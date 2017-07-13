@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4D72B7E9-558A-4066-9605-0D23D8E28D2E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Shared</RootNamespace>
+    <AssemblyName>SharedLib</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Builds\Shared\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;FAKE_ADDRESS_</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>T:\GitProjects\Builds\Shared\Debug\SharedLib.xml</DocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Builds\Shared\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DocumentationFile>..\Builds\Shared\Release\SharedLib.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Shared.key.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\Builds\Shared\3rdParty\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Checks.cs" />
+    <Compile Include="Classes\BaseServiceBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\CacheManager.cs" />
+    <Compile Include="Classes\CachItem.cs" />
+    <Compile Include="Classes\CpuUsage.cs" />
+    <Compile Include="Classes\FileBackup.cs" />
+    <Compile Include="Classes\FTP.cs" />
+    <Compile Include="Classes\LogScanner.cs" />
+    <Compile Include="Classes\Mutex.cs" />
+    <Compile Include="Classes\NVPCodec.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\Params.cs" />
+    <Compile Include="Classes\ThreadManager.cs" />
+    <Compile Include="Classes\TimedLockObject.cs" />
+    <Compile Include="Classes\WebClientEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\ZipFiles.cs" />
+    <Compile Include="Communication\Email.cs" />
+    <Compile Include="Communication\HttpPost.cs" />
+    <Compile Include="Communication\MessageServer\ConnectedClients.cs" />
+    <Compile Include="Communication\MessageServer\FileTransfer.cs" />
+    <Compile Include="Communication\MessageServer\Message.cs" />
+    <Compile Include="Communication\MessageServer\MessageClient.cs" />
+    <Compile Include="Communication\MessageServer\MessageDelegates.cs" />
+    <Compile Include="Communication\MessageServer\MessageServer.cs" />
+    <Compile Include="Communication\SendSMS.cs" />
+    <Compile Include="Communication\WCFServer.cs" />
+    <Compile Include="Download\FileDownload.cs" />
+    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Events\Events.cs" />
+    <Compile Include="Logging\LoggingCache.cs" />
+    <Compile Include="Logging\EventLog.cs" />
+    <Compile Include="Logging\LoggingThread.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Classes\UserSession.cs" />
+    <Compile Include="Utils\Utilities.cs" />
+    <Compile Include="Utils\Validation.cs" />
+    <Compile Include="XMLManipulation\DefenderXML.cs" />
+    <Compile Include="ZipFiles\ZipFiles.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shared.key.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="License.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
