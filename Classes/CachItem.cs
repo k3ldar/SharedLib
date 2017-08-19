@@ -45,6 +45,8 @@ namespace Shared.Classes
             _lastUpdated = Created;
             _resetCount = 0;
             Name = name;
+            Index = Utilities.Hash(name);
+
             _value = value;
         }
 
@@ -104,6 +106,11 @@ namespace Shared.Classes
                 return (_value);
             }
         }
+
+        /// <summary>
+        /// Search index for fast lookup
+        /// </summary>
+        internal UInt64 Index { get; set; }
 
         #endregion Properties
 

@@ -4,7 +4,7 @@
  *
  *  The Original Code was created by Simon Carter (s1cart3r@gmail.com)
  *
- *  Copyright (c) 2015 Simon Carter
+ *  Copyright (c) 2015 - 2017 Simon Carter
  *
  *  Purpose:  Session Manager - Used to manage web sessions
  *
@@ -12,18 +12,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Text;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-
-using Shared.Classes;
 
 namespace Shared.Classes
 {
     /// <summary>
     /// UserSessionManager
     /// 
-    /// Object to manage user web sessions
+    /// Class to manage user web sessions
     /// </summary>
     [Serializable]
     public class UserSessionManager : ThreadManager, IDisposable
@@ -139,10 +134,13 @@ namespace Shared.Classes
                         {
                             using (TimedLock.Lock(session))
                             {
-                                RaiseSessionSave(session);
+                                if (session.SaveStatus == SaveStatus.RequiresSave || session.PageSaveStatus == SaveStatus.RequiresSave)
+                                {
+                                    RaiseSessionSave(session);
+                                    session.PageSaveStatus = SaveStatus.Saved;
+                                }
                             }
 
-                            session.PageSaveStatus = SaveStatus.Saved;
                         }
 
                         System.Threading.Thread.Sleep(0);
@@ -204,10 +202,6 @@ namespace Shared.Classes
             }
         }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
         /// <summary>
         /// Called in a seperate thread, updates thread with basic data to stop blocking
         /// </summary>
@@ -227,9 +221,9 @@ namespace Shared.Classes
                 // referral type
                 session.Referal = GetReferralType(session);
 
-                RaiseSessionCreated(session);
-
                 session.SaveStatus = SaveStatus.RequiresSave;
+
+                RaiseSessionCreated(session);
             }
             catch (Exception err)
             {
@@ -241,6 +235,10 @@ namespace Shared.Classes
                 session.Status = SessionStatus.Updated;
             }
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         /// <summary>
         /// Determines the Referal Type for the sesssion
@@ -589,6 +587,11 @@ namespace Shared.Classes
         /// If true the website is automatically initialised, if false, the app is responsible
         /// </summary>
         public static bool InitialiseWebsite { get; set; }
+
+        /// <summary>
+        /// If true, the page/session save is called immediately, if false, it is called within a thread
+        /// </summary>
+        public static bool SaveImmediately { get; set; }
 
         #endregion Static Properties
 
@@ -1060,10 +1063,17 @@ namespace Shared.Classes
             using (TimedLock.Lock(_pageViewLockObject))
             {
                 PageViewData newPageView = new PageViewData(page, referrer, isPostBack);
-
-                newPageView.SaveStatus = Classes.SaveStatus.RequiresSave;
                 _pageViews.Add(newPageView);
-                UserSessionManager.Instance.RaiseSavePage(this, newPageView);                
+
+                if (UserSessionManager.SaveImmediately)
+                {
+                    newPageView.SaveStatus = Classes.SaveStatus.RequiresSave;
+                    UserSessionManager.Instance.RaiseSavePage(this, newPageView);
+                }
+                else
+                {
+                    newPageView.SaveStatus = SaveStatus.Pending;
+                }
             }
 
             int pages = _pageViews.Count -1;
@@ -1106,7 +1116,9 @@ namespace Shared.Classes
             UserEmail = email;
             UserID = userID;
             SaveStatus = SaveStatus.RequiresSave;
-            UserSessionManager.Instance.RaiseSessionSave(this);
+
+            if (UserSessionManager.SaveImmediately)
+                UserSessionManager.Instance.RaiseSessionSave(this);
         }
 
         /// <summary>
@@ -1119,7 +1131,9 @@ namespace Shared.Classes
             CurrentSale = saleAmount;
             CurrentSaleCurrency = currencyCode;
             SaveStatus = Classes.SaveStatus.RequiresSave;
-            UserSessionManager.Instance.RaiseSessionSave(this);   
+
+            if (UserSessionManager.SaveImmediately)
+                UserSessionManager.Instance.RaiseSessionSave(this);   
         }
 
         #endregion Public Methods

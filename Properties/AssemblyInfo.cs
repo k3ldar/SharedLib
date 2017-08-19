@@ -10,14 +10,13 @@
  *
  */
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Shared")]
-[assembly: AssemblyDescription("Shared Library")]
+[assembly: AssemblyTitle("Shared Library")]
+[assembly: AssemblyDescription("Library of shared classes.  Includes ThreadManager and CacheManager, Event Logging etc")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Simon Carter")]
 [assembly: AssemblyProduct("Shared")]
@@ -40,4 +39,4 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.5.0.41")]
+[assembly: AssemblyVersion("2.5.2.43")]

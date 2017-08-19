@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 using ICSharpCode.SharpZipLib.Zip;
@@ -121,6 +122,121 @@ namespace Shared
 
         #region Public Static Methods
 
+        #region Log Errors
+
+        /// <summary>
+        /// Logs an internal error
+        /// </summary>
+        /// <param name="method">Method where error occured</param>
+        /// <param name="ex">Ecxeption being raised</param>
+        /// <param name="values">Parameter values within the method</param>
+        /// <returns>void</returns>
+        public static void LogError(MethodBase method, Exception ex, params object[] values)
+        {
+            LoggingErrorCacheItem previousError = null;
+
+            if (!GetPreviousErrorData(ex.Message, ref previousError))
+                return;
+
+            ParameterInfo[] parms = method.GetParameters();
+            string parameters = String.Empty;
+
+            for (int i = 0; i < parms.Length; i++)
+            {
+                if (i >= values.Length)
+                    parameters += String.Format("{0} = {1}\r\n", parms[i].Name, "missing parameter value???");
+                else
+                    parameters += String.Format("{0} = {1}\r\n", parms[i].Name, values[i] == null ? "null" : values[i]);
+            }
+
+
+            string msg = String.Format("Date: {0}\r\n\r\nError Message: {1}\r\n" +
+                "\r\nParameters: \r\n\r\n{2}\r\n\r\nStackTrace\r\n\r\n{3}\r\n\r\nInnerException\r\n\r\n{4}", 
+                DateTime.Now.ToString("g"), ex.Message, parameters, 
+                ex.StackTrace == null ? "No Stack Trace" : ex.StackTrace.ToString(),
+                ex.InnerException == null ? "No Inner Exception" : ex.InnerException.ToString());
+
+            try
+            {
+                StreamWriter w = File.AppendText(previousError.FileName);
+                try
+                {
+                    w.Write(msg);
+                }
+                finally
+                {
+                    // Update the underlying file.
+                    w.Flush();
+                    w.Close();
+                    w.Dispose();
+                    w = null;
+                }
+            }
+            catch
+            {
+                //ignore, I suppose :-\
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="method"></param>
+        /// <param name="error"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static void LogError(MethodBase method, string error, params object[] values)
+        {
+            ParameterInfo[] parms = method.GetParameters();
+            string parameters = String.Empty;
+
+            for (int i = 0; i < parms.Length; i++)
+            {
+                if (i >= values.Length)
+                    parameters += String.Format("{0} = {1}\r\n", parms[i].Name, "missing parameter value???");
+                else
+                    parameters += String.Format("{0} = {1}\r\n", parms[i].Name, values[i] == null ? "null" : values[i]);
+            }
+
+            parameters += "\r\n\r\nOther Values:\r\n\r\n";
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                parameters += String.Format("{0}\r\n", values[i]);
+            }
+
+            string msg = String.Format("Date: {0}\r\n\r\nError Message: {1}\r\n" +
+                "\r\nParameters: \r\n\r\n{2}", DateTime.Now.ToString("g"), error, parameters);
+
+            LoggingErrorCacheItem previousError = null;
+
+            if (!GetPreviousErrorData(error, ref previousError))
+                return;
+
+            try
+            {
+                StreamWriter w = File.AppendText(previousError.FileName);
+                try
+                {
+                    w.Write(msg);
+                }
+                finally
+                {
+                    // Update the underlying file.
+                    w.Flush();
+                    w.Close();
+                    w.Dispose();
+                    w = null;
+                }
+            }
+            catch
+            {
+                //ignore, I suppose :-\
+            }
+        }
+
+        #endregion Log Errors
+
         /// <summary>
         /// Debug only
         /// </summary>
@@ -229,7 +345,6 @@ namespace Shared
             }
         }
 
-
         /// <summary>
         /// Starts the thread log manager to manage log files
         /// </summary>
@@ -258,9 +373,9 @@ namespace Shared
 
             using (TimedLock.Lock(_lockObject))
             {
-                LoggingErrorCache previousError = null;
+                LoggingErrorCacheItem previousError = null;
 
-                previousError = (LoggingErrorCache)_errorCache.Get(e.Message);
+                previousError = (LoggingErrorCacheItem)_errorCache.Get(e.Message);
 
                 if (previousError != null)
                 {
@@ -310,8 +425,9 @@ namespace Shared
                         Directory.CreateDirectory(_errorPath);
 
                     // add this error to the cache
-                    previousError = new LoggingErrorCache(e.Message, e.Message);
-                    previousError.FileName = _errorPath + String.Format("{0}.log", DateTime.Now.ToString("ddMMyyyy HH mm ss ffff"));
+                    previousError = new LoggingErrorCacheItem(e.Message, e.Message);
+                    previousError.FileName = _errorPath + String.Format("{0}.log", 
+                        DateTime.Now.ToString("ddMMyyyy HH mm ss ffff"));
 
                     if (!CanLogData(previousError.FileName))
                         return;
@@ -481,42 +597,115 @@ namespace Shared
 
         #region Public Static Properties
 
-        /// <summary>
-        /// Get/Set the path of the event log file.
-        /// </summary>
-        public static string Path
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(_logPath))
+                /// <summary>
+                /// Get/Set the path of the event log file.
+                /// </summary>
+                public static string Path
                 {
-                    string Result = XML.GetXMLValue("Settings", "Path");
-
-                    if (!System.IO.Directory.Exists(Result))
+                    get
                     {
-                        Result = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
-                        Result = System.IO.Path.GetDirectoryName(Result);
-                        Result = Result.Substring(6);
+                        if (String.IsNullOrEmpty(_logPath))
+                        {
+                            string Result = XML.GetXMLValue("Settings", "Path");
+
+                            if (!System.IO.Directory.Exists(Result))
+                            {
+                                Result = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
+                                Result = System.IO.Path.GetDirectoryName(Result);
+                                Result = Result.Substring(6);
+                            }
+
+                            Result += "\\Logs\\";
+
+                            _errorPath = Result.Replace("\\Logs\\", "\\Errors\\");
+
+                            _logPath = Result;
+
+                            return (Result);
+                        }
+                        else
+                        {
+                            return (_logPath);
+                        }
                     }
-
-                    Result += "\\Logs\\";
-
-                    _errorPath = Result.Replace("\\Logs\\", "\\Errors\\");
-
-                    _logPath = Result;
-
-                    return (Result);
                 }
-                else
-                {
-                    return (_logPath);
-                }
-            }
-        }
 
         #endregion Public Static Properties
 
         #region Private Static Methods
+
+        /// <summary>
+        /// Finds previous error data, if already exists, appends further occurrance data to the file,
+        /// if not exists, creates the cache item
+        /// </summary>
+        /// <param name="error">error caused</param>
+        /// <param name="errorItem"></param>
+        /// <returns></returns>
+        private static bool GetPreviousErrorData(string error, ref LoggingErrorCacheItem errorItem)
+        {
+            errorItem = (LoggingErrorCacheItem)_errorCache.Get(error);
+
+            if (errorItem != null)
+            {
+                if (!CanLogData(errorItem.FileName))
+                    return (false);
+
+                if (errorItem.NumberOfErrors > _maximumReoccuranceCount)
+                    return (false);
+
+                // if this error has occurred before, then append the date/time to the existing message
+                StreamWriter w = File.AppendText(errorItem.FileName);
+                try
+                {
+                    if (errorItem.NumberOfErrors == 0)
+                        w.WriteLine(String.Empty);
+
+                    if (errorItem.NumberOfErrors < _maximumReoccuranceCount)
+                    {
+                        w.WriteLine("Further Occurance: {0}", DateTime.Now.ToString());
+                    }
+                    else if (errorItem.NumberOfErrors == _maximumReoccuranceCount)
+                    {
+                        w.WriteLine("Maximum Reoccurance Rate Reached - Further reporting on this error will be supressed");
+                    }
+                }
+                finally
+                {
+                    // Update the underlying file.
+                    w.Flush();
+                    w.Close();
+                    w.Dispose();
+                    w = null;
+                }
+
+                errorItem.IncrementErrors();
+
+                return (false);
+            }
+            else
+            {
+                if (_errorPath == null)
+                {
+                    string dummy = Path;
+                }
+
+                if (!Directory.Exists(_errorPath))
+                    Directory.CreateDirectory(_errorPath);
+
+                // add this error to the cache
+                errorItem = new LoggingErrorCacheItem(error, error);
+                errorItem.FileName = _errorPath + String.Format("{0}.log",
+                    DateTime.Now.ToString("ddMMyyyy HH mm ss ffff"));
+
+                if (!CanLogData(errorItem.FileName))
+                    return (false);
+
+                if (!_errorCache.Add(error, errorItem))
+                    return(false);
+            }
+
+            return (true);
+        }
 
         private static bool CanLogData(string file)
         {

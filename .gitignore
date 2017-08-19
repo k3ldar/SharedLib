@@ -1,1 +1,7 @@
 bin/
+obj/
+SC.Shared.Library.2.5.2.43.nupkg
+Shared.Library.2.5.0.41.nupkg
+Shared.Library.2.5.1.42.nupkg
+SharedLib.nuspec
+Properties/ver.txt

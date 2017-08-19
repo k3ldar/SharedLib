@@ -7,6 +7,9 @@ using ICSharpCode.SharpZipLib.Zip;
 
 namespace Shared.Classes
 {
+    /// <summary>
+    /// Class for zipping files
+    /// </summary>
     public static class ZipFiles
     {
         #region Public Static Methods
@@ -49,6 +52,11 @@ namespace Shared.Classes
             zip.ExtractZip(fileName, unpackFolder, "");
         }
 
+        /// <summary>
+        /// Unpack files
+        /// </summary>
+        /// <param name="ZipFile"></param>
+        /// <param name="ZipExtractPath"></param>
         public static void Unpack(string ZipFile, string ZipExtractPath)
         {
             try
@@ -223,8 +231,16 @@ namespace Shared.Classes
         public static event ZipFileAddEventHandler ZipFileAddedToArchive;
     }
 
+    /// <summary>
+    /// Event arguments
+    /// </summary>
     public sealed class ZipFileAddEventArgs
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="archive"></param>
         public ZipFileAddEventArgs(string fileName, string archive)
         {
             FileName = fileName;
@@ -232,9 +248,14 @@ namespace Shared.Classes
             Cancel = false;
         }
 
+        /// <summary>
+        /// File
+        /// </summary>
         public string FileName { get; private set; }
 
-
+        /// <summary>
+        /// Archive Name
+        /// </summary>
         public string Archive { get; private set; }
 
         /// <summary>
@@ -243,5 +264,10 @@ namespace Shared.Classes
         public bool Cancel { get; set; }
     }
 
+    /// <summary>
+    /// delegate
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     public delegate void ZipFileAddEventHandler(object sender, ZipFileAddEventArgs e);
 }

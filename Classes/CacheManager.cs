@@ -11,9 +11,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Shared.Classes;
 
 namespace Shared.Classes
 {
@@ -225,12 +222,12 @@ namespace Shared.Classes
         /// <param name="deleteIfExists">if true and the list contains a value with the same name, then the existing item is deleted</param>
         public bool Add(string name, CacheItem value, bool deleteIfExists = false)
         {
+            if (value == null)
+                throw new Exception("invalid value parameter");
+
             // is the item is already cached and we are not renewing it
             if (_cachedItems.ContainsKey(name) && !deleteIfExists)
                     return (false);
-
-            if (value == null)
-                throw new Exception("invalid value parameter");
 
             using (TimedLock.Lock(_cacheLockObject))
             {

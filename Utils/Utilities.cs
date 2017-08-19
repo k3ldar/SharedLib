@@ -1902,6 +1902,26 @@ namespace Shared
         }
 
         /// <summary>
+        /// Creates a hash of a string
+        /// 
+        /// From: https://stackoverflow.com/questions/8820399/c-sharp-4-0-how-to-get-64-bit-hash-code-of-given-string
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        public static UInt64 Hash(string Value)
+        {
+            string s1 = Value.Substring(0, Value.Length / 2);
+            string s2 = Value.Substring(Value.Length / 2);
+
+            Byte[] MS4B = BitConverter.GetBytes(s1.GetHashCode());
+            Byte[] LS4B = BitConverter.GetBytes(s2.GetHashCode());
+            return ((UInt64)MS4B[0] << 56 | (UInt64)MS4B[1] << 48 | 
+                          (UInt64)MS4B[2] << 40 | (UInt64)MS4B[3] << 32 |
+                          (UInt64)LS4B[0] << 24 | (UInt64)LS4B[1] << 16 | 
+                          (UInt64)LS4B[2] << 8  | (UInt64)LS4B[3]);
+        }
+
+        /// <summary>
         /// Converts a string to an MD5 value
         /// </summary>
         /// <param name="Value"></param>

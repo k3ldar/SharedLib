@@ -17,11 +17,11 @@ using Shared.Classes;
 
 namespace Shared
 {
-    internal class LoggingErrorCache : CacheItem
+    internal class LoggingErrorCacheItem : CacheItem
     {
         #region Constructor
 
-        internal LoggingErrorCache(string name, object value)
+        internal LoggingErrorCacheItem(string name, object value)
             : base (name, value)
         {
             NumberOfErrors = 0;
