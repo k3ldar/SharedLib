@@ -124,11 +124,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>T:\Tools\BuildUtil\Build.Deploy.Util.exe /IgnoreDebug /$(ConfigurationName) /target="$(TargetPath)" /git="C:\Program Files\Git\bin\git.exe" /gitrepository="SharedLib" /GitWorkingDir="T:\GitProjects\SharedLib" /NugetPack="T:\GitProjects\SharedLib\SharedLib.nuspec" /NugetVer=3 /NugetExe="t:\tools\nuget\nuget.exe" /netVersion=net452 /nugetKeyFile="T:\GitProjects\Private NUGET Key.txt" /nugetPush</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>T:\HeavenMain\Build\UpdateVer\UpdateVersion.exe /out="$(ProjectDir)Properties\ver.txt" /$(ConfigurationName) /path="$(ProjectDir)</PreBuildEvent>
+    <PreBuildEvent>T:\Tools\BuildUtil\UpdateVersion.exe /out="$(ProjectDir)Properties\ver.txt" /$(ConfigurationName) /path="$(ProjectDir)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
