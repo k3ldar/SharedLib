@@ -80,6 +80,7 @@
     <Compile Include="Classes\CpuUsage.cs" />
     <Compile Include="Classes\FileBackup.cs" />
     <Compile Include="Classes\FTP.cs" />
+    <Compile Include="Classes\FTPEntry.cs" />
     <Compile Include="Classes\LogScanner.cs" />
     <Compile Include="Classes\Mutex.cs" />
     <Compile Include="Classes\NVPCodec.cs">

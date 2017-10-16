@@ -10,11 +10,13 @@
  *
  */
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Net.Sockets;
 using System.Text;
+
+#pragma warning disable IDE0017 // object initialization can be simplified
 
 namespace Shared.Communication
 {
@@ -73,8 +75,24 @@ namespace Shared.Communication
         /// <returns></returns>
         public bool SendTestEmail()
         {
-
             return (SmtpHelper.TestSend("Test email", "Connection Test", User, User, Password, Host, Port, SSL));
+        }
+
+        /// <summary>
+        /// Sends and email with optional attachments
+        /// </summary>
+        /// <param name="senderName"></param>
+        /// <param name="recipientName"></param>
+        /// <param name="recipientEmail"></param>
+        /// <param name="message"></param>
+        /// <param name="subject"></param>
+        /// <param name="isHtml"></param>
+        /// <param name="attachments"></param>
+        /// <returns></returns>
+        public bool SendEmail(string senderName, string recipientName, string recipientEmail, 
+            string message, string subject, bool isHtml, params string[] attachments)
+        {
+            return (SmtpHelper.Send(message, subject, recipientEmail, recipientName, User, Sender, User, Password, Host, Port, SSL, isHtml, attachments));
         }
 
         #endregion Public Methods
@@ -120,19 +138,61 @@ namespace Shared.Communication
         internal static bool TestSend(string message, string subject, string recipient,
             string userName, string password, string host, int port, bool ssl)
         {
-            SmtpClient SMTPServer = new SmtpClient(host);
-            SMTPServer.Port = port;
-            SMTPServer.EnableSsl = ssl;
+            return (Send(message, subject, recipient, recipient, recipient, recipient, userName, password, host, port, ssl, false));
+        }
 
-            SMTPServer.Credentials = new System.Net.NetworkCredential(userName, password);
+        internal static bool Send(string message, string subject, 
+            string recipientEmail, string recipientName,
+            string senderEmail, string senderName,
+            string userName, string password, string host, int port, bool ssl,
+            bool isHtml,
+            params string[] attachments)
+        {
+            SmtpClient smtpClient = new SmtpClient(host);
             try
             {
-                SMTPServer.Send(new MailMessage(recipient, recipient, subject, message));
-                return (true);
+                smtpClient.Port = port;
+                smtpClient.EnableSsl = ssl;
+
+                smtpClient.Credentials = new NetworkCredential(userName, password);
+                try
+                {
+                    MailMessage msg = new MailMessage(new MailAddress(senderEmail, senderName), new MailAddress(recipientEmail, recipientName));
+                    try
+                    {
+                        msg.Subject = subject;
+                        msg.Body = message;
+                        msg.IsBodyHtml = isHtml;
+
+                        foreach (string file in attachments)
+                        {
+                            if (String.IsNullOrEmpty(file) || !File.Exists(file))
+                                continue;
+
+                            System.Net.Mime.ContentType contentType = new System.Net.Mime.ContentType();
+                            contentType.MediaType = System.Net.Mime.MediaTypeNames.Application.Octet;
+                            contentType.Name = Path.GetFileName(file);
+                            msg.Attachments.Add(new Attachment(file, contentType));
+                        }
+
+                        smtpClient.Send(msg);
+                        return (true);
+                    }
+                    finally
+                    {
+                        msg.Dispose();
+                        msg = null;
+                    }
+                }
+                catch
+                {
+                    return (false);
+                }
             }
-            catch
+            finally
             {
-                return (false);
+                smtpClient.Dispose();
+                smtpClient = null;
             }
         }
 

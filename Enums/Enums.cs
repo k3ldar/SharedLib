@@ -11,6 +11,8 @@
  */
 using System;
 
+#pragma warning disable IDE1006 // naming rule violation
+
 namespace Shared
 {
     /// <summary>

@@ -9,9 +9,8 @@
  *  Purpose:  TextMagic SMS class
  *
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
+
+#pragma warning disable IDE0028 // collection intialization can be simplified
 
 namespace Shared.Communication
 {
@@ -62,11 +61,11 @@ namespace Shared.Communication
         /// <returns></returns>
         public bool SMSSend(string from, string telephone, string message)
         {
-            Classes.NVPCodec headers = new Shared.Classes.NVPCodec();
+            Classes.NVPCodec headers = new Classes.NVPCodec();
             headers.Add("X-TM-Username", Username);
             headers.Add("X-TM-Key", Key);
 
-            Classes.NVPCodec codec = new Shared.Classes.NVPCodec();
+            Classes.NVPCodec codec = new Classes.NVPCodec();
             codec.Add("from", from);
             codec.Add("phones", telephone);
             codec.Add("text", message);

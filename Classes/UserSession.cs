@@ -13,6 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+#pragma warning disable IDE1005 // Delegate invocation can be simplified
+#pragma warning disable IDE0029 // simplified null checks
+
 namespace Shared.Classes
 {
     /// <summary>

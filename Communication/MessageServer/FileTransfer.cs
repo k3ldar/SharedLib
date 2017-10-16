@@ -10,14 +10,12 @@
  *
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
 using System.IO;
 using System.Net.Sockets;
-using System.Threading;
 
 using Shared.Classes;
+
+#pragma warning disable IDE1005 // Delegate invocation can be simplified
 
 namespace Shared.Communication
 {

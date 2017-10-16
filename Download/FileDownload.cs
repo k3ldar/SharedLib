@@ -10,13 +10,11 @@
  *
  */
 using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using System.ComponentModel;
-using System.Reflection;
 
 using Shared.Classes;
+
+#pragma warning disable IDE1006 // naming rule violation
 
 namespace Shared
 {

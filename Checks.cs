@@ -9,7 +9,6 @@
  *  Purpose:  Provide warning depending on how the library is being built
  *
  */
-using System;
 
 namespace Shared
 {

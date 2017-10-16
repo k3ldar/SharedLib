@@ -10,14 +10,15 @@
  *
  */
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 using ICSharpCode.SharpZipLib.Zip;
 
 using Shared.Classes;
+
+#pragma warning disable IDE0017 // initialization can be simplified
+#pragma warning disable IDE0029 // Null checks can be simplified
 
 namespace Shared
 {

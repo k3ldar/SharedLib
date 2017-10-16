@@ -12,9 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading;
-using System.IO;
-using System.Text.RegularExpressions;
+
+#pragma warning disable IDE0028 // collection intialization can be simplified
 
 namespace Shared.Classes
 {

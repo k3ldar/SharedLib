@@ -15,6 +15,11 @@ using System.Diagnostics;
 using System.Threading;
 using System.Runtime.InteropServices;
 
+#pragma warning disable IDE1005 // Delegate invocation can be simplified
+#pragma warning disable IDE1006 // naming rule violation
+#pragma warning disable IDE0016 // simplified null checks
+#pragma warning disable IDE0017 // initialization can be simplified
+
 namespace Shared.Classes
 {
     /// <summary>

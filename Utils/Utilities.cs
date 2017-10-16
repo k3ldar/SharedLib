@@ -26,6 +26,8 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 
+#pragma warning disable IDE0018 // variable can be inlined
+
 namespace Shared
 {
     /// <summary>

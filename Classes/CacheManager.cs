@@ -12,6 +12,8 @@
 using System;
 using System.Collections.Generic;
 
+#pragma warning disable IDE1005 // Delegate invocation can be simplified
+
 namespace Shared.Classes
 {
     /// <summary>

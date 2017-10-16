@@ -14,7 +14,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+
+#pragma warning disable IDE1006 // naming rule violation
 
 namespace Shared.Classes
 {

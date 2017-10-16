@@ -9,7 +9,6 @@
  *  Purpose:  internally used WCF service contract
  *
  */
-using System;
 using System.ServiceModel;
 
 namespace Shared

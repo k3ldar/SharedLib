@@ -10,11 +10,11 @@
  *
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 using System.IO;
+
+#pragma warning disable IDE1005 // Delegate invocation can be simplified
+#pragma warning disable IDE1006 // naming rule violation
 
 namespace Shared.Classes
 {
@@ -528,7 +528,6 @@ namespace Shared.Classes
                             StreamReader ftpReader = new StreamReader(ftpStream);
                             try
                             {
-
                                 /* Read the Full Response Stream */
                                 try
                                 {
@@ -756,9 +755,7 @@ namespace Shared.Classes
                 /* Return the Directory Listing as a string Array by Parsing 'directoryRaw' with the Delimiter you Append (I use | in This Example) */
                 try
                 {
-                    string[] directoryList = directoryRaw.Split("|".ToCharArray());
-
-                    return (directoryList);
+                    return (directoryRaw.Split("|".ToCharArray()));
                 }
                 catch (Exception ex)
                 {

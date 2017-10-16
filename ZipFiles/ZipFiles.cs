@@ -10,11 +10,13 @@
  *
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
 
 using ICSharpCode.SharpZipLib.Zip;
+
+#pragma warning disable IDE1005 // Delegate invocation can be simplified
+#pragma warning disable IDE1006 // naming rule violation
+#pragma warning disable IDE0017 // initialization can be simplified
 
 namespace Shared
 {

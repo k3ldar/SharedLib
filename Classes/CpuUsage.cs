@@ -12,11 +12,11 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using ComTypes = System.Runtime.InteropServices.ComTypes;
-using System.Threading;
 using System.Diagnostics;
+
+#pragma warning disable IDE0018 // variable can be inlined
 
 namespace Shared.Classes
 {
