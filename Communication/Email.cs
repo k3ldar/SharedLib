@@ -34,6 +34,8 @@ namespace Shared.Communication
 
         /// <summary>
         /// Constructor
+        /// 
+        /// Reads settings from saved/encrypted file
         /// </summary>
         public Email()
         {
@@ -50,6 +52,27 @@ namespace Shared.Communication
             {
 
             }
+        }
+
+        /// <summary>
+        /// Constructor
+        /// 
+        /// User defined details
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="host"></param>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="port"></param>
+        /// <param name="ssl"></param>
+        public Email(string sender, string host, string userName, string password, int port, bool ssl)
+        {
+            Sender = sender;
+            Host = host;
+            User = userName;
+            Password = password;
+            Port = port;
+            SSL = ssl;
         }
 
         #endregion Constructors
