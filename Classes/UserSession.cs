@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  The contents of this file are subject to MIT Licence.  Please
  *  view License.txt for further details. 
  *
@@ -467,6 +467,12 @@ namespace Shared.Classes
         /// <param name="session"></param>
         public static void Add(UserSession session)
         {
+            if (session == null)
+                throw new ArgumentNullException(nameof(session));
+
+            if (_userSessionCacheManager == null)
+                throw new Exception("SessionManager has not been initialised!");
+
             _userSessionCacheManager.Add(session.SessionID, 
                 new CacheItem(session.SessionID, session));
         }
@@ -645,13 +651,20 @@ namespace Shared.Classes
     [Serializable]
     public class UserSession : IDisposable
     {
-        #region Private Static Members
+        #region Private Members
 
+        /// <summary>
+        /// Is Mobile Device
+        /// </summary>
         private static Regex MobileCheck = new Regex("android|(android|bb\\d+|meego).+mobile|avantgo|bada\\/|blackberry|blazer|"+
             "compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|" +
             "opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\\.(browser|link)|" +
             "vodafone|wap|windows (ce|phone)|xda|xiino", 
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+
+        /// <summary>
+        /// Mobile Version
+        /// </summary>
         private static Regex MobileVersionCheck = new Regex("1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|" +
             "s\\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\\-m|r |s )|avan|be(ck|ll|nq)|" +
             "bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\\-(n|u)|c55\\/|capi|ccwa|cdm\\-|cell|chtm|cldc|cmd\\-|co(mp|nd)|craw|da(it|ll|" +
@@ -669,7 +682,7 @@ namespace Shared.Classes
             "vx(52|53|60|61|70|80|81|83|85|98)|w3c(\\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\\-|your|zeto|zte\\-", 
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
-        #endregion Private Static Members
+        #endregion Protected Members
 
         #region Private Members
 
@@ -697,7 +710,7 @@ namespace Shared.Classes
         /// </summary>
         public UserSession()
         {
-
+            Status = SessionStatus.Initialising;
         }
 
         /// <summary>
@@ -727,6 +740,7 @@ namespace Shared.Classes
             string ipAddress, string hostName, bool isMobile, bool isBrowserMobile, bool mobileRedirect,
             ReferalType referralType, bool bounced, bool isBot, string mobileManufacturer, string mobileModel,
             long userID, int screenWidth, int screenHeight, string saleCurrency, decimal saleAmount)
+            : this ()
         {
             this.InternalSessionID = id;
             Created = created;
@@ -751,107 +765,6 @@ namespace Shared.Classes
             Status = SessionStatus.Continuing;
         }
 
-        /// <summary>
-        /// Constructor
-        /// 
-        /// Allows passing of user defined object
-        /// </summary>
-        /// <param name="Session">Current User Session</param>
-        /// <param name="Request">Current Web Request</param>
-        /// <param name="tag">User defined object</param>
-        public UserSession(System.Web.SessionState.HttpSessionState Session,
-            System.Web.HttpRequest Request, object tag)
-            :this (Session, Request)
-        {
-            Tag = tag;
-            InternalSessionID = -1;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// 
-        /// Allows passing of user name and email
-        /// </summary>
-        /// <param name="Session">Current User Session</param>
-        /// <param name="Request">Current Web Request</param>
-        /// <param name="userName">Current user's name</param>
-        /// <param name="userEmail">Current user's email address</param>
-        /// <param name="userID">Current user's unique id</param>
-        public UserSession(System.Web.SessionState.HttpSessionState Session,
-            System.Web.HttpRequest Request, string userName, string userEmail,
-            Int64 userID)
-            :this(Session, Request)
-        {
-            UserName = userName;
-            UserEmail = userEmail;
-            UserID = userID;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// 
-        /// Standard constructor
-        /// </summary>
-        /// <param name="Session">Current User Session</param>
-        /// <param name="Request">Current Web Request</param>
-        public UserSession(System.Web.SessionState.HttpSessionState Session,
-            System.Web.HttpRequest Request)
-        {
-            Created = DateTime.Now;
-            Bounced = true;
-            Status = SessionStatus.Initialising;
-            CurrentSale = 0.00m;
-            CurrentSaleCurrency = String.Empty;
-            Tag = null;
-
-            SessionID = Session.SessionID;
-            IPAddress = Request.UserHostAddress;
-
-            if (IPAddress == "::1")
-                IPAddress = "127.0.0.1";
-
-#if FAKE_ADDRESS
-            IPAddress = GetFormValue(Request, "FakeAddress", IPAddress);
-#endif
-
-            HostName = Request.UserHostName;
-            UserAgent = Request.UserAgent;
-            IsMobileDevice = CheckIfMobileDevice(Request);
-            IsBrowserMobile = Request.Browser.IsMobileDevice;
-
-            MobileRedirect = IsMobileDevice | IsBrowserMobile;
-
-            MobileManufacturer = Request.Browser.MobileDeviceManufacturer;
-            MobileModel = Request.Browser.MobileDeviceModel;
-            ScreenHeight = Request.Browser.ScreenPixelsHeight;
-            ScreenWidth = Request.Browser.ScreenPixelsWidth;
-
-            try
-            {
-                if (Request.UrlReferrer == null)
-                    Referal = ReferalType.Unknown;
-                else
-                    InitialReferrer = Request.UrlReferrer.ToString();
-            }
-            catch (Exception err)
-            {
-                if (!err.Message.Contains("The hostname could not be parsed"))
-                    throw;
-            }
-
-            CountryCode = String.Empty;
-
-            UserName = String.Empty;
-            UserEmail = String.Empty;
-            UserID = -1;
-
-            UserSessionManager.UpdateSession(this);
-
-            SaveStatus = SaveStatus.Pending;
-            PageSaveStatus = SaveStatus.Saved;
-            InternalSessionID = Int64.MinValue;
-        }
-
         #endregion Constructor
 
         #region Properties
@@ -859,7 +772,7 @@ namespace Shared.Classes
         /// <summary>
         /// Date/Time Session Created
         /// </summary>
-        public DateTime Created { get; private set; }
+        public DateTime Created { get; protected set; }
 
         /// <summary>
         /// internal indicator on wether it's been processed by the UserSessionManger or not
@@ -869,7 +782,7 @@ namespace Shared.Classes
         /// <summary>
         /// Unique Session ID
         /// </summary>
-        public string SessionID { get; private set; }
+        public string SessionID { get; protected set; }
 
         /// <summary>
         /// Internal session id
@@ -879,27 +792,27 @@ namespace Shared.Classes
         /// <summary>
         /// IP Address of User
         /// </summary>
-        public string IPAddress { get; private set; }
+        public string IPAddress { get; protected set; }
 
         /// <summary>
         /// Host computer name for user
         /// </summary>
-        public string HostName { get; private set; }
+        public string HostName { get; protected set; }
 
         /// <summary>
         /// User Agent
         /// </summary>
-        public string UserAgent { get; private set; }
+        public string UserAgent { get; protected set; }
 
         /// <summary>
         /// Is mobile device
         /// </summary>
-        public bool IsMobileDevice { get; private set; }
+        public bool IsMobileDevice { get; protected set; }
 
         /// <summary>
         /// Is mobile device based on browser capabilities
         /// </summary>
-        public bool IsBrowserMobile { get; private set; }
+        public bool IsBrowserMobile { get; protected set; }
 
         /// <summary>
         /// Determines wether the user should be redirected to the mobile site
@@ -909,17 +822,17 @@ namespace Shared.Classes
         /// <summary>
         /// Type of referral for session
         /// </summary>
-        public ReferalType Referal { get; internal set; }
+        public ReferalType Referal { get; set; }
 
         /// <summary>
         /// Initial referring website
         /// </summary>
-        public string InitialReferrer { get; private set; }
+        public string InitialReferrer { get; protected set; }
 
         /// <summary>
         /// Bounced indicates wether the user came to the page and left the site without doing anything else
         /// </summary>
-        public bool Bounced { get; private set; }
+        public bool Bounced { get; set; }
 
         /// <summary>
         /// User session is a bot
@@ -929,67 +842,67 @@ namespace Shared.Classes
         /// <summary>
         /// Unique ID for City information
         /// </summary>
-        public Int64 CityID { get; private set; }
+        public Int64 CityID { get; protected set; }
 
         /// <summary>
         /// Country for visitor
         /// </summary>
-        public string CountryCode { get; private set; }
+        public string CountryCode { get; protected set; }
 
         /// <summary>
         /// Visitor Region
         /// </summary>
-        public string Region { get; private set; }
+        public string Region { get; protected set; }
 
         /// <summary>
         /// Visitor city
         /// </summary>
-        public string CityName { get; private set; }
+        public string CityName { get; protected set; }
 
         /// <summary>
         /// Latitude for ip address
         /// </summary>
-        public decimal Latitude { get; private set; }
+        public decimal Latitude { get; protected set; }
 
         /// <summary>
         /// Longitude for ip address
         /// </summary>
-        public decimal Longitude { get; private set; }
+        public decimal Longitude { get; protected set; }
 
         /// <summary>
         /// ID of current logged on user
         /// </summary>
-        public Int64 UserID { get; internal set; }
+        public Int64 UserID { get; set; }
 
         /// <summary>
         /// Name of logged on user
         /// </summary>
-        public string UserName { get; internal set; }
+        public string UserName { get; set; }
 
         /// <summary>
         /// Email for logged on user
         /// </summary>
-        public string UserEmail { get; internal set; }
+        public string UserEmail { get; set; }
 
         /// <summary>
         /// Mobile device manufacturer
         /// </summary>
-        public string MobileManufacturer { get; private set; }
+        public string MobileManufacturer { get; protected set; }
 
         /// <summary>
         /// Mobile device model
         /// </summary>
-        public string MobileModel { get; private set; }
+        public string MobileModel { get; protected set; }
 
         /// <summary>
         /// Width of users screen
         /// </summary>
-        public int ScreenWidth { get; private set; }
+        public int ScreenWidth { get; protected set; }
 
         /// <summary>
         /// Height of users screen
         /// </summary>
-        public int ScreenHeight { get; private set; }
+        public int ScreenHeight { get; protected set; }
 
         /// <summary>
         /// List of pages visited by user
@@ -1021,19 +934,19 @@ namespace Shared.Classes
         /// <summary>
         /// Current page being viewed
         /// </summary>
-        public string CurrentPage { get; private set; }
+        public string CurrentPage { get; set; }
 
         /// <summary>
         /// Indicates the value of the current sale
         /// 
         /// This value should be set when the website makes a sale
         /// </summary>
-        public decimal CurrentSale { get; private set; }
+        public decimal CurrentSale { get; set; }
 
         /// <summary>
         /// Current sale currency code
         /// </summary>
-        public string CurrentSaleCurrency { get; private set; }
+        public string CurrentSaleCurrency { get; set; }
 
         /// <summary>
         /// User defined object for storing other data
@@ -1049,7 +962,7 @@ namespace Shared.Classes
         /// <summary>
         /// Save Status of pages for session
         /// </summary>
-        internal SaveStatus PageSaveStatus { get; set; }
+        public SaveStatus PageSaveStatus { get; set; }
 
         #endregion Properties
 
@@ -1139,10 +1052,6 @@ namespace Shared.Classes
                 UserSessionManager.Instance.RaiseSessionSave(this);   
         }
 
-        #endregion Public Methods
-
-        #region Internal Methods
-
         /// <summary>
         /// Internally updates the IP Address details
         /// </summary>
@@ -1152,7 +1061,7 @@ namespace Shared.Classes
         /// <param name="regionName">Region for IP Address</param>
         /// <param name="cityName">City for IP Address</param>
         /// <param name="countryCode">Country Code for IP Address</param>
-        internal void UpdateIPDetails(Int64 id, decimal latitude, decimal longitude, string regionName, 
+        public void UpdateIPDetails(Int64 id, decimal latitude, decimal longitude, string regionName, 
             string cityName, string countryCode)
         {
             CityID = id;
@@ -1163,57 +1072,25 @@ namespace Shared.Classes
             CountryCode = countryCode;
         }
 
-        #endregion Internal Methods
+        #endregion Public Methods
 
         #region Private Methods
 
-#if FAKE_ADDRESS
-        
-        /// <summary>
-        /// Retrieves a form value
-        /// </summary>
-        /// <param name="Request"></param>
-        /// <param name="Name"></param>
-        /// <param name="Default"></param>
-        /// <returns></returns>
-        private static string GetFormValue(System.Web.HttpRequest Request, string Name, string Default)
-        {
-            string Result = String.Empty;
-
-            if (Request[Name] != null && Request[Name] != String.Empty)
-                Result = Request[Name];
-            else
-                Result = Default;
-
-            return (Result);
-        }
-
-#endif
         /// <summary>
         /// Detects wether the user session is from a mobile device or not
         /// 
         /// Stores the result as session state
         /// </summary>
-        /// <param name="request">WebRequest</param>
+        /// <param name="userAgent">User Agent</param>
         /// <returns>bool, true if mobile device, otherwise false</returns>
-        public static bool CheckIfMobileDevice(System.Web.HttpRequest request)
+        protected bool CheckIfMobileDevice(string userAgent)
         {
-            bool Result = false;
-
-            string userAgent = request.ServerVariables["HTTP_USER_AGENT"] == null ? null :
-                request.ServerVariables["HTTP_USER_AGENT"];
-
-            if (userAgent == null)
+            if (!String.IsNullOrEmpty(userAgent) && userAgent.Length >= 4)
             {
-                return (false);
+                return (MobileCheck.IsMatch(userAgent) || MobileVersionCheck.IsMatch(userAgent.Substring(0, 4)));
             }
 
-            if (userAgent.Length >= 4)
-            {
-                Result = (MobileCheck.IsMatch(userAgent) || MobileVersionCheck.IsMatch(userAgent.Substring(0, 4)));
-            }
-
-            return (Result);
+            return (false);
         }
 
 

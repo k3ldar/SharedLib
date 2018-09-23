@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  The contents of this file are subject to MIT Licence.  Please
  *  view License.txt for further details. 
  *
@@ -58,7 +58,7 @@ namespace Shared.Communication
     {
         #region Private Members
 
-        private object _messageLockObject = new object();
+        private readonly object _messageLockObject = new object();
 
         #endregion Private Members
 

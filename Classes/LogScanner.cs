@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  The contents of this file are subject to MIT Licence.  Please
  *  view License.txt for further details. 
  *
@@ -26,9 +26,9 @@ namespace Shared.Classes
 
         private List<LogLine> _logEntries = new List<LogLine>();
 
-        private long _lastPosition;
+        private readonly long _lastPosition;
 
-        private string _fileName;
+        private readonly string _fileName;
 
         #endregion Private Members
 

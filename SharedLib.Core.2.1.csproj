@@ -1,0 +1,82 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <AssemblyName>SharedLib</AssemblyName>
+    <RootNamespace>Shared</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Shared.Key.pfx</AssemblyOriginatorKeyFile>
+    <Copyright>Copyright © 2010 - 2018.  Simon Carter All rights reserved.</Copyright>
+    <PackageId>SC.Shared.Library.Core</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.6.0</Version>
+    <Authors>Simon Carter</Authors>
+    <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
+    <PackageTags>Shared Library ThreadManager CacheManager</PackageTags>
+    <PackageLicenseUrl>https://github.com/k3ldar/SharedLib/blob/master/LICENSE</PackageLicenseUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;NET_CORE</DefineConstants>
+    <OutputPath>..\Builds\Shared\Debug\NetCore.2.1</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DefineConstants>RELEASE;NETCOREAPP2_0;NET_CORE</DefineConstants>
+    <OutputPath>..\Builds\Shared\Release\NetCore.2.1</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ZipFiles\**" />
+    <EmbeddedResource Remove="ZipFiles\**" />
+    <None Remove="ZipFiles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Classes\BaseLicence.cs" />
+    <Compile Remove="Classes\BaseServiceBase.cs" />
+    <Compile Remove="Classes\ZipFiles.cs" />
+    <Compile Remove="Communication\HttpPost.cs" />
+    <Compile Remove="Communication\SendSMS.cs" />
+    <Compile Remove="Communication\WCFServer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="SharedLib.csproj.vspscc" />
+    <None Remove="SharedLib.nuspec" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+  </ItemGroup>
+
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="..\..\..\..\..\GitProjects\Builds\NetBuildTools\Release\UpdateVersion.exe /out=&quot;$(ProjectDir)Properties\ver.txt&quot; /$(ConfigurationName) /path=&quot;$(ProjectDir)" />
+  </Target>
+
+</Project>

@@ -1,4 +1,4 @@
-﻿//TCP Client/Server 
+//TCP Client/Server 
 //Redistribution and use in source and binary forms are permitted
 //provided that the above copyright notice and this paragraph are
 //duplicated in all such forms and that any documentation,
@@ -21,6 +21,8 @@ using System;
 using System.Text;
 using System.Security.Cryptography;
 using System.IO;
+
+#pragma warning disable IDE0017
 
 namespace SieraDelta.Shared
 {

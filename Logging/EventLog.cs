@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  The contents of this file are subject to MIT Licence.  Please
  *  view License.txt for further details. 
  *
@@ -12,8 +12,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-
-using ICSharpCode.SharpZipLib.Zip;
 
 using Shared.Classes;
 
@@ -32,7 +30,7 @@ namespace Shared
         /// <summary>
         /// object used for obtaining lock for multithreaded use
         /// </summary>
-        private static object _lockObject = new object();
+        private static readonly object _lockObject = new object();
 
         /// <summary>
         /// if error is reported more than once in an hour, ignore previous errors
@@ -72,26 +70,9 @@ namespace Shared
         /// Archives old log files, older than days
         /// </summary>
         /// <param name="days">Age of file in days</param>
+        [Obsolete()]
         public static void ArchiveOldLogFiles(int days = 7)
         {
-            using (TimedLock.Lock(_lockObject))
-            {
-                string logPath = Utilities.AddTrailingBackSlash(Path);
-                string zipFile = logPath + "Archives.zip";
-
-                string[] files = Directory.GetFiles(logPath, "*.log");
-                TimeSpan lastAccessed = new TimeSpan(days * 24, 0, 0);
-
-                foreach (string file in files)
-                {
-                    FileInfo info = new FileInfo(file);
-
-                    if ((DateTime.Now - info.LastWriteTime) > lastAccessed)
-                    {
-                        CompressLogFile(zipFile, file, info.Name);
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -725,76 +706,12 @@ namespace Shared
             return (String.Format("{0}{1}.log", path, DateTime.Now.ToString("ddMMyyyy")));
         }
 
+#if !NET_CORE
+        [Obsolete()]
         private static void CompressLogFile(string zipFile, string logFile, string logFileName)
         {
-            try
-            {
-                if (File.Exists(zipFile))
-                {
-                    ZipFile zipArchive = new ZipFile(zipFile);
-
-                    // Must call BeginUpdate to start, and CommitUpdate at the end.
-                    zipArchive.BeginUpdate();
-                    try
-                    {
-                        zipArchive.Add(logFile, logFileName);
-                    }
-                    finally
-                    {
-                        // Both CommitUpdate and Close must be called.
-                        zipArchive.CommitUpdate();
-                        zipArchive.Close();
-                        zipArchive = null;
-                    }
-                }
-                else
-                {
-                    byte[] buff;
-
-                    ZipOutputStream zipOut = new ZipOutputStream(File.Open(zipFile, FileMode.OpenOrCreate));
-                    try
-                    {
-                        zipOut.SetLevel(9);
-
-                        ZipEntry entry = new ZipEntry(logFileName);
-                        FileStream sReader = File.OpenRead(logFile);
-                        try
-                        {
-                            buff = new byte[Convert.ToInt32(sReader.Length)];
-                            sReader.Read(buff, 0, (int)sReader.Length);
-                            entry.DateTime = DateTime.Now;
-                            entry.Size = sReader.Length;
-                        }
-                        finally
-                        {
-                            sReader.Close();
-                            sReader.Dispose();
-                            sReader = null;
-                        }
-
-                        zipOut.PutNextEntry(entry);
-                        zipOut.Write(buff, 0, buff.Length);
-                    }
-                    finally
-                    {
-                        zipOut.Finish();
-                        zipOut.Close();
-                        zipOut.Dispose();
-                        zipOut = null;
-                    }
-                }
-
-                //delete backup file
-                File.Delete(logFile);
-            }
-            catch (Exception err)
-            {
-                if (err.Message.Contains("The file exists"))
-                    File.Delete(logFile);
-            }
-
         }
-
+#endif
         #endregion Private Static Methods
     }
 }

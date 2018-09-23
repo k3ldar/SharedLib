@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  The contents of this file are subject to MIT Licence.  Please
  *  view License.txt for further details. 
  *
@@ -10,7 +10,10 @@
  *
  */
 using System;
+
+#if !NET_CORE
 using System.Windows.Forms;
+#endif
 
 using Shared.Classes;
 
@@ -51,7 +54,7 @@ namespace Shared
         /// <summary>
         /// Constructor
         /// </summary>
-        public SchemaValidationArgs(string objectType, string objectName1, string objectName2, 
+        public SchemaValidationArgs(string objectType, string objectName1, string objectName2,
             string message, string sql, bool existDifferentName)
         {
             ObjectType = objectType;
@@ -104,7 +107,7 @@ namespace Shared
     /// <summary>
     /// Toast Notification Arguments
     /// </summary>
-    public sealed class ToastNotificationArgs: EventArgs
+    public sealed class ToastNotificationArgs : EventArgs
     {
         /// <summary>
         /// Constructor
@@ -138,7 +141,7 @@ namespace Shared
     /// <summary>
     /// File Progress Args
     /// </summary>
-    public class FileProgressArgs: EventArgs
+    public class FileProgressArgs : EventArgs
     {
         /// <summary>
         /// Constructor
@@ -204,16 +207,18 @@ namespace Shared
     /// <param name="e"></param>
     public delegate void AddToLogFileHandler(object sender, AddToLogFileArgs e);
 
+#if !NET_CORE
+
     /// <summary>
     /// Tooltip Event Arguments
     /// </summary>
     public class ToolTipEventArgs : EventArgs
     {
-        #region Private Members
+    #region Private Members
 
-        #endregion Private Members
+    #endregion Private Members
 
-        #region Constructor
+    #region Constructor
 
         /// <summary>
         /// Constructor
@@ -238,9 +243,9 @@ namespace Shared
             ListViewItem = null;
         }
 
-        #endregion Constructor
+    #endregion Constructor
 
-        #region Properties
+    #region Properties
 
         /// <summary>
         /// Determines if balloon type hint is shown
@@ -272,7 +277,7 @@ namespace Shared
         /// </summary>
         public ListViewItem ListViewItem { get; set; }
 
-        #endregion Properties
+    #endregion Properties
     }
 
     /// <summary>
@@ -281,6 +286,7 @@ namespace Shared
     /// <param name="sender"></param>
     /// <param name="e"></param>
     public delegate void ToolTipEventHandler(object sender, ToolTipEventArgs e);
+#endif
 
     /// <summary>
     /// Event arguments for User Session
@@ -631,7 +637,7 @@ namespace Shared
         /// Constructor
         /// </summary>
         /// <param name="name">Name of cached item</param>
-        public CacheItemNotFoundArgs (string name)
+        public CacheItemNotFoundArgs(string name)
         {
             Name = name;
             CachedItem = null;
@@ -738,6 +744,7 @@ namespace Shared
     /// <param name="e"></param>
     public delegate void LogScannerDelegate(object sender, LogScannerArgs e);
 
+#if !NET_CORE
     /// <summary>
     /// Price column override event arguments
     /// </summary>
@@ -815,7 +822,7 @@ namespace Shared
     /// </summary>
     public sealed class SettingsLoadArgs
     {
-        #region Constructor
+    #region Constructor
 
         /// <summary>
         /// Constructor
@@ -826,16 +833,16 @@ namespace Shared
             Parent = parent;
         }
 
-        #endregion Constructor
+    #endregion Constructor
 
-        #region Properties
+    #region Properties
 
         /// <summary>
         /// Parent Node
         /// </summary>
         public TreeNode Parent { get; private set; }
 
-        #endregion Properties
+    #endregion Properties
     }
 
     /// <summary>
@@ -844,6 +851,7 @@ namespace Shared
     /// <param name="sender"></param>
     /// <param name="e"></param>
     public delegate void SettingsLoadDelegate(object sender, SettingsLoadArgs e);
+#endif
 
     /// <summary>
     /// Update available event arguments

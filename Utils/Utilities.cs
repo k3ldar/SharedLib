@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  The contents of this file are subject to MIT Licence.  Please
  *  view License.txt for further details. 
  *
@@ -16,15 +16,18 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Management;
 using System.Net;
 using System.Security.Cryptography;
 using System.ServiceProcess;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Forms;
 using System.Xml;
+
+#if !NET_CORE
+using System.Management;
+using System.Windows.Forms;
+#endif
 
 #pragma warning disable IDE0018 // variable can be inlined
 
@@ -36,7 +39,7 @@ namespace Shared
     public static class Utilities
     {
         #region Windows System Users
-
+#if !NET_CORE
         /// <summary>
         /// Get's account names for local users
         /// </summary>
@@ -58,6 +61,7 @@ namespace Shared
 
             return (Result);
         }
+#endif
 
         #endregion Windows System Users
 
@@ -204,7 +208,7 @@ namespace Shared
         /// <param name="length"></param>
         /// <param name="AcceptableChars"></param>
         /// <returns></returns>
-        public static string GetRandomWord(int length, string AcceptableChars = 
+        public static string GetRandomWord(int length, string AcceptableChars =
             "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.-")
         {
             Random rnd = new Random(DateTime.Now.Minute + DateTime.Now.Second + DateTime.Now.Millisecond);
@@ -383,6 +387,7 @@ namespace Shared
                 return (value);
         }
 
+#if !NET_CORE
         /// <summary>
         /// Measures text
         /// 
@@ -409,6 +414,7 @@ namespace Shared
 
             return (TextRenderer.MeasureText(text, font));
         }
+#endif
 
         /// <summary>
         /// 
@@ -497,7 +503,7 @@ namespace Shared
         #endregion Text Manipulation
 
         #region Service Methods
-
+#if !NET_CORE
         /// <summary>
         /// Retrieves the version information for a service application
         /// </summary>
@@ -744,6 +750,7 @@ namespace Shared
 
             return (ServiceRunning(ServiceName));
         }
+#endif
 
         #endregion Service Methods
 
@@ -1413,7 +1420,7 @@ namespace Shared
             Regex postcode = new Regex(@"(GIR 0AA)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?" +
                 "|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|" +
                 "R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]" +
-                "|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})", 
+                "|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9]) [0-9][ABD-HJLNP-UW-Z]{2})",
                 RegexOptions.Singleline);
 
             Match m = postcode.Match(PostCode);
@@ -1513,11 +1520,11 @@ namespace Shared
         /// <param name="length"></param>
         /// <param name="acceptableCharacters"></param>
         /// <returns></returns>
-        public static string GetRandomPassword(int length, 
+        public static string GetRandomPassword(int length,
             string acceptableCharacters = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
         {
             Random rnd = new Random(DateTime.Now.Minute + DateTime.Now.Second + DateTime.Now.Millisecond);
-            string AcceptableChars = String.IsNullOrEmpty(acceptableCharacters) ? 
+            string AcceptableChars = String.IsNullOrEmpty(acceptableCharacters) ?
                 "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ." : acceptableCharacters;
             string Result = "";
 
@@ -1597,6 +1604,9 @@ namespace Shared
         /// <returns>string</returns>
         public static string FileSize(long bytes, int decimalPlaces)
         {
+            if (bytes == 0)
+                return ("0 b");
+
             decimalPlaces = CheckMinMax(decimalPlaces, 0, 6);
             string[] suf = { " B", " KB", " MB", " GB", " TB", " PB" };
             int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
@@ -1658,7 +1668,7 @@ namespace Shared
         public static string FileCRC(string fileName, bool exclusiveAccess)
         {
             // open the file locked
-            Stream fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, 
+            Stream fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read,
                 exclusiveAccess ? FileShare.None : FileShare.Read);
             try
             {
@@ -1917,10 +1927,10 @@ namespace Shared
 
             Byte[] MS4B = BitConverter.GetBytes(s1.GetHashCode());
             Byte[] LS4B = BitConverter.GetBytes(s2.GetHashCode());
-            return ((UInt64)MS4B[0] << 56 | (UInt64)MS4B[1] << 48 | 
+            return ((UInt64)MS4B[0] << 56 | (UInt64)MS4B[1] << 48 |
                           (UInt64)MS4B[2] << 40 | (UInt64)MS4B[3] << 32 |
-                          (UInt64)LS4B[0] << 24 | (UInt64)LS4B[1] << 16 | 
-                          (UInt64)LS4B[2] << 8  | (UInt64)LS4B[3]);
+                          (UInt64)LS4B[0] << 24 | (UInt64)LS4B[1] << 16 |
+                          (UInt64)LS4B[2] << 8 | (UInt64)LS4B[3]);
         }
 
         /// <summary>
@@ -2149,14 +2159,14 @@ namespace Shared
         /// <param name="checkDate">Date to be checked</param>
         /// <param name="ignoreYears">If true, the check will not include the years element, only the day/month</param>
         /// <returns>bool, true if falls within, otherwise false</returns>
-        public static bool DateWithin(DateTime dateStart, DateTime finishDate, 
+        public static bool DateWithin(DateTime dateStart, DateTime finishDate,
             DateTime checkDate, bool ignoreYears = false)
         {
             if (ignoreYears)
             {
-                bool result = (checkDate.Date.Month >= dateStart.Date.Month && 
+                bool result = (checkDate.Date.Month >= dateStart.Date.Month &&
                                checkDate.Date.Day >= dateStart.Date.Day &&
-                               checkDate.Date.Month <= finishDate.Date.Month && 
+                               checkDate.Date.Month <= finishDate.Date.Month &&
                                checkDate.Date.Day <= finishDate.Date.Day);
                 return (result);
             }
@@ -3038,7 +3048,7 @@ namespace Shared
                             {
                                 byte[] plainTextBytes = new byte[cipherTextBytes.Length];
                                 int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
-                                
+
                                 return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
                             }
                             finally

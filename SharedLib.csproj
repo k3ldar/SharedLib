@@ -53,9 +53,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -92,7 +89,6 @@
     <Compile Include="Classes\WebClientEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Classes\ZipFiles.cs" />
     <Compile Include="Communication\Email.cs" />
     <Compile Include="Communication\HttpPost.cs" />
     <Compile Include="Communication\MessageServer\ConnectedClients.cs" />
@@ -114,7 +110,6 @@
     <Compile Include="Utils\Utilities.cs" />
     <Compile Include="Utils\Validation.cs" />
     <Compile Include="XMLManipulation\DefenderXML.cs" />
-    <Compile Include="ZipFiles\ZipFiles.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.txt" />

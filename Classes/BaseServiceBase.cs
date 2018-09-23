@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  The contents of this file are subject to MIT Licence.  Please
  *  view License.txt for further details. 
  *
@@ -148,6 +148,16 @@ namespace Shared
         }
 
         /// <summary>
+        /// Determines whether the client can connect or not
+        /// </summary>
+        /// <param name="ipAddress">ip Address trying to connect</param>
+        /// <returns>true if allowed, otherwise false</returns>
+        protected virtual bool MessageServerAllowConnect(string ipAddress)
+        {
+            return (true);
+        }
+
+        /// <summary>
         /// Method used so can run as application
         /// 
         /// Should be overridden in descendant class
@@ -228,19 +238,19 @@ namespace Shared
             }
         }
 
-        void _messageServer_ClientLogin(object sender, ClientLoginArgs e)
+        private void _messageServer_ClientLogin(object sender, ClientLoginArgs e)
         {
             e.LoggedIn = MessageServerLoginAttempt(e.Username, e.Password, e.IPAddress);
         }
 
         /// <summary>
-        /// Determines wether the connection is allowed
+        /// Determines whether the connection is allowed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void _messageServer_AllowClientConnect(object sender, ClientAllowConnectEventArgs e)
         {
-            e.Allow = true;
+            e.Allow = MessageServerAllowConnect(e.IPAddress);
         }
 
         /// <summary>

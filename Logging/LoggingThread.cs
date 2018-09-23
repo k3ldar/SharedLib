@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  The contents of this file are subject to MIT Licence.  Please
  *  view License.txt for further details. 
  *
@@ -37,7 +37,7 @@ namespace Shared.Logging
         protected override bool Run(object parameters)
         {
             EventLog.ClearCache();
-            EventLog.ArchiveOldLogFiles((int)parameters);
+            //EventLog.ArchiveOldLogFiles((int)parameters);
 
             return (!HasCancelled());
         }

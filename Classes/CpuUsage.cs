@@ -1,4 +1,4 @@
-﻿/*
+/*
  *
  *  The Original Code was created by Ben Watson
  *  http://www.philosophicalgeek.com/2009/01/03/determine-cpu-usage-of-current-process-c-and-c/
