@@ -9,11 +9,10 @@
  *  Purpose:  XML Wrapper Functions
  *
  */
+using Shared.Classes;
 using System;
 using System.Collections.Generic;
 using System.Xml;
-
-using Shared.Classes;
 
 namespace Shared
 {
@@ -29,7 +28,7 @@ namespace Shared
         /// </summary>
         private static Dictionary<string, XMLMemoryFile> _memoryXMLFile = new Dictionary<string, XMLMemoryFile>();
 
-        
+
 
         /// <summary>
         /// Lock object for asynchronous access
@@ -46,7 +45,7 @@ namespace Shared
             }
         }
 
-        private static string LoadXMLFile(ref XmlDocument doc, string xmlFile, 
+        private static string LoadXMLFile(ref XmlDocument doc, string xmlFile,
             string rootNode = "WebDefender", bool lockFile = true)
         {
             if (String.IsNullOrEmpty(xmlFile))
@@ -150,7 +149,7 @@ namespace Shared
         /// <param name="keyName"></param>
         /// <param name="xmlFile"></param>
         /// <param name="rootName"></param>
-        public static void DeleteXMLValue(string parentName, string keyName, 
+        public static void DeleteXMLValue(string parentName, string keyName,
             string xmlFile, string rootName)
         {
             XmlDocument xmldoc = new XmlDocument();
@@ -158,7 +157,7 @@ namespace Shared
             xmlFile = LoadXMLFile(ref xmldoc, xmlFile);
             XmlNode Root = xmldoc.DocumentElement;
             XmlNode xmlParentNode = null;
-            
+
             if (Root != null & Root.Name == rootName)
             {
                 for (int i = 0; i <= Root.ChildNodes.Count - 1; i++)
@@ -196,7 +195,7 @@ namespace Shared
         /// <param name="keyName"></param>
         /// <param name="value"></param>
         /// <param name="rootName"></param>
-        public static void SetXMLValue(string parentName, string keyName, 
+        public static void SetXMLValue(string parentName, string keyName,
             string value, string xmlFile, string rootName)
         {
             XmlDocument xmldoc = new XmlDocument();
@@ -363,7 +362,7 @@ namespace Shared
         /// <param name="defaultValue">Default value if not found</param>
         /// <param name="xmlFile">XML File</param>
         /// <returns>boolean value if found, otherwise default value</returns>
-        public static bool GetXMLValue(string parentName, string keyName, 
+        public static bool GetXMLValue(string parentName, string keyName,
             bool defaultValue, string xmlFile = "")
         {
             try
@@ -384,7 +383,7 @@ namespace Shared
         /// <param name="defaultValue">Default value if not found</param>
         /// <param name="xmlFile">XML File</param>
         /// <returns>int value from xml file if found, otherwise the default value</returns>
-        public static int GetXMLValue(string parentName, string keyName, 
+        public static int GetXMLValue(string parentName, string keyName,
             int defaultValue, string xmlFile = "")
         {
             int Result = defaultValue;
@@ -448,7 +447,7 @@ namespace Shared
         /// <param name="defaultValue">Default value if not found</param>
         /// <param name="xmlFile">XML File</param>
         /// <returns>ulong value from xml file if found, otherwise default value</returns>
-        public static ulong GetXMLValueU(string parentName, string keyName, 
+        public static ulong GetXMLValueU(string parentName, string keyName,
             ulong defaultValue, string xmlFile = "")
         {
             ulong Result = defaultValue;
@@ -574,7 +573,7 @@ namespace Shared
         /// <param name="defaultValue">Default value if not found</param>
         /// <param name="xmlFile">XML File</param>
         /// <returns>Date/time value if found, otherwise default value</returns>
-        public static DateTime GetXMLValue(string parentName, string keyName, 
+        public static DateTime GetXMLValue(string parentName, string keyName,
             DateTime defaultValue, string xmlFile = "")
         {
             DateTime Result = defaultValue;
@@ -638,7 +637,7 @@ namespace Shared
         /// <param name="defaultValue">Default value if not found</param>
         /// <param name="xmlFile">XML File</param>
         /// <returns>string value if found, otherwise default value</returns>
-        public static string GetXMLValue(string parentName, string keyName, 
+        public static string GetXMLValue(string parentName, string keyName,
             string defaultValue, string xmlFile = "")
         {
             string Result = defaultValue;
@@ -766,11 +765,11 @@ namespace Shared
         /// <param name="keyName">Key Name</param>
         /// <param name="xmlFile">XML File</param>
         /// <returns>string value if found, otherwise empty string</returns>
-        public static string GetXMLValue(string parentName, string keyName, 
+        public static string GetXMLValue(string parentName, string keyName,
             string xmlFile = "")
         {
             string Result = "";
-                
+
             XmlDocument xmldoc = new XmlDocument();
             try
             {

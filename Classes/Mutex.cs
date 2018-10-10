@@ -10,13 +10,13 @@
  *  Purpose:  Extende Mutex class
  *
  */
+#if !NET_CORE
 using System;
 using System.Security.AccessControl;
 using System.Threading;
 
 namespace Shared.Classes
 {
-#if !NET_CORE
     /// <summary>
     /// MutexEx control
     /// </summary>
@@ -281,5 +281,5 @@ namespace Shared.Classes
 
         #endregion Disposable
     }
-#endif
 }
+#endif

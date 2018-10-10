@@ -112,7 +112,7 @@ namespace Shared.Communication
         /// <param name="isHtml"></param>
         /// <param name="attachments"></param>
         /// <returns></returns>
-        public bool SendEmail(string senderName, string recipientName, string recipientEmail, 
+        public bool SendEmail(string senderName, string recipientName, string recipientEmail,
             string message, string subject, bool isHtml, params string[] attachments)
         {
             return (SmtpHelper.Send(message, subject, recipientEmail, recipientName, User, Sender, User, Password, Host, Port, SSL, isHtml, attachments));
@@ -164,7 +164,7 @@ namespace Shared.Communication
             return (Send(message, subject, recipient, recipient, recipient, recipient, userName, password, host, port, ssl, false));
         }
 
-        internal static bool Send(string message, string subject, 
+        internal static bool Send(string message, string subject,
             string recipientEmail, string recipientName,
             string senderEmail, string senderName,
             string userName, string password, string host, int port, bool ssl,

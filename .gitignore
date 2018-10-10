@@ -6,3 +6,4 @@ Shared.Library.2.5.1.42.nupkg
 SharedLib.nuspec
 Properties/ver.txt
 /.vs/SharedLib/v15/
+/.vs/

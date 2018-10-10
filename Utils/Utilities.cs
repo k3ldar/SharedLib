@@ -13,18 +13,18 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
-using System.ServiceProcess;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 
 #if !NET_CORE
+using System.Drawing;
+using System.ServiceProcess;
 using System.Management;
 using System.Windows.Forms;
 #endif
@@ -2751,12 +2751,14 @@ namespace Shared
         public static void SaveEmailCredentials(string userName, string password, string host, string sender,
             int port, bool ssl)
         {
+#if NETCOREAPP2_1 && !NETCOREAPP1_0
             XML.SetXMLValue("Email", "SSL", StringCipher.Encrypt(ssl.ToString(), StringCipher.DefaultPassword));
             XML.SetXMLValue("Email", "Port", StringCipher.Encrypt(port.ToString(), StringCipher.DefaultPassword));
             XML.SetXMLValue("Email", "User", StringCipher.Encrypt(userName, StringCipher.DefaultPassword));
             XML.SetXMLValue("Email", "Password", StringCipher.Encrypt(password, StringCipher.DefaultPassword));
             XML.SetXMLValue("Email", "Host", StringCipher.Encrypt(host, StringCipher.DefaultPassword));
             XML.SetXMLValue("Email", "Sender", StringCipher.Encrypt(sender, StringCipher.DefaultPassword));
+#endif
         }
 
         #endregion Settings

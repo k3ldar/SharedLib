@@ -711,6 +711,7 @@ namespace Shared.Classes
         public UserSession()
         {
             Status = SessionStatus.Initialising;
+            Bounced = true;
         }
 
         /// <summary>
@@ -832,7 +833,7 @@ namespace Shared.Classes
         /// <summary>
         /// Bounced indicates wether the user came to the page and left the site without doing anything else
         /// </summary>
-        public bool Bounced { get; set; }
+        public bool Bounced { get; internal set; }
 
         /// <summary>
         /// User session is a bot

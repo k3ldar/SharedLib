@@ -14,7 +14,9 @@ namespace Shared.Classes
     /// <summary>
     /// Timed lock 
     /// </summary>
+#if !NETCORE
     [Serializable]
+#endif
     public struct TimedLock : IDisposable
     {
         /// <summary>
