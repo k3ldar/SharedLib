@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Shared Library")]
-[assembly: AssemblyDescription("Library of shared classes.  Includes ThreadManager and CacheManager, Event Logging etc\r\n\r\nNet Core 2.1")]
+[assembly: AssemblyDescription("Library of shared classes.  Includes ThreadManager and CacheManager, Event Logging etc\r\n\r\n.Net 4.6.1; .Net Core 2.1; .Net Core 2.2")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Simon Carter")]
 [assembly: AssemblyProduct("SC.Shared.Library.Core")]
@@ -41,4 +41,4 @@ using System.Runtime.InteropServices;
 //
 [assembly: AssemblyVersion("2.6.0.0")]
 
-[assembly: AssemblyFileVersion("2.5.53.179")]
+[assembly: AssemblyFileVersion("2.5.59.185")]
