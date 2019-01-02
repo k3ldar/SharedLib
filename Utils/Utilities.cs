@@ -1826,7 +1826,6 @@ namespace Shared
             return (Result);
         }
 
-
         /// <summary>
         /// enusres a int value is between minimum and maximum value
         /// </summary>
@@ -2857,7 +2856,7 @@ namespace Shared
         /// <param name="fileName">Filename and path</param>
         /// <param name="contents">String data to be encryped and saved</param>
         /// <param name="key">key used to encrypt the contents</param>
-        public static void FileEncryptedWrite(string fileName, string contents, string key)
+        public static void FileEncryptedWrite(in string fileName, in string contents, string key)
         {
             if (File.Exists(fileName))
                 File.Delete(fileName);
@@ -2890,7 +2889,7 @@ namespace Shared
         /// <param name="fileName">Filename and path</param>
         /// <param name="key">key used to decrypt the contents</param>
         /// <returns>Decrypted contents of the file</returns>
-        public static string FileEncryptedRead(string fileName, string key)
+        public static string FileEncryptedRead(in string fileName, string key)
         {
             if (!File.Exists(fileName))
                 throw new FileNotFoundException("File does not exist", fileName);
@@ -2925,7 +2924,7 @@ namespace Shared
         /// <param name="connectionString"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static string GetDatabasePart(string connectionString, string name)
+        public static string GetDatabasePart(in string connectionString, in string name)
         {
             string Result = String.Empty;
 
@@ -2946,6 +2945,72 @@ namespace Shared
         }
 
         #endregion Database Connection String
+
+        public static decimal VATRemove(in decimal Value, in decimal vatRate)
+        {
+            return ((100 / (100 + vatRate)) * Value);
+        }
+
+        public static decimal VATCalculatePaid(in decimal value, in decimal vatRate)
+        {
+            return (value - ((100 / (100 + vatRate)) * value));
+        }
+
+        public static decimal VATCalculate(in decimal Value, in decimal vatRate)
+        {
+            return ((vatRate / 100) * Value);
+        }
+
+        public static decimal BankersRounding(in decimal value, in int decimalPlaces)
+        {
+            if (decimalPlaces < 0)
+            {
+                throw new ArgumentException("The decimals must be non-negative", "decimals");
+            }
+
+            decimal multiplier = (decimal)Math.Pow(10, decimalPlaces);
+            decimal number = value * multiplier;
+
+            if (decimal.Truncate(number) < number)
+            {
+                number += 0.5m;
+            }
+
+            return (decimal.Round(number) / multiplier);
+        }
+
+        /// <summary>
+        /// Format's Money for display
+        /// </summary>
+        /// <param name="value">Monetary value, in any currency</param>
+        /// <param name="currency">Currency used to format the money</param>
+        /// <param name="removeCurrencySymbol">should the currency symbol be removed</param>
+        /// <returns>string, value formatted to local currency value/format</returns>
+        public static string FormatMoney(in decimal value, in CultureInfo culture, in decimal conversionRate = 1.0m,
+            in bool removeCurrencySymbol = false, in string customCurrencySymbol = "")
+        {
+            decimal amount = value;
+
+            if (conversionRate != 1.0m)
+            {
+                amount = (amount * conversionRate);
+            }
+
+            string Result = String.Format(culture, "{0:C}", amount);
+
+            if (removeCurrencySymbol)
+                Result = Result.Replace(GetCurrencySymbol(culture, out string ISO), "");
+
+            RegionInfo region = new RegionInfo(culture.LCID);
+            string isoSymbol = region.CurrencySymbol;
+
+            if (!String.IsNullOrEmpty(customCurrencySymbol) && customCurrencySymbol != isoSymbol)
+            {
+                Result = Result.Replace(isoSymbol, customCurrencySymbol);
+            }
+
+            return (Result);
+        }
     }
 
 
@@ -3086,5 +3151,4 @@ namespace Shared
             }
         }
     }
-
 }

@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Simon Carter")]
 [assembly: AssemblyProduct("SC.Shared.Library.Core")]
-[assembly: AssemblyCopyright("Copyright © 2010 - 2018.  Simon Carter All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2010 - 2019.  Simon Carter All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -41,4 +41,4 @@ using System.Runtime.InteropServices;
 //
 [assembly: AssemblyVersion("2.6.0.0")]
 
-[assembly: AssemblyFileVersion("2.5.59.185")]
+[assembly: AssemblyFileVersion("2.5.61.187")]
