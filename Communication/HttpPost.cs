@@ -13,7 +13,10 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
+
+#if NET461
 using System.Web;
+#endif
 
 using Shared.Classes;
 
@@ -110,6 +113,7 @@ namespace Shared.Communication
             return (Post(url, parameters.Encode(), timeout, additionalHeaders, userAgent));
         }
 
+#if NET461
         /// <summary>
         /// Performs a post to a web page and redirects to the webpage
         /// </summary>
@@ -138,5 +142,6 @@ namespace Shared.Communication
 
             response.End();
         }
+#endif
     }
 }
