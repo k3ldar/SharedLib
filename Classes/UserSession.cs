@@ -28,7 +28,7 @@ namespace Shared.Classes
     {
         #region Private Members
 
-        private static string[] knownBots = { ".co.uk/bot", ".com/bot", ".net/bot", "googlebot", "bingpreview", 
+        private static readonly string[] knownBots = { ".co.uk/bot", ".com/bot", ".net/bot", "googlebot", "bingpreview", 
                 "/bingbot.htm", "ahrefs.com", "yandex.com", "semrushbot",
                 "google.com/bot.html", "baidu.com/search/spider.html", "baidu.", "girafabot", 
                 "buzzbot", "experibot", "livelapbot", "mediatoolkitbot", "stashbot", "applebot", "tweetmemebot", 
@@ -42,13 +42,13 @@ namespace Shared.Classes
                 "onpagebot", "surdotlybot", "favico.be/bot", "companiesintheuk.co.uk/bot", ".k39.us/bot",
                 "seozoom.it/bot"};
 
-        private static UserSessionManager _sessionManager = new UserSessionManager();
+        private static readonly UserSessionManager _sessionManager = new UserSessionManager();
 
-        private static object _sessionLockObject = new object();
+        private static readonly object _sessionLockObject = new object();
 
         private static List<UserSession> _userSessions = new List<UserSession>();
 
-        private static object _tempLockObject = new object();
+        private static readonly object _tempLockObject = new object();
 
         private static List<UserSession> _tempUserSessions = new List<UserSession>();
 
@@ -694,7 +694,7 @@ namespace Shared.Classes
         /// <summary>
         /// Private lock object for when adding pages
         /// </summary>
-        private object _pageViewLockObject = new object();
+        private readonly object _pageViewLockObject = new object();
 
         // <summary>
         // Lock object for when user requests a lock
@@ -712,6 +712,7 @@ namespace Shared.Classes
         {
             Status = SessionStatus.Initialising;
             Bounced = true;
+            Culture = "en-GB";
         }
 
         /// <summary>
@@ -964,6 +965,9 @@ namespace Shared.Classes
         /// Save Status of pages for session
         /// </summary>
         public SaveStatus PageSaveStatus { get; set; }
+
+
+        public string Culture { get; set; }
 
         #endregion Properties
 
