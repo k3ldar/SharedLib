@@ -33,7 +33,7 @@ namespace Shared
         /// <summary>
         /// Lock object for asynchronous access
         /// </summary>
-        private static object _lockObject = new object();
+        private static readonly object _lockObject = new object();
 
         #endregion Private Static Members
 

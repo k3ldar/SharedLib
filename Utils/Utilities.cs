@@ -1738,6 +1738,34 @@ namespace Shared
 
         #endregion Date/Time
 
+        public static string ResizeImage(in string image, int size)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(image))
+                    return (image);
+
+                string Result = image;
+
+                if (image.Contains("."))
+                    Result = Result.Substring(0, image.Length - 8);
+
+                string extension;
+
+                if (image.Contains("."))
+                    extension = image.Substring(image.Length - 4);
+                else
+                    extension = ".jpg";
+
+                Result = String.Format("{0}_{1}{2}", Result, size, extension);
+
+                return (Result);
+            }
+            catch
+            {
+                return (image);
+            }
+        }
 
         /// <summary>
         /// Determines wether value is between two values
@@ -2977,6 +3005,37 @@ namespace Shared
             }
 
             return (decimal.Round(number) / multiplier);
+        }
+
+        public static string FormatMoney(decimal value, CultureInfo culture, int decimalPlaces, decimal conversionRate = 1.0m,
+            bool removeCurrencySymbol = false, string customCurrencySymbol = "")
+        {
+            decimal amount = value;
+
+            if (conversionRate != 1.0m)
+            {
+                amount = (amount * conversionRate);
+            }
+
+            string Result = String.Empty;
+
+            if (culture.NumberFormat.CurrencyDecimalDigits >= decimalPlaces)
+                Result = String.Format(culture, "{0:C}", amount);
+            else
+                Result = culture.NumberFormat.CurrencySymbol + value.ToString($"N{decimalPlaces}", culture);
+
+            if (removeCurrencySymbol)
+                Result = Result.Replace(GetCurrencySymbol(culture, out string ISO), "");
+
+            RegionInfo region = new RegionInfo(culture.LCID);
+            string isoSymbol = region.CurrencySymbol;
+
+            if (!String.IsNullOrEmpty(customCurrencySymbol) && customCurrencySymbol != isoSymbol)
+            {
+                Result = Result.Replace(isoSymbol, customCurrencySymbol);
+            }
+
+            return (Result);
         }
 
         /// <summary>

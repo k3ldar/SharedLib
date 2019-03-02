@@ -343,6 +343,26 @@ namespace Shared
             return (Path);
         }
 
+        public static string Initialise(int maximumAge, string logPath, string errorPath)
+        {
+            if (String.IsNullOrEmpty(logPath))
+                throw new ArgumentNullException(nameof(logPath));
+
+            if (String.IsNullOrEmpty(errorPath))
+                throw new ArgumentNullException(nameof(errorPath));
+
+            if (!Directory.Exists(logPath))
+                Directory.CreateDirectory(logPath);
+
+            if (!Directory.Exists(errorPath))
+                Directory.CreateDirectory(errorPath);
+
+            _logPath = logPath;
+            _errorPath = errorPath;
+
+            return Initialise(maximumAge);
+        }
+
         /// <summary>
         /// Add's an exception to the event log
         /// </summary>
@@ -579,38 +599,38 @@ namespace Shared
 
         #region Public Static Properties
 
-                /// <summary>
-                /// Get/Set the path of the event log file.
-                /// </summary>
-                public static string Path
+        /// <summary>
+        /// Get/Set the path of the event log file.
+        /// </summary>
+        public static string Path
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_logPath))
                 {
-                    get
+                    string Result = XML.GetXMLValue("Settings", "Path");
+
+                    if (!Directory.Exists(Result))
                     {
-                        if (String.IsNullOrEmpty(_logPath))
-                        {
-                            string Result = XML.GetXMLValue("Settings", "Path");
-
-                            if (!System.IO.Directory.Exists(Result))
-                            {
-                                Result = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
-                                Result = System.IO.Path.GetDirectoryName(Result);
-                                Result = Result.Substring(6);
-                            }
-
-                            Result += "\\Logs\\";
-
-                            _errorPath = Result.Replace("\\Logs\\", "\\Errors\\");
-
-                            _logPath = Result;
-
-                            return (Result);
-                        }
-                        else
-                        {
-                            return (_logPath);
-                        }
+                        Result = Assembly.GetExecutingAssembly().CodeBase;
+                        Result = System.IO.Path.GetDirectoryName(Result);
+                        Result = Result.Substring(6);
                     }
+
+                    Result += "\\Logs\\";
+
+                    _errorPath = Result.Replace("\\Logs\\", "\\Errors\\");
+
+                    _logPath = Result;
+
+                    return (Result);
                 }
+                else
+                {
+                    return (_logPath);
+                }
+            }
+        }
 
         #endregion Public Static Properties
 
