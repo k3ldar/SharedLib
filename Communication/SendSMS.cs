@@ -69,7 +69,7 @@ namespace Shared.Communication
             codec.Add("from", from);
             codec.Add("phones", telephone);
             codec.Add("text", message);
-            Communication.HttpPost.Post("https://rest.textmagic.com/api/v2/messages", codec, 30, headers);
+            HttpPost.Post("https://rest.textmagic.com/api/v2/messages", codec, 30, headers);
 
             return (true);
         }
