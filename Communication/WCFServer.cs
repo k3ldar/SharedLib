@@ -13,6 +13,7 @@ using System.ServiceModel;
 
 namespace Shared
 {
+#if NET461
     /// <summary>
     /// Service contract
     /// </summary>
@@ -64,5 +65,5 @@ namespace Shared
         [OperationContract]
         void UpdateSettingsDomain();
     }
-
+#endif
 }

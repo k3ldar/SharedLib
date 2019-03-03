@@ -18,6 +18,7 @@ using Shared.Communication;
 
 namespace Shared
 {
+#if NET461
     /// <summary>
     /// Base service class
     /// 
@@ -404,4 +405,6 @@ namespace Shared
 
         #endregion Overridden Methods
     }
+
+#endif
 }

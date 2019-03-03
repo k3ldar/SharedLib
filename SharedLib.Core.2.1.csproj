@@ -21,7 +21,7 @@
     <Copyright>Copyright © 2010 - 2019.  Simon Carter All rights reserved.</Copyright>
     <PackageId>SC.Shared.Library.Core</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.7.7</Version>
+    <Version>2.8.0</Version>
     <Authors>Simon Carter</Authors>
     <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
     <PackageTags>Shared Library ThreadManager CacheManager</PackageTags>
@@ -81,21 +81,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ZipFiles\**" />
-    <EmbeddedResource Remove="ZipFiles\**" />
-    <None Remove="ZipFiles\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Classes\BaseLicence.cs" />
-    <Compile Remove="Classes\BaseServiceBase.cs" />
-    <Compile Remove="Classes\ZipFiles.cs" />
-    <Compile Remove="Communication\SendSMS.cs" />
-    <Compile Remove="Communication\WCFServer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="LICENSE" />
     <None Remove="SharedLib.csproj.vspscc" />
     <None Remove="SharedLib.nuspec" />
   </ItemGroup>
