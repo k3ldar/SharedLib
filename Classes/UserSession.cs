@@ -656,10 +656,10 @@ namespace Shared.Classes
         /// <summary>
         /// Is Mobile Device
         /// </summary>
-        private static Regex MobileCheck = new Regex("android|(android|bb\\d+|meego).+mobile|avantgo|bada\\/|blackberry|blazer|"+
+        private static Regex MobileCheck = new Regex("android|(android|bb\\d+|meego).+mobile|avantgo|bada\\/|blackberry|blazer|" +
             "compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|" +
             "opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\\.(browser|link)|" +
-            "vodafone|wap|windows (ce|phone)|xda|xiino", 
+            "vodafone|wap|windows (ce|phone)|xda|xiino",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
         /// <summary>
@@ -679,7 +679,7 @@ namespace Shared.Classes
             "mm|ms|ny|va)|sc(01|h\\-|oo|p\\-)|sdk\\/|se(c(\\-|0|1)|47|mc|nd|ri)|sgh\\-|shar|sie(\\-|m)|sk\\-0|sl(45|id)|sm(al|ar|b3|" +
             "it|t5)|so(ft|ny)|sp(01|h\\-|v\\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\\-|tdg\\-|tel(i|m)|tim\\-|t\\-mo|" +
             "to(pl|sh)|ts(70|m\\-|m3|m5)|tx\\-9|up(\\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\\-v)|vm40|voda|vulc|" +
-            "vx(52|53|60|61|70|80|81|83|85|98)|w3c(\\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\\-|your|zeto|zte\\-", 
+            "vx(52|53|60|61|70|80|81|83|85|98)|w3c(\\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\\-|your|zeto|zte\\-",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
         #endregion Protected Members
@@ -738,11 +738,11 @@ namespace Shared.Classes
         /// <param name="screenHeight"></param>
         /// <param name="saleCurrency"></param>
         /// <param name="saleAmount"></param>
-        public UserSession(long id, DateTime created, string sessionID, string userAgent, string initialReferer, 
+        public UserSession(long id, DateTime created, string sessionID, string userAgent, string initialReferer,
             string ipAddress, string hostName, bool isMobile, bool isBrowserMobile, bool mobileRedirect,
             ReferalType referralType, bool bounced, bool isBot, string mobileManufacturer, string mobileModel,
             long userID, int screenWidth, int screenHeight, string saleCurrency, decimal saleAmount)
-            : this ()
+            : this()
         {
             this.InternalSessionID = id;
             Created = created;
@@ -909,8 +909,8 @@ namespace Shared.Classes
         /// <summary>
         /// List of pages visited by user
         /// </summary>
-        public List<PageViewData> Pages 
-        { 
+        public List<PageViewData> Pages
+        {
             get
             {
                 return (_pageViews);
