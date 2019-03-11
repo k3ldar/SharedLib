@@ -887,6 +887,11 @@ namespace Shared.Classes
         public string UserEmail { get; set; }
 
         /// <summary>
+        /// Users basket id
+        /// </summary>
+        public long UserBasketId { get; set; }
+
+        /// <summary>
         /// Mobile device manufacturer
         /// </summary>
         public string MobileManufacturer { get; protected set; }
