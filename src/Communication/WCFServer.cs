@@ -9,7 +9,9 @@
  *  Purpose:  internally used WCF service contract
  *
  */
+#if NET461
 using System.ServiceModel;
+#endif
 
 namespace Shared
 {

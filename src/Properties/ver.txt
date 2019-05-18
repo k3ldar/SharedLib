@@ -1,0 +1,10 @@
+Parameters
+/out=T:\GitProjects\SharedLib\Properties\ver.txt
+/Release
+/path=T:\GitProjects\SharedLib\
+
+Path Exists
+
+T:\GitProjects\SharedLib\properties\AssemblyInfo.cs Found
+
+New Version 2.5.7.48

@@ -10,11 +10,13 @@
  *
  */
 
+#if NET461
 using System;
 using System.ServiceProcess;
 
 using Shared.Classes;
 using Shared.Communication;
+#endif
 
 namespace Shared
 {
