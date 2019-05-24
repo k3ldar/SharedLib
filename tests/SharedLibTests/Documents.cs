@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Shared.Docs;
@@ -17,8 +19,11 @@ namespace SharedLibTests
         public void LoadXmlFile()
         {
             DocumentBuilder builder = new DocumentBuilder();
+            List<Document> documents = new List<Document>();
 
-            builder.LoadDocuments("T:\\GitProjects\\.NetCorePluginManager\\Docs\\SharedPluginFeatures.xml");
+            builder.LoadDocuments(documents, "T:\\GitProjects\\.NetCorePluginManager\\Docs\\XmlFiles\\Modular.xml");
+            builder.LoadDocuments(documents, "T:\\GitProjects\\.NetCorePluginManager\\Docs\\XmlFiles\\SharedPluginFeatures.xml");
+            builder.LoadDocuments(documents, "T:\\GitProjects\\.NetCorePluginManager\\Docs\\XmlFiles\\BadEgg.Plugin.xml");
         }
     }
 }

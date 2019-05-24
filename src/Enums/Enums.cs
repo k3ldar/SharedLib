@@ -16,6 +16,32 @@ using System;
 namespace Shared
 {
     /// <summary>
+    /// Type of document
+    /// </summary>
+    public enum DocumentType
+    {
+        Custom,
+
+        Document,
+
+        Assembly,
+
+        Class,
+
+        Constructor,
+
+        Method,
+
+        Property,
+
+        Field,
+
+        Parameter,
+
+        Exception
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     public enum ToastEventType

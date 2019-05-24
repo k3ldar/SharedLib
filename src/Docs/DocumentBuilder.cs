@@ -18,6 +18,9 @@ using System.Linq;
 
 namespace Shared.Docs
 {
+    /// <summary>
+    /// DocumentBuilder is used to load a documentation xml file
+    /// </summary>
     public sealed class DocumentBuilder
     {
         #region Public Methods
@@ -51,12 +54,24 @@ namespace Shared.Docs
             XmlNode docNode = nodes.Item(1);
             XmlNode assemblyNode = docNode.FirstChild;
             string assemblyName = assemblyNode.InnerText;
-            
-            XmlNodeList memberNodes = assemblyNode.NextSibling.ChildNodes;
 
-            for (int i = 0; i < memberNodes.Count; i++)
-            { 
-                ProcessMember(currentDocuments, assemblyName, memberNodes.Item(i));
+            if (assemblyNode.NextSibling == null)
+            {
+                // custom document add a custom document 
+                Document doc = new Document(DocumentType.Custom);
+                doc.Title = assemblyNode.InnerText;
+                doc.ShortDescription = doc.Title;
+
+                currentDocuments.Add(doc);
+            }
+            else
+            {
+                XmlNodeList memberNodes = assemblyNode.NextSibling.ChildNodes;
+
+                for (int i = 0; i < memberNodes.Count; i++)
+                {
+                    ProcessMember(currentDocuments, assemblyName, memberNodes.Item(i));
+                }
             }
 
             currentDocuments.ForEach(r => r.PostProcess());
@@ -86,7 +101,15 @@ namespace Shared.Docs
             {
                 className = parts[parts.Count - 1];
                 namespaceName = memberParts[1].Substring(0, memberParts[1].Length - (className.Length + 1));
-                document = new Document(assemblyName, namespaceName, className);
+
+                string ns = assemblyName;
+
+                if (documents.Where(d => d.DocumentType == DocumentType.Assembly && d.AssemblyName == ns).FirstOrDefault() == null)
+                {
+                    documents.Add(new Document(assemblyName));
+                }
+
+                document = new Document(DocumentType.Class, assemblyName, namespaceName, className);
                 documents.Add(document);
 
                 if (memberNode.HasChildNodes)
@@ -102,10 +125,11 @@ namespace Shared.Docs
 
                 if (memberParts[0] == "M")
                 {
-                    DocumentMethod method = new DocumentMethod(assemblyName, 
-                        namespaceName, className, memberName);
+                    DocumentMethod method = new DocumentMethod(
+                        memberName.StartsWith("#ctor") ? DocumentType.Constructor : DocumentType.Method,
+                        assemblyName, namespaceName, className, memberName);
 
-                    if (method.MethodName.StartsWith("#ctor"))
+                    if (method.IsConstructor)
                         document.Constructors.Add(method);
                     else
                         document.Methods.Add(method);

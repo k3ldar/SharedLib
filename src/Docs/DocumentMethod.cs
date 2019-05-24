@@ -14,12 +14,13 @@ using System.Collections.Generic;
 
 namespace Shared.Docs
 {
-    public sealed class DocumentMethod
+    public sealed class DocumentMethod : BaseDocument
     {
         #region Constructors
 
-        public DocumentMethod(in string assemblyName, in string namespaceName,
+        public DocumentMethod(in DocumentType documentType, in string assemblyName, in string namespaceName,
             in string className, in string methodName)
+            : base (assemblyName, namespaceName, documentType)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));
@@ -46,10 +47,6 @@ namespace Shared.Docs
         #endregion Constructors
 
         #region Properties
-
-        public string AssemblyName { get; set; }
-
-        public string NameSpaceName { get; set; }
 
         public string ClassName { get; set; }
 

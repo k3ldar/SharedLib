@@ -11,15 +11,24 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Shared.Docs
 {
-    public sealed class Document
+    /// <summary>
+    /// Contains documentation for a class/type or custom documentation
+    /// </summary>
+    public sealed class Document : BaseDocument
     {
         #region Constructors
 
-        public Document()
+        /// <summary>
+        /// Constructor
+        /// 
+        /// Other document types (Custom etc)
+        /// </summary>
+        /// <param name="documentType">DocumentType</param>
+        public Document(DocumentType documentType)
+            : base(null, null, documentType)
         {
             Constructors = new List<DocumentMethod>();
             Methods = new List<DocumentMethod>();
@@ -31,8 +40,36 @@ namespace Shared.Docs
             SortOrder = 5000;
         }
 
-        public Document(in string assemblyName, in string namespaceName, in string className)
-            : this()
+        /// <summary>
+        /// Constructor
+        /// 
+        /// Used when documenting an assembly
+        /// </summary>
+        /// <param name="assemblyName">Name of assembly</param>
+        public Document(in string assemblyName)
+            : base(assemblyName, null, DocumentType.Assembly)
+        {
+            Constructors = new List<DocumentMethod>();
+            Methods = new List<DocumentMethod>();
+            Properties = new List<DocumentProperty>();
+            Fields = new List<DocumentField>();
+            ExampleUseage = String.Empty;
+            Title = String.Empty;
+
+            SortOrder = 5000;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// 
+        /// Used when documenting a class/type
+        /// </summary>
+        /// <param name="documentType">DocumentType</param>
+        /// <param name="assemblyName">Name of assembly containing the class</param>
+        /// <param name="namespaceName">Namespace where class can be found</param>
+        /// <param name="className">Name of class</param>
+        public Document(in DocumentType documentType, in string assemblyName, in string namespaceName, in string className)
+            : this(documentType)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));
@@ -53,37 +90,80 @@ namespace Shared.Docs
 
         #region Properties
 
+        /// <summary>
+        /// Document Title
+        /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        /// How class can be acquired (DI etc)
+        /// </summary>
         public string AcquisitionMethod { get; set; }
 
-        public string AssemblyName { get; set; }
-
-        public string NameSpaceName { get; set; }
-
+        /// <summary>
+        /// Name of class
+        /// </summary>
         public string ClassName { get; set; }
 
+        /// <summary>
+        /// Summary for class
+        /// </summary>
         public string Summary { get; set; }
 
+        /// <summary>
+        /// Any remarkable information for class
+        /// </summary>
         public string Remarks { get; set; }
 
+        /// <summary>
+        /// Return Value if required
+        /// </summary>
         public string Returns { get; set; }
 
+        /// <summary>
+        /// Value if required
+        /// </summary>
         public string Value { get; set; }
 
+        /// <summary>
+        /// Example 
+        /// </summary>
         public string Example { get; set; }
 
+        /// <summary>
+        /// Documented Construcors
+        /// </summary>
         public List<DocumentMethod> Constructors { get; private set; }
 
+        /// <summary>
+        /// Documented Methods
+        /// </summary>
         public List<DocumentMethod> Methods { get; private set; }
 
+        /// <summary>
+        /// Documented Properties
+        /// </summary>
         public List<DocumentProperty> Properties { get; private set; }
 
+        /// <summary>
+        /// Documented Fields
+        /// </summary>
         public List<DocumentField> Fields { get; private set; }
 
+        /// <summary>
+        /// Sort order to be used for this item
+        /// </summary>
         public int SortOrder { get; set; }
 
+        /// <summary>
+        /// Text for example useage
+        /// </summary>
         public string ExampleUseage { get; set; }
+
+        /// <summary>
+        /// Custom object for use by implementing class to hold any data.
+        /// </summary>
+        public object Tag { get; set; }
 
         #endregion Properties
 

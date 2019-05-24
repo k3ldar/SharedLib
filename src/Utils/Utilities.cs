@@ -2974,21 +2974,45 @@ namespace Shared
 
         #endregion Database Connection String
 
+        /// <summary>
+        /// Removes Vat/Tax at a specific rate
+        /// </summary>
+        /// <param name="Value">Value including Vat/Tax</param>
+        /// <param name="vatRate">Rate of Vat/Tax</param>
+        /// <returns></returns>
         public static decimal VATRemove(in decimal Value, in decimal vatRate)
         {
             return ((100 / (100 + vatRate)) * Value);
         }
 
+        /// <summary>
+        /// Determines how much vat/tax has been paid at a specific rate
+        /// </summary>
+        /// <param name="value">Value including Vat/Tax</param>
+        /// <param name="vatRate">Rate of Vat/Tax</param>
+        /// <returns></returns>
         public static decimal VATCalculatePaid(in decimal value, in decimal vatRate)
         {
             return (value - ((100 / (100 + vatRate)) * value));
         }
 
+        /// <summary>
+        /// Calculates how much vat/tax will be applied at a specific rate
+        /// </summary>
+        /// <param name="Value">Value including Vat/Tax</param>
+        /// <param name="vatRate">Rate of Vat/Tax</param>
+        /// <returns></returns>
         public static decimal VATCalculate(in decimal Value, in decimal vatRate)
         {
             return ((vatRate / 100) * Value);
         }
 
+        /// <summary>
+        /// Converts a value using bankers rounding to  a specific number of decimal places
+        /// </summary>
+        /// <param name="value">value to be rounded</param>
+        /// <param name="decimalPlaces">Number of decimal places</param>
+        /// <returns></returns>
         public static decimal BankersRounding(in decimal value, in int decimalPlaces)
         {
             if (decimalPlaces < 0)
@@ -3007,6 +3031,16 @@ namespace Shared
             return (decimal.Round(number) / multiplier);
         }
 
+        /// <summary>
+        /// Formates a monetary value for display
+        /// </summary>
+        /// <param name="value">Monetary value, in any currency</param>
+        /// <param name="culture">Culture to be used to format the money</param>
+        /// <param name="decimalPlaces">Number of decimal places</param>
+        /// <param name="conversionRate">Optional conversion rate, 1 = parity with value</param>
+        /// <param name="removeCurrencySymbol">should the currency symbol be removed</param>
+        /// <param name="customCurrencySymbol">Provides a custom currency symbol different to what is used within culture.</param>
+        /// <returns>string, value formatted to local currency value/format</returns>
         public static string FormatMoney(decimal value, CultureInfo culture, int decimalPlaces, decimal conversionRate = 1.0m,
             bool removeCurrencySymbol = false, string customCurrencySymbol = "")
         {
@@ -3042,8 +3076,10 @@ namespace Shared
         /// Format's Money for display
         /// </summary>
         /// <param name="value">Monetary value, in any currency</param>
-        /// <param name="currency">Currency used to format the money</param>
+        /// <param name="culture">Culture to be used to format the money</param>
+        /// <param name="conversionRate">Optional conversion rate, 1 = parity with value</param>
         /// <param name="removeCurrencySymbol">should the currency symbol be removed</param>
+        /// <param name="customCurrencySymbol">Provides a custom currency symbol different to what is used within culture.</param>
         /// <returns>string, value formatted to local currency value/format</returns>
         public static string FormatMoney(in decimal value, in CultureInfo culture, in decimal conversionRate = 1.0m,
             in bool removeCurrencySymbol = false, in string customCurrencySymbol = "")

@@ -17,4 +17,8 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SharedLib.Core.csproj" />
+  </ItemGroup>
+
 </Project>

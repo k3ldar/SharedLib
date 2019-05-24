@@ -13,12 +13,13 @@ using System;
 
 namespace Shared.Docs
 {
-    public sealed class DocumentMethodParameter
+    public sealed class DocumentMethodParameter : BaseDocument
     {
         #region Constructors
 
         public DocumentMethodParameter(in string assemblyName, in string namespaceName,
             in string className, in string methodName, in string parameterName)
+            : base (assemblyName, namespaceName, DocumentType.Parameter)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));
@@ -45,10 +46,6 @@ namespace Shared.Docs
         #endregion Constructors
 
         #region Properties
-
-        public string AssemblyName { get; set; }
-
-        public string NameSpaceName { get; set; }
 
         public string ClassName { get; set; }
 

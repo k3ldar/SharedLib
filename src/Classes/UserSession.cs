@@ -872,7 +872,7 @@ namespace Shared.Classes
         public decimal Longitude { get; protected set; }
 
         /// <summary>
-        /// ID of current logged on user
+        /// Id of current logged on user
         /// </summary>
         public Int64 UserID { get; set; }
 
@@ -885,6 +885,11 @@ namespace Shared.Classes
         /// Email for logged on user
         /// </summary>
         public string UserEmail { get; set; }
+
+        /// <summary>
+        /// Unique guid used to identify a user
+        /// </summary>
+        public Guid UserGuid { get; set; }
 
         /// <summary>
         /// Users basket id

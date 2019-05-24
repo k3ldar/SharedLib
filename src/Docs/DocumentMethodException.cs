@@ -13,12 +13,13 @@ using System;
 
 namespace Shared.Docs
 {
-    public sealed class DocumentMethodException
+    public sealed class DocumentMethodException : BaseDocument
     {
         #region Constructors
 
         public DocumentMethodException(in string assemblyName, in string namespaceName,
             in string className, in string exceptionName)
+            : base (assemblyName, namespaceName, DocumentType.Exception)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));
@@ -41,10 +42,6 @@ namespace Shared.Docs
         #endregion Constructors
 
         #region Properties
-
-        public string AssemblyName { get; set; }
-
-        public string NameSpaceName { get; set; }
 
         public string ClassName { get; set; }
 

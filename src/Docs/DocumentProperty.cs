@@ -13,12 +13,16 @@ using System;
 
 namespace Shared.Docs
 {
-    public sealed class DocumentProperty
+    /// <summary>
+    /// Documentation for a property
+    /// </summary>
+    public sealed class DocumentProperty : BaseDocument
     {
         #region Constructors
 
         public DocumentProperty(in string assemblyName, in string namespaceName,
             in string className, in string propertyName)
+            : base (assemblyName, namespaceName, DocumentType.Property)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));
@@ -42,16 +46,24 @@ namespace Shared.Docs
 
         #region Properties
 
-        public string AssemblyName { get; set; }
-
-        public string NameSpaceName { get; set; }
-
+        /// <summary>
+        /// Name of class where property belongs
+        /// </summary>
         public string ClassName { get; set; }
 
+        /// <summary>
+        /// Name of property
+        /// </summary>
         public string PropertyName { get; set; }
 
+        /// <summary>
+        /// Summary Description
+        /// </summary>
         public string Summary { get; set; }
 
+        /// <summary>
+        /// Value of property
+        /// </summary>
         public string Value { get; set; }
 
         #endregion Properties

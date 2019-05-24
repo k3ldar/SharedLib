@@ -13,12 +13,13 @@ using System;
 
 namespace Shared.Docs
 {
-    public sealed class DocumentField
+    public sealed class DocumentField : BaseDocument
     {
         #region Constructors
 
         public DocumentField(in string assemblyName, in string namespaceName,
             in string className, in string fieldName)
+            : base (assemblyName, namespaceName, DocumentType.Field)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));
@@ -41,10 +42,6 @@ namespace Shared.Docs
         #endregion Constructors
 
         #region Properties
-
-        public string AssemblyName { get; set; }
-
-        public string NameSpaceName { get; set; }
 
         public string ClassName { get; set; }
 
