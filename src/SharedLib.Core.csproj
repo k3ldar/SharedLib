@@ -16,12 +16,12 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Shared.Key.pfx</AssemblyOriginatorKeyFile>
     <Copyright>Copyright © 2010 - 2019.  Simon Carter All rights reserved.</Copyright>
     <PackageId>SC.Shared.Library.Core</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.9.4</Version>
+    <Version>2.9.5</Version>
     <Authors>Simon Carter</Authors>
     <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
     <PackageTags>Shared Library ThreadManager CacheManager</PackageTags>

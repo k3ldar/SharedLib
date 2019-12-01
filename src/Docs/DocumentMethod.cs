@@ -14,6 +14,9 @@ using System.Collections.Generic;
 
 namespace Shared.Docs
 {
+    /// <summary>
+    /// Class Method
+    /// </summary>
     public sealed class DocumentMethod : BaseDocument
     {
         #region Constructors
@@ -48,20 +51,44 @@ namespace Shared.Docs
 
         #region Properties
 
+        /// <summary>
+        /// Name of class
+        /// </summary>
         public string ClassName { get; set; }
 
+        /// <summary>
+        /// Name of method
+        /// </summary>
         public string MethodName { get; set; }
 
+        /// <summary>
+        /// Summary
+        /// </summary>
         public string Summary { get; set; }
 
+        /// <summary>
+        /// Return type
+        /// </summary>
         public string Returns { get; set; }
 
+        /// <summary>
+        /// Parameters for method
+        /// </summary>
         public List<DocumentMethodParameter> Parameters { get; private set; }
 
+        /// <summary>
+        /// Exceptions that can be raised within the method
+        /// </summary>
         public List<DocumentMethodException> Exceptions { get; private set; }
 
+        /// <summary>
+        /// Determines if the method is a constructor
+        /// </summary>
         public bool IsConstructor { get; private set; }
 
+        /// <summary>
+        /// Example useage for method
+        /// </summary>
         public string ExampleUseage { get; set; }
 
         #endregion Properties

@@ -13,6 +13,9 @@ using System;
 
 namespace Shared.Docs
 {
+    /// <summary>
+    /// Represents a class Field
+    /// </summary>
     public sealed class DocumentField : BaseDocument
     {
         #region Constructors
@@ -43,12 +46,24 @@ namespace Shared.Docs
 
         #region Properties
 
+        /// <summary>
+        /// Name of class where field belongs
+        /// </summary>
         public string ClassName { get; set; }
 
+        /// <summary>
+        /// Name of field
+        /// </summary>
         public string FieldName { get; set; }
 
+        /// <summary>
+        /// Summary description of field
+        /// </summary>
         public string Summary { get; set; }
 
+        /// <summary>
+        /// Value of field
+        /// </summary>
         public string Value { get; set; }
 
         #endregion Properties

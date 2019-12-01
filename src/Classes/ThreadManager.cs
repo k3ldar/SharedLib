@@ -708,6 +708,9 @@ namespace Shared.Classes
         /// <returns>true if cancel has been requested, otherwise false</returns>
         protected bool HasCancelled()
         {
+            if (_globalCancelRequested)
+                return true;
+
             // still alive as we the thread has called this directly
             _lastCommunication = DateTime.Now;
 
