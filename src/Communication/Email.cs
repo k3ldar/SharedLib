@@ -98,7 +98,7 @@ namespace Shared.Communication
         /// <returns></returns>
         public bool SendTestEmail()
         {
-            return (SmtpHelper.TestSend("Test email", "Connection Test", User, User, Password, Host, Port, SSL));
+            return SmtpHelper.TestSend("Test email", "Connection Test", User, User, Password, Host, Port, SSL);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Shared.Communication
         public bool SendEmail(string senderName, string recipientName, string recipientEmail,
             string message, string subject, bool isHtml, params string[] attachments)
         {
-            return (SmtpHelper.Send(message, subject, recipientEmail, recipientName, User, Sender, User, Password, Host, Port, SSL, isHtml, attachments));
+            return SmtpHelper.Send(message, subject, recipientEmail, recipientName, User, Sender, User, Password, Host, Port, SSL, isHtml, attachments);
         }
 
         #endregion Public Methods
@@ -161,7 +161,7 @@ namespace Shared.Communication
         internal static bool TestSend(string message, string subject, string recipient,
             string userName, string password, string host, int port, bool ssl)
         {
-            return (Send(message, subject, recipient, recipient, recipient, recipient, userName, password, host, port, ssl, false));
+            return Send(message, subject, recipient, recipient, recipient, recipient, userName, password, host, port, ssl, false);
         }
 
         internal static bool Send(string message, string subject,
@@ -199,7 +199,7 @@ namespace Shared.Communication
                         }
 
                         smtpClient.Send(msg);
-                        return (true);
+                        return true;
                     }
                     finally
                     {
@@ -209,7 +209,7 @@ namespace Shared.Communication
                 }
                 catch
                 {
-                    return (false);
+                    return false;
                 }
             }
             finally
@@ -242,7 +242,7 @@ namespace Shared.Communication
                 // send HELO and test the response for code 250 = proper response
                 SendData(tcpSocket, string.Format("HELO {0}\r\n", Dns.GetHostName()));
 
-                return (CheckResponse(tcpSocket, 250));
+                return CheckResponse(tcpSocket, 250);
             }
         }
 
@@ -264,7 +264,7 @@ namespace Shared.Communication
             string responseData = Encoding.ASCII.GetString(responseArray);
             int responseCode = Convert.ToInt32(responseData.Substring(0, 3));
 
-            return (responseCode == expectedCode);
+            return responseCode == expectedCode;
         }
     }
 

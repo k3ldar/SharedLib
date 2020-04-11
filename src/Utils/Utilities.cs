@@ -59,7 +59,7 @@ namespace Shared
                 Result.Add(user["FullName"].ToString());
             }
 
-            return (Result);
+            return Result;
         }
 #endif
 
@@ -78,8 +78,8 @@ namespace Shared
 
             for (int i = 0; i < 4; i++)
             {
-                int num = (int)(longIP / Math.Pow(256, (3 - i)));
-                longIP = longIP - (long)(num * Math.Pow(256, (3 - i)));
+                int num = (int)(longIP / Math.Pow(256, 3 - i));
+                longIP = longIP - (long)(num * Math.Pow(256, 3 - i));
 
                 if (i == 0)
                     Result = num.ToString();
@@ -87,7 +87,7 @@ namespace Shared
                     Result = Result + "." + num.ToString();
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -106,11 +106,11 @@ namespace Shared
 
                 for (int i = ipBytes.Length - 1; i >= 0; i--)
                 {
-                    Result += ((int.Parse(ipBytes[i]) % 256) * Math.Pow(256, (3 - i)));
+                    Result += int.Parse(ipBytes[i]) % 256 * Math.Pow(256, 3 - i);
                 }
             }
 
-            return ((long)Result);
+            return (long)Result;
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Shared
             if (localIP.EndsWith(";"))
                 localIP = localIP.Substring(0, localIP.Length - 1);
 
-            return (localIP.Split(';'));
+            return localIP.Split(';');
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace Shared
         public static bool LocalIPAddress(string ipAddress)
         {
             if (ipAddress == "127.0.0.1" || ipAddress == "0.0.0.0")
-                return (true);
+                return true;
 
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 
@@ -154,11 +154,11 @@ namespace Shared
                 if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork &&
                     ip.ToString() == ipAddress)
                 {
-                    return (true);
+                    return true;
                 }
             }
 
-            return (false);
+            return false;
         }
 
         #endregion IP Address
@@ -185,7 +185,7 @@ namespace Shared
                 Result += AVAILABLE_CHARACTERS.Substring(_random.Next(0, 62), 1);
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace Shared
             if (_random == null)
                 _random = new Random(DateTime.Now.Hour + DateTime.Now.Minute + DateTime.Now.Second + DateTime.Now.Day);
 
-            return (_random.Next(min, max));
+            return _random.Next(min, max);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace Shared
             if (addTrailingBackSlash)
                 Result = AddTrailingBackSlash(Result);
 
-            return (Result.Substring(6));
+            return Result.Substring(6);
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace Shared
 
                     if (values[0].ToLower() == name.ToLower())
                     {
-                        return (values[1]);
+                        return values[1];
                     }
                 }
             }
@@ -266,7 +266,7 @@ namespace Shared
                 // ignore, just returns an empty string
             }
 
-            return (String.Empty);
+            return String.Empty;
         }
 
         #endregion Other
@@ -287,7 +287,7 @@ namespace Shared
                 try
                 {
                     process.Kill();
-                    return (true);
+                    return true;
                 }
                 catch
                 {
@@ -295,7 +295,7 @@ namespace Shared
                 }
             }
 
-            return (false);
+            return false;
         }
 
         #endregion Processes
@@ -310,7 +310,7 @@ namespace Shared
         public static string GetCurrencySymbol(string Culture)
         {
             string isos;
-            return (GetCurrencySymbol(Culture, out isos));
+            return GetCurrencySymbol(Culture, out isos);
         }
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace Shared
         {
             CultureInfo info = CultureInfo.CreateSpecificCulture(Culture);
 
-            return (GetCurrencySymbol(info, out ISOSymbol));
+            return GetCurrencySymbol(info, out ISOSymbol);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace Shared
         public static string GetCurrencySymbol(CultureInfo culture)
         {
             string isos;
-            return (GetCurrencySymbol(culture, out isos));
+            return GetCurrencySymbol(culture, out isos);
         }
 
         /// <summary>
@@ -347,7 +347,7 @@ namespace Shared
         {
             RegionInfo region = new RegionInfo(Culture.LCID);
             ISOSymbol = region.ISOCurrencySymbol;
-            return (region.CurrencySymbol);
+            return region.CurrencySymbol;
         }
 
 
@@ -379,12 +379,12 @@ namespace Shared
         public static string TextMaxLength(string value, uint maxLength)
         {
             if (String.IsNullOrEmpty(value))
-                return (String.Empty);
+                return String.Empty;
 
             if (value.Length > maxLength)
-                return (value.Substring(0, (int)maxLength));
+                return value.Substring(0, (int)maxLength);
             else
-                return (value);
+                return value;
         }
 
 #if !NET_CORE
@@ -398,7 +398,7 @@ namespace Shared
         /// <returns>Size of text</returns>
         public static Size MeasureText(string text, Font font)
         {
-            return (TextRenderer.MeasureText(text, font));
+            return TextRenderer.MeasureText(text, font);
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace Shared
         {
             text = WordWrap(text, maxCharacters);
 
-            return (TextRenderer.MeasureText(text, font));
+            return TextRenderer.MeasureText(text, font);
         }
 #endif
 
@@ -482,7 +482,7 @@ namespace Shared
             if (Result.StartsWith("\"") && Result.EndsWith("\""))
                 Result = Result.Substring(1, Result.Length - 2);
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -497,7 +497,7 @@ namespace Shared
                  (?<=[^A-Z])(?=[A-Z]) |
                  (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
 
-            return (r.Replace(s, " "));
+            return r.Replace(s, " ");
         }
 
         #endregion Text Manipulation
@@ -521,7 +521,7 @@ namespace Shared
                     {
                         FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(service["PathName"].ToString().Trim('"'));
 
-                        return (fvi.FileVersion);
+                        return fvi.FileVersion;
                     }
                     catch (Exception err)
                     {
@@ -532,7 +532,7 @@ namespace Shared
                 }
             }
 
-            return (String.Empty);
+            return String.Empty;
         }
 
         /// <summary>
@@ -550,7 +550,7 @@ namespace Shared
                 {
                     try
                     {
-                        return (Path.GetDirectoryName(service["PathName"].ToString().Trim('"')));
+                        return Path.GetDirectoryName(service["PathName"].ToString().Trim('"'));
                     }
                     catch (Exception err)
                     {
@@ -561,7 +561,7 @@ namespace Shared
                 }
             }
 
-            return (String.Empty);
+            return String.Empty;
         }
 
         /// <summary>
@@ -642,7 +642,7 @@ namespace Shared
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -658,11 +658,11 @@ namespace Shared
             {
                 if (service.ServiceName == ServiceName)
                 {
-                    return (service.Status == ServiceControllerStatus.Running);
+                    return service.Status == ServiceControllerStatus.Running;
                 }
             }
 
-            return (false);
+            return false;
         }
 
         /// <summary>
@@ -685,15 +685,15 @@ namespace Shared
                         case ServiceControllerStatus.PausePending:
                         case ServiceControllerStatus.StopPending:
                         case ServiceControllerStatus.Running:
-                            return (false);
+                            return false;
 
                         default:
-                            return (true);
+                            return true;
                     }
                 }
             }
 
-            return (false);
+            return false;
         }
 
         /// <summary>
@@ -709,11 +709,11 @@ namespace Shared
             {
                 if (service.ServiceName == ServiceName)
                 {
-                    return (service.Status == ServiceControllerStatus.Running);
+                    return service.Status == ServiceControllerStatus.Running;
                 }
             }
 
-            return (false);
+            return false;
         }
 
         /// <summary>
@@ -748,7 +748,7 @@ namespace Shared
                 iterator++;
             }
 
-            return (ServiceRunning(ServiceName));
+            return ServiceRunning(ServiceName);
         }
 #endif
 
@@ -772,7 +772,7 @@ namespace Shared
             if (Time > 24) Time = 23.75;
 
             int h = (int)Time;
-            int m = (int)(((Time - Math.Floor(Time)) * 100) / 1.666666666666667);
+            int m = (int)((Time - Math.Floor(Time)) * 100 / 1.666666666666667);
 
             if (m > 0)
                 m++;
@@ -781,7 +781,7 @@ namespace Shared
             Result = Result.AddMinutes(m);
 
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -799,7 +799,7 @@ namespace Shared
             if (Time > 24) Time = 23.75;
 
             int h = (int)Time;
-            int m = (int)(((Time - Math.Floor(Time)) * 100) / 1.666666666666667);
+            int m = (int)((Time - Math.Floor(Time)) * 100 / 1.666666666666667);
 
             if (m > 0)
                 m++;
@@ -813,7 +813,7 @@ namespace Shared
                 Result = Result.AddMinutes(15);
 
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -823,7 +823,7 @@ namespace Shared
         /// <returns></returns>
         public static double DateToDouble(DateTime date)
         {
-            return (TimeToDouble(date.ToString("HH:MM")));
+            return TimeToDouble(date.ToString("HH:MM"));
         }
 
         /// <summary>
@@ -833,7 +833,7 @@ namespace Shared
         /// <returns></returns>
         public static double TimeToDouble(DateTime time)
         {
-            return (TimeToDouble(time.ToString("t")));
+            return TimeToDouble(time.ToString("t"));
         }
 
         /// <summary>
@@ -861,7 +861,7 @@ namespace Shared
 
             s = parts[0] + "." + s;
 
-            return (Convert.ToDouble(s));
+            return Convert.ToDouble(s);
         }
 
         /// <summary>
@@ -876,7 +876,7 @@ namespace Shared
             if (d > 24) d = 23.75;
 
             int h = (int)d;
-            int m = (int)(((d - Math.Floor(d)) * 100) / 1.666666666666667);
+            int m = (int)((d - Math.Floor(d)) * 100 / 1.666666666666667);
 
 
             if (m > 0)
@@ -890,7 +890,7 @@ namespace Shared
             if (Result.Length == 4)
                 Result = "0" + Result;
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -913,7 +913,7 @@ namespace Shared
                 Result = defaultValue;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -936,7 +936,7 @@ namespace Shared
                 Result = defaultValue;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -950,9 +950,9 @@ namespace Shared
             try
             {
                 if (Value == null || Value.Length == 0)
-                    return (DefaultValue);
+                    return DefaultValue;
 
-                return (Convert.ToInt32(Value));
+                return Convert.ToInt32(Value);
             }
             catch
             {
@@ -971,13 +971,13 @@ namespace Shared
             try
             {
                 if (Value == null || Value.Length == 0)
-                    return (DefaultValue);
+                    return DefaultValue;
 
-                return (Convert.ToInt64(Value));
+                return Convert.ToInt64(Value);
             }
             catch
             {
-                return (DefaultValue);
+                return DefaultValue;
             }
         }
 
@@ -1001,7 +1001,7 @@ namespace Shared
                 Result = defaultValue;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -1011,7 +1011,7 @@ namespace Shared
         /// <returns></returns>
         public static bool StrToBool(string Value)
         {
-            return (Value.ToUpper().CompareTo("TRUE") == 0);
+            return Value.ToUpper().CompareTo("TRUE") == 0;
         }
 
         /// <summary>
@@ -1022,7 +1022,7 @@ namespace Shared
         /// <returns></returns>
         public static DateTime StrToDateTime(string value, string culture = "en-GB")
         {
-            return (StrToDateTime(value, new CultureInfo(culture)));
+            return StrToDateTime(value, new CultureInfo(culture));
         }
 
         /// <summary>
@@ -1034,7 +1034,7 @@ namespace Shared
         public static DateTime StrToDateTime(string value, CultureInfo culture)
         {
             IFormatProvider formatProvider = culture;
-            return (DateTime.Parse(value, formatProvider, DateTimeStyles.AssumeLocal));
+            return DateTime.Parse(value, formatProvider, DateTimeStyles.AssumeLocal);
         }
 
         /// <summary>
@@ -1046,7 +1046,7 @@ namespace Shared
         public static string DateTimeToStr(DateTime timeStamp, string culture)
         {
             IFormatProvider formatProvider = new CultureInfo(culture, true);
-            return (timeStamp.ToString(formatProvider));
+            return timeStamp.ToString(formatProvider);
         }
 
         /// <summary>
@@ -1058,7 +1058,7 @@ namespace Shared
         public static string DateTimeToStr(DateTime timeStamp, CultureInfo culture)
         {
             IFormatProvider formatProvider = culture;
-            return (timeStamp.ToString(formatProvider));
+            return timeStamp.ToString(formatProvider);
         }
 
         private const string NUMERIC_NUMBERS = "0123456789";
@@ -1080,14 +1080,14 @@ namespace Shared
                         value = value.Substring(1);
                     }
 
-                    return (decimal.TryParse(value, out val));
+                    return decimal.TryParse(value, out val);
                 }
                 else
-                    return (false);
+                    return false;
             }
             catch
             {
-                return (false);
+                return false;
             }
         }
 
@@ -1099,7 +1099,7 @@ namespace Shared
         /// <returns>true if it is a date format, otherwise false</returns>
         public static bool StrIsDate(string value, ref DateTime val)
         {
-            return (StrIsDate(value, ref val, Thread.CurrentThread.CurrentUICulture));
+            return StrIsDate(value, ref val, Thread.CurrentThread.CurrentUICulture);
         }
 
         /// <summary>
@@ -1112,7 +1112,7 @@ namespace Shared
         public static bool StrIsDate(string value, ref DateTime val, CultureInfo culture)
         {
             IFormatProvider formatProvider = culture;
-            return (DateTime.TryParse(value, formatProvider, DateTimeStyles.AssumeLocal, out val));
+            return DateTime.TryParse(value, formatProvider, DateTimeStyles.AssumeLocal, out val);
         }
 
         /// <summary>
@@ -1125,11 +1125,11 @@ namespace Shared
         {
             try
             {
-                return (Int64.TryParse(value, out val));
+                return Int64.TryParse(value, out val);
             }
             catch
             {
-                return (false);
+                return false;
             }
         }
 
@@ -1160,7 +1160,7 @@ namespace Shared
                 if (cultureInfo == null)
                     cultureInfo = Thread.CurrentThread.CurrentUICulture;
 
-                return (Convert.ToDecimal(value, cultureInfo));
+                return Convert.ToDecimal(value, cultureInfo);
             }
             catch
             {
@@ -1178,7 +1178,7 @@ namespace Shared
         {
             try
             {
-                return (Convert.ToDouble(Value));
+                return Convert.ToDouble(Value);
             }
             catch
             {
@@ -1193,7 +1193,7 @@ namespace Shared
         /// <returns>double</returns>
         public static Double StrToDbl(string Value)
         {
-            return (Convert.ToDouble(Value));
+            return Convert.ToDouble(Value);
         }
 
         /// <summary>
@@ -1207,9 +1207,9 @@ namespace Shared
             try
             {
                 if (Value == null || Value.Length == 0)
-                    return (DefaultValue);
+                    return DefaultValue;
 
-                return (Convert.ToInt64(Value));
+                return Convert.ToInt64(Value);
             }
             catch
             {
@@ -1230,12 +1230,12 @@ namespace Shared
             try
             {
                 if (Value == null || Value.Length == 0)
-                    return (DefaultValue);
+                    return DefaultValue;
 
                 if (!uint.TryParse(Value, out Result))
                     Result = DefaultValue;
 
-                return (Result);
+                return Result;
             }
             catch
             {
@@ -1262,7 +1262,7 @@ namespace Shared
         /// <returns>Minutes converted to milliseconds</returns>
         public static int ConvertMinTomSecDef(int Minutes, int Default)
         {
-            return (Minutes * 60 * 1000);
+            return Minutes * 60 * 1000;
         }
 
         /// <summary>
@@ -1284,7 +1284,7 @@ namespace Shared
                 Result = false;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -1309,13 +1309,13 @@ namespace Shared
             try
             {
                 if (Value == null || Value.Length == 0)
-                    return (DefaultValue);
+                    return DefaultValue;
 
-                return (Convert.ToInt16(Value));
+                return Convert.ToInt16(Value);
             }
             catch
             {
-                return (DefaultValue);
+                return DefaultValue;
             }
         }
 
@@ -1335,9 +1335,9 @@ namespace Shared
                 Result = "0" + Result.Substring(2);
 
             if (Result.StartsWith("07")) //mobile
-                return (Regex.Replace(Result, @"(\d{5})(\d{3})(\d{3})", "$1 $2$3"));
+                return Regex.Replace(Result, @"(\d{5})(\d{3})(\d{3})", "$1 $2$3");
             else //landline
-                return (Regex.Replace(Result, @"(\d{5})(\d{3})(\d{3})", "$1 $2 $3"));
+                return Regex.Replace(Result, @"(\d{5})(\d{3})(\d{3})", "$1 $2 $3");
         }
 
         /// <summary>
@@ -1358,7 +1358,7 @@ namespace Shared
                   @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
             Regex re = new Regex(strRegex);
 
-            return (re.IsMatch(inputEmail));
+            return re.IsMatch(inputEmail);
         }
 
         /// <summary>
@@ -1368,7 +1368,7 @@ namespace Shared
         /// <returns></returns>
         public static Double ConvertKMtoMiles(Double KM)
         {
-            return (KM * 0.621371192);
+            return KM * 0.621371192;
         }
 
         /// <summary>
@@ -1382,11 +1382,11 @@ namespace Shared
             {
                 CultureInfo cultureInfo = System.Threading.Thread.CurrentThread.CurrentUICulture;
                 TextInfo TextInfo = cultureInfo.TextInfo;
-                return (TextInfo.ToTitleCase(S.ToLower()));
+                return TextInfo.ToTitleCase(S.ToLower());
             }
             catch
             {
-                return (S);
+                return S;
             }
         }
 
@@ -1425,7 +1425,7 @@ namespace Shared
 
             Match m = postcode.Match(PostCode);
 
-            return (m.Success);
+            return m.Success;
         }
 
         /// <summary>
@@ -1437,27 +1437,27 @@ namespace Shared
         {
             int time = Time;
             int hours = (int)time / 60;
-            int mins = (time - (hours * 60));
+            int mins = time - (hours * 60);
 
             if (hours == 0)
             {
-                return (String.Format("{0} minutes", mins));
+                return String.Format("{0} minutes", mins);
             }
             else
             {
                 if (hours > 1)
                 {
                     if (mins == 0)
-                        return (String.Format("{0} hours", hours));
+                        return String.Format("{0} hours", hours);
                     else
-                        return (String.Format("{0} hours and {1} minutes", hours, mins));
+                        return String.Format("{0} hours and {1} minutes", hours, mins);
                 }
                 else
                 {
                     if (mins == 0)
-                        return (String.Format("{0} hour", hours));
+                        return String.Format("{0} hour", hours);
                     else
-                        return (String.Format("{0} hour and {1} minutes", hours, mins));
+                        return String.Format("{0} hour and {1} minutes", hours, mins);
                 }
             }
         }
@@ -1474,7 +1474,7 @@ namespace Shared
             string Result = Value.ToString(culture);
 
             Result = Result.Remove(Result.Length - 8, 8);
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -1488,7 +1488,7 @@ namespace Shared
             IFormatProvider culture = Culture;
             string Result = Value.ToString(culture);
 
-            return (Result.Remove(Result.Length - 8, 8));
+            return Result.Remove(Result.Length - 8, 8);
         }
 
         #endregion Conversion
@@ -1511,7 +1511,7 @@ namespace Shared
                 Result = Result + s;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -1555,7 +1555,7 @@ namespace Shared
             for (int i = 0; i < Find.Length; i++)
                 Result = Result.Replace(Find[i], Replace[i]);
 
-            return (Result);
+            return Result;
         }
 
         #endregion HTML
@@ -1605,13 +1605,13 @@ namespace Shared
         public static string FileSize(long bytes, int decimalPlaces)
         {
             if (bytes == 0)
-                return ("0 b");
+                return "0 b";
 
             decimalPlaces = CheckMinMax(decimalPlaces, 0, 6);
             string[] suf = { " B", " KB", " MB", " GB", " TB", " PB" };
             int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
             double num = Math.Round(bytes / Math.Pow(1024, place), decimalPlaces);
-            return (num.ToString() + suf[place]);
+            return num.ToString() + suf[place];
         }
 
         /// <summary>
@@ -1622,12 +1622,12 @@ namespace Shared
         public static long FileSize(string fileName)
         {
             if (!File.Exists(fileName))
-                return (0);
+                return 0;
 
             FileInfo file = new FileInfo(fileName);
             try
             {
-                return (file.Length);
+                return file.Length;
             }
             finally
             {
@@ -1693,7 +1693,7 @@ namespace Shared
                 try
                 {
                     byte[] hash = myCRC.ComputeHash(fileContents);
-                    return (BitConverter.ToString(hash).Replace("-", String.Empty));
+                    return BitConverter.ToString(hash).Replace("-", String.Empty);
                 }
                 finally
                 {
@@ -1733,7 +1733,7 @@ namespace Shared
                 Result += String.Format(" {0}", Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern);
             }
 
-            return (Result);
+            return Result;
         }
 
         #endregion Date/Time
@@ -1743,7 +1743,7 @@ namespace Shared
             try
             {
                 if (String.IsNullOrEmpty(image))
-                    return (image);
+                    return image;
 
                 string Result = image;
 
@@ -1759,11 +1759,11 @@ namespace Shared
 
                 Result = String.Format("{0}_{1}{2}", Result, size, extension);
 
-                return (Result);
+                return Result;
             }
             catch
             {
-                return (image);
+                return image;
             }
         }
 
@@ -1788,9 +1788,9 @@ namespace Shared
         public static int MinimumValue(int Minimum, int Value)
         {
             if (Value < Minimum)
-                return (Minimum);
+                return Minimum;
             else
-                return (Value);
+                return Value;
         }
 
         /// <summary>
@@ -1809,7 +1809,7 @@ namespace Shared
             if (rem > 0)
                 Result++;
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -1819,7 +1819,7 @@ namespace Shared
         /// <returns>true if any of the characters are right to left</returns>
         public static bool IsRightToLeftCharacter(string s)
         {
-            return (Regex.IsMatch(s, @"\p{IsArabic}|\p{IsHebrew}"));
+            return Regex.IsMatch(s, @"\p{IsArabic}|\p{IsHebrew}");
         }
 
         /// <summary>
@@ -1832,7 +1832,7 @@ namespace Shared
         public static string FormatDate(DateTime date, string culture, string dateFormat = "g")
         {
             CultureInfo cultureInfo = new CultureInfo(culture);
-            return (date.ToString(dateFormat, cultureInfo));
+            return date.ToString(dateFormat, cultureInfo);
         }
 
         /// <summary>
@@ -1851,7 +1851,7 @@ namespace Shared
                     Result += ch;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -1877,7 +1877,7 @@ namespace Shared
             if (value > maximum)
                 Result = maximum;
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -1889,9 +1889,9 @@ namespace Shared
         public static string MaximumLength(string s, int length)
         {
             if (s.Length > length)
-                return (s.Substring(0, length));
+                return s.Substring(0, length);
             else
-                return (s);
+                return s;
         }
 
         /// <summary>
@@ -1954,10 +1954,10 @@ namespace Shared
 
             Byte[] MS4B = BitConverter.GetBytes(s1.GetHashCode());
             Byte[] LS4B = BitConverter.GetBytes(s2.GetHashCode());
-            return ((UInt64)MS4B[0] << 56 | (UInt64)MS4B[1] << 48 |
-                          (UInt64)MS4B[2] << 40 | (UInt64)MS4B[3] << 32 |
-                          (UInt64)LS4B[0] << 24 | (UInt64)LS4B[1] << 16 |
-                          (UInt64)LS4B[2] << 8 | (UInt64)LS4B[3]);
+            return ((UInt64)MS4B[0] << 56) | ((UInt64)MS4B[1] << 48) |
+                          ((UInt64)MS4B[2] << 40) | ((UInt64)MS4B[3] << 32) |
+                          ((UInt64)LS4B[0] << 24) | ((UInt64)LS4B[1] << 16) |
+                          ((UInt64)LS4B[2] << 8) | (UInt64)LS4B[3];
         }
 
         /// <summary>
@@ -1999,7 +1999,7 @@ namespace Shared
             while (Result.Length < Length)
                 Result += " ";
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -2010,7 +2010,7 @@ namespace Shared
         /// <returns>Percentage</returns>
         public static double Percentage(double total, double current)
         {
-            return (Math.Round((double)(100 * current) / total));
+            return Math.Round((double)(100 * current) / total);
         }
 
         /// <summary>
@@ -2021,7 +2021,7 @@ namespace Shared
         /// <returns>Percentage</returns>
         public static int Percentage(int total, int current)
         {
-            return ((int)Math.Round((double)(100 * current) / total));
+            return (int)Math.Round((double)(100 * current) / total);
         }
 
         /// <summary>
@@ -2030,7 +2030,7 @@ namespace Shared
         /// <returns>Week number</returns>
         public static int GetWeek()
         {
-            return (GetWeek(DateTime.Now));
+            return GetWeek(DateTime.Now);
         }
 
         /// <summary>
@@ -2041,9 +2041,9 @@ namespace Shared
         public static int GetWeek(DateTime date)
         {
             CultureInfo cult = CultureInfo.CurrentCulture;
-            return (cult.Calendar.GetWeekOfYear(date,
+            return cult.Calendar.GetWeekOfYear(date,
                 cult.DateTimeFormat.CalendarWeekRule,
-                cult.DateTimeFormat.FirstDayOfWeek));
+                cult.DateTimeFormat.FirstDayOfWeek);
         }
 
         #region Simple Encryption / Decryption
@@ -2056,7 +2056,7 @@ namespace Shared
         /// <returns>Encrypted String</returns>
         public static string Encrypt(string textToEncrypt, string key)
         {
-            return (StringCipher.Encrypt(textToEncrypt, key));
+            return StringCipher.Encrypt(textToEncrypt, key);
         }
 
         /// <summary>
@@ -2067,7 +2067,7 @@ namespace Shared
         /// <returns>Decrypted String</returns>
         public static string Decrypt(string textToDecrypt, string key)
         {
-            return (StringCipher.Decrypt(textToDecrypt, key));
+            return StringCipher.Decrypt(textToDecrypt, key);
         }
 
         /// <summary>
@@ -2102,7 +2102,7 @@ namespace Shared
             if (InStr.Length == 0)
                 return "";
 
-            Char C = (Char)((InStr.Length + 50));
+            Char C = (Char)(InStr.Length + 50);
             string Result = Convert.ToString(C);
             int Offset = rnd.Next(1, 30);
             Result = Result + Convert.ToString((Char)(Offset + 30));
@@ -2133,7 +2133,7 @@ namespace Shared
         {
             try
             {
-                int Len = (Char)((InStr[0]) - 50);
+                int Len = (Char)(InStr[0] - 50);
                 int Offset = (Char)(InStr[1] - 30);
 
                 string Result = "";
@@ -2145,7 +2145,7 @@ namespace Shared
                     {
                         Result = Result + (Char)(Byte)(InStr[I] - Offset);
 
-                        if ((Result.Length) == Len)
+                        if (Result.Length == Len)
                         {
                             return Result;
                         }
@@ -2175,7 +2175,7 @@ namespace Shared
         public static bool DateWithin(DateTime date, int Range)
         {
             DateTime check = new DateTime(DateTime.Now.Year, date.Month, date.Day);
-            return (check >= DateTime.Now.AddDays(-Range) && check <= DateTime.Now.AddDays(Range));
+            return check >= DateTime.Now.AddDays(-Range) && check <= DateTime.Now.AddDays(Range);
         }
 
         /// <summary>
@@ -2191,14 +2191,14 @@ namespace Shared
         {
             if (ignoreYears)
             {
-                bool result = (checkDate.Date.Month >= dateStart.Date.Month &&
+                bool result = checkDate.Date.Month >= dateStart.Date.Month &&
                                checkDate.Date.Day >= dateStart.Date.Day &&
                                checkDate.Date.Month <= finishDate.Date.Month &&
-                               checkDate.Date.Day <= finishDate.Date.Day);
-                return (result);
+                               checkDate.Date.Day <= finishDate.Date.Day;
+                return result;
             }
             else
-                return (checkDate.Date >= dateStart.Date && checkDate.Date <= finishDate.Date);
+                return checkDate.Date >= dateStart.Date && checkDate.Date <= finishDate.Date;
         }
 
         /// <summary>
@@ -2216,7 +2216,7 @@ namespace Shared
             if (!Result)
                 Result = checkDateFinish <= finishDate && checkDateFinish >= dateStart;
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -2236,7 +2236,7 @@ namespace Shared
             if (Result > max)
                 Result = max;
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -2256,7 +2256,7 @@ namespace Shared
             if (Result > max)
                 Result = max;
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -2276,7 +2276,7 @@ namespace Shared
             if (Result > max)
                 Result = max;
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -2296,7 +2296,7 @@ namespace Shared
             if (Result > max)
                 Result = max;
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -2316,7 +2316,7 @@ namespace Shared
             if (Result > max)
                 Result = max;
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -2327,14 +2327,14 @@ namespace Shared
         public static string AddTrailingBackSlash(string s)
         {
             if (String.IsNullOrEmpty(s))
-                return (s);
+                return s;
 
             string Result = s;
 
             if (!Result.EndsWith("\\"))
                 Result += "\\";
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -2367,7 +2367,7 @@ namespace Shared
             IPAddress address;
             Result = IPAddress.TryParse(ipAddress, out address);
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -2382,7 +2382,7 @@ namespace Shared
         public static bool ValidateDomainName(string domain, bool extendedTest = false, int timeout = 10000)
         {
             if (string.IsNullOrEmpty(domain))
-                return (false);
+                return false;
 
             Regex TempReg = new Regex(@"^(http|https|ftp)://([a-zA-Z0-9_-]*(?:\.[a-zA-Z0-9_-]*)+):?([0-9]+)?/?");
             bool Result = TempReg.IsMatch(domain);
@@ -2416,12 +2416,12 @@ namespace Shared
 
                                 string data = reader.ReadToEnd();
 
-                                return (true);
+                                return true;
                             }
                         }
                         catch
                         {
-                            return (false);
+                            return false;
                         }
                         finally
                         {
@@ -2440,11 +2440,11 @@ namespace Shared
                 catch (WebException err)
                 {
                     if (err.Status != WebExceptionStatus.Success)
-                        return (false);
+                        return false;
                 }
             }
 
-            return (false);
+            return false;
         }
 
         private static bool invalid = false;
@@ -2459,7 +2459,7 @@ namespace Shared
             invalid = false;
 
             if (String.IsNullOrEmpty(email))
-                return (false);
+                return false;
 
             try
             {
@@ -2467,23 +2467,23 @@ namespace Shared
             }
             catch (Exception)
             {
-                return (false);
+                return false;
             }
 
             if (invalid)
-                return (false);
+                return false;
 
             // Return true if strIn is in valid e-mail format. 
             try
             {
-                return (Regex.IsMatch(email,
+                return Regex.IsMatch(email,
                       @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
                       @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
-                      RegexOptions.IgnoreCase));
+                      RegexOptions.IgnoreCase);
             }
             catch (Exception)
             {
-                return (false);
+                return false;
             }
         }
 
@@ -2503,7 +2503,7 @@ namespace Shared
                 invalid = true;
             }
 
-            return (match.Groups[1].Value + domainName);
+            return match.Groups[1].Value + domainName;
         }
 
         #endregion Validation
@@ -2594,11 +2594,11 @@ namespace Shared
         {
             try
             {
-                return (Convert.ToBoolean(XMLGetValue(xmlFile, parentName, keyName)));
+                return Convert.ToBoolean(XMLGetValue(xmlFile, parentName, keyName));
             }
             catch
             {
-                return (defaultValue);
+                return defaultValue;
             }
         }
 
@@ -2634,14 +2634,14 @@ namespace Shared
                                     Result = defaultValue;
                                 }
 
-                                return (Result);
+                                return Result;
                             }
                         }
                     }
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         internal static DateTime XMLGetValue(string xmlFile, string parentName, string keyName, DateTime defaultValue)
@@ -2676,14 +2676,14 @@ namespace Shared
                                     Result = defaultValue;
                                 }
 
-                                return (Result);
+                                return Result;
                             }
                         }
                     }
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         internal static string XMLGetValue(string xmlFile, string parentName, string keyName, string defaultValue)
@@ -2718,14 +2718,14 @@ namespace Shared
                                     Result = defaultValue;
                                 }
 
-                                return (Result);
+                                return Result;
                             }
                         }
                     }
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         internal static string XMLGetValue(string xmlFile, string parentName, string keyName)
@@ -2752,14 +2752,14 @@ namespace Shared
                             if (Item.Name == keyName)
                             {
                                 Result = Item.InnerText;
-                                return (Result);
+                                return Result;
                             }
                         }
                     }
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         #endregion XML
@@ -2845,7 +2845,7 @@ namespace Shared
                     if (notFoundException)
                         throw new FileNotFoundException();
                     else
-                        return (Result);
+                        return Result;
                 }
 
                 StreamReader rdr = new StreamReader(fileName);
@@ -2865,11 +2865,11 @@ namespace Shared
                 if (err.Message.Contains("because it is being used by another process") && iteration < 10)
                 {
                     System.Threading.Thread.Sleep(500);
-                    return (FileRead(fileName, notFoundException, iteration + 1));
+                    return FileRead(fileName, notFoundException, iteration + 1);
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         #endregion Non Encrypted Files
@@ -2939,7 +2939,7 @@ namespace Shared
                 rdr = null;
             }
 
-            return (Result);
+            return Result;
         }
 
         #endregion Encrypted Files
@@ -2969,7 +2969,7 @@ namespace Shared
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         #endregion Database Connection String
@@ -2982,7 +2982,7 @@ namespace Shared
         /// <returns></returns>
         public static decimal VATRemove(in decimal Value, in decimal vatRate)
         {
-            return ((100 / (100 + vatRate)) * Value);
+            return 100 / (100 + vatRate) * Value;
         }
 
         /// <summary>
@@ -2993,7 +2993,7 @@ namespace Shared
         /// <returns></returns>
         public static decimal VATCalculatePaid(in decimal value, in decimal vatRate)
         {
-            return (value - ((100 / (100 + vatRate)) * value));
+            return value - (100 / (100 + vatRate) * value);
         }
 
         /// <summary>
@@ -3004,7 +3004,7 @@ namespace Shared
         /// <returns></returns>
         public static decimal VATCalculate(in decimal Value, in decimal vatRate)
         {
-            return ((vatRate / 100) * Value);
+            return vatRate / 100 * Value;
         }
 
         /// <summary>
@@ -3028,7 +3028,7 @@ namespace Shared
                 number += 0.5m;
             }
 
-            return (decimal.Round(number) / multiplier);
+            return decimal.Round(number) / multiplier;
         }
 
         /// <summary>
@@ -3048,7 +3048,7 @@ namespace Shared
 
             if (conversionRate != 1.0m)
             {
-                amount = (amount * conversionRate);
+                amount = amount * conversionRate;
             }
 
             string Result = String.Empty;
@@ -3069,7 +3069,7 @@ namespace Shared
                 Result = Result.Replace(isoSymbol, customCurrencySymbol);
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -3088,7 +3088,7 @@ namespace Shared
 
             if (conversionRate != 1.0m)
             {
-                amount = (amount * conversionRate);
+                amount = amount * conversionRate;
             }
 
             string Result = String.Format(culture, "{0:C}", amount);
@@ -3104,7 +3104,7 @@ namespace Shared
                 Result = Result.Replace(isoSymbol, customCurrencySymbol);
             }
 
-            return (Result);
+            return Result;
         }
     }
 

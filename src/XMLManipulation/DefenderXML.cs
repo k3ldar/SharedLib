@@ -26,7 +26,7 @@ namespace Shared
         /// <summary>
         /// Dictionary for in memory xml file to speed up reading/writing
         /// </summary>
-        private static Dictionary<string, XMLMemoryFile> _memoryXMLFile = new Dictionary<string, XMLMemoryFile>();
+        private static readonly Dictionary<string, XMLMemoryFile> _memoryXMLFile = new Dictionary<string, XMLMemoryFile>();
 
 
 
@@ -41,7 +41,7 @@ namespace Shared
         {
             get
             {
-                return (Utilities.CurrentPath(true) + "WebDefender.xml");
+                return Utilities.CurrentPath(true) + "WebDefender.xml";
             }
         }
 
@@ -59,7 +59,7 @@ namespace Shared
 
 
                     doc = _memoryXMLFile[xmlFile].Document;
-                    return (xmlFile);
+                    return xmlFile;
                 }
             }
 
@@ -78,7 +78,7 @@ namespace Shared
                 doc.AppendChild(root);
             }
 
-            return (xmlFile);
+            return xmlFile;
         }
 
         #region Public Static Methods
@@ -351,7 +351,7 @@ namespace Shared
                 Result = defaultValue;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -367,11 +367,11 @@ namespace Shared
         {
             try
             {
-                return (Convert.ToBoolean(GetXMLValue(parentName, keyName, xmlFile)));
+                return Convert.ToBoolean(GetXMLValue(parentName, keyName, xmlFile));
             }
             catch
             {
-                return (defaultValue);
+                return defaultValue;
             }
         }
 
@@ -419,7 +419,7 @@ namespace Shared
                                         Result = defaultValue;
                                     }
 
-                                    return (Result);
+                                    return Result;
                                 }
                             }
                         }
@@ -436,7 +436,7 @@ namespace Shared
                 xmldoc = null;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -482,7 +482,7 @@ namespace Shared
                                         Result = defaultValue;
                                     }
 
-                                    return (Result);
+                                    return Result;
                                 }
                             }
                         }
@@ -499,7 +499,7 @@ namespace Shared
                 xmldoc = null;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -545,7 +545,7 @@ namespace Shared
                                         Result = defaultValue;
                                     }
 
-                                    return (Result);
+                                    return Result;
                                 }
                             }
                         }
@@ -562,7 +562,7 @@ namespace Shared
                 xmldoc = null;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -609,7 +609,7 @@ namespace Shared
                                         Result = defaultValue;
                                     }
 
-                                    return (Result);
+                                    return Result;
                                 }
                             }
                         }
@@ -626,7 +626,7 @@ namespace Shared
                 xmldoc = null;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -672,7 +672,7 @@ namespace Shared
                                         Result = defaultValue;
                                     }
 
-                                    return (Result);
+                                    return Result;
                                 }
                             }
                         }
@@ -690,7 +690,7 @@ namespace Shared
             }
 
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -737,7 +737,7 @@ namespace Shared
                                         Result = defaultValue;
                                     }
 
-                                    return (Result);
+                                    return Result;
                                 }
                             }
                         }
@@ -755,7 +755,7 @@ namespace Shared
             }
 
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -792,7 +792,7 @@ namespace Shared
                                 if (Item.Name == keyName)
                                 {
                                     Result = Item.InnerText;
-                                    return (Result);
+                                    return Result;
                                 }
                             }
                         }
@@ -809,7 +809,7 @@ namespace Shared
                 xmldoc = null;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -855,7 +855,7 @@ namespace Shared
                                         Result = defaultValue;
                                     }
 
-                                    return (Result);
+                                    return Result;
                                 }
                             }
                         }
@@ -872,7 +872,7 @@ namespace Shared
                 xmldoc = null;
             }
 
-            return (Result);
+            return Result;
         }
 
 

@@ -26,13 +26,13 @@ namespace Shared.Classes
         #region Private Members
 
         private string _host = null;
-        private string _username = null;
-        private string _password = null;
-        private int _port;
-        private bool _useBinary;
-        private bool _usePassive;
-        private bool _keepAlive;
-        private int _bufferSize = 2048;
+        private readonly string _username = null;
+        private readonly string _password = null;
+        private readonly int _port;
+        private readonly bool _useBinary;
+        private readonly bool _usePassive;
+        private readonly bool _keepAlive;
+        private readonly int _bufferSize = 2048;
 
         #endregion Private Members
 
@@ -482,7 +482,7 @@ namespace Shared.Classes
                 }
 
                 /* Return File Created Date Time */
-                return (fileInfo);
+                return fileInfo;
             }
             catch //(Exception ex)
             {
@@ -568,7 +568,7 @@ namespace Shared.Classes
                 }
 
                 /* Return File Size */
-                return (fileInfo);
+                return fileInfo;
             }
             catch //(Exception ex)
             {
@@ -658,7 +658,7 @@ namespace Shared.Classes
                 try
                 {
                     string[] directoryList = directoryRaw.Split("|".ToCharArray());
-                    return (directoryList);
+                    return directoryList;
                 }
                 catch (Exception ex)
                 {
@@ -671,7 +671,7 @@ namespace Shared.Classes
             }
 
             /* Return an Empty string Array if an Exception Occurs */
-            return (new string[] { "" });
+            return new string[] { "" };
         }
 
         /// <summary>
@@ -755,7 +755,7 @@ namespace Shared.Classes
                 /* Return the Directory Listing as a string Array by Parsing 'directoryRaw' with the Delimiter you Append (I use | in This Example) */
                 try
                 {
-                    return (directoryRaw.Split("|".ToCharArray()));
+                    return directoryRaw.Split("|".ToCharArray());
                 }
                 catch (Exception ex)
                 {
@@ -768,7 +768,7 @@ namespace Shared.Classes
             }
 
             /* Return an Empty string Array if an Exception Occurs */
-            return (new string[] { "" });
+            return new string[] { "" };
         }
 
         #endregion Public Methods
@@ -784,7 +784,7 @@ namespace Shared.Classes
             if (!_host.StartsWith("ftp://"))
                 _host = String.Format("ftp://{0}", _host);
 
-            return (String.Format("{0}:{1}", _host, _port));
+            return String.Format("{0}:{1}", _host, _port);
         }
 
         /// <summary>
@@ -816,7 +816,7 @@ namespace Shared.Classes
                 Result = !args.Cancel;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>

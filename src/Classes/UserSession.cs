@@ -46,11 +46,11 @@ namespace Shared.Classes
 
         private static readonly object _sessionLockObject = new object();
 
-        private static List<UserSession> _userSessions = new List<UserSession>();
+        private static readonly List<UserSession> _userSessions = new List<UserSession>();
 
         private static readonly object _tempLockObject = new object();
 
-        private static List<UserSession> _tempUserSessions = new List<UserSession>();
+        private static readonly List<UserSession> _tempUserSessions = new List<UserSession>();
 
         private static CacheManager _userSessionCacheManager = null;
 
@@ -66,7 +66,7 @@ namespace Shared.Classes
         public UserSessionManager()
             :base(null, new TimeSpan(0, 0, 5))
         {
-            this.HangTimeout = 0;
+            HangTimeout = 0;
             Classes.ThreadManager.ThreadStart(this, "UserSessionManager", 
                 System.Threading.ThreadPriority.Lowest);
         }
@@ -118,7 +118,6 @@ namespace Shared.Classes
                             FinaliseSession(session);
                             _userSessions.Remove(session);
                             session.Dispose();
-                            session = null;
                             break;
                     }
                 }
@@ -156,7 +155,7 @@ namespace Shared.Classes
 
             _loopCounter++;
 
-            return (!this.HasCancelled());
+            return !this.HasCancelled();
         }
 
         /// <summary>
@@ -251,7 +250,7 @@ namespace Shared.Classes
         private ReferalType GetReferralType(UserSession session)
         {
             if (String.IsNullOrEmpty(session.InitialReferrer))
-                return (ReferalType.Direct);
+                return ReferalType.Direct;
 
             Uri uri = new Uri(session.InitialReferrer.ToLower());
 
@@ -261,23 +260,23 @@ namespace Shared.Classes
             switch (referrer)
             {
                 case "t.co":
-                    return (ReferalType.Twitter);
+                    return ReferalType.Twitter;
 
                 case "m.facebook.com":
                 case "facebook.com":
                 case "l.facebook.com":
                 case "lm.facebook.com":
                 case "fb.me":
-                    return (ReferalType.Facebook);
+                    return ReferalType.Facebook;
                
                 case "r.search.yahoo.com":
                 case "uk.search.yahoo.com":
                 case "search.yahoo.com":
-                    return (ReferalType.Yahoo);
+                    return ReferalType.Yahoo;
 
                 case "www.bing.com":
                 case "m.bing.com":
-                    return (ReferalType.Bing);
+                    return ReferalType.Bing;
 
                 // other search engines
                 case "m.baidu.com":
@@ -285,14 +284,14 @@ namespace Shared.Classes
                 case "www.ask.com":
                 case "ask.com":
                 case "yandex.ru":
-                    return (ReferalType.Organic);
+                    return ReferalType.Organic;
 
                 // anything else is a referral
                 default:
                     if (referrer.Contains("google"))
-                        return (ReferalType.Google);
+                        return ReferalType.Google;
                     else
-                        return (ReferalType.Referal);
+                        return ReferalType.Referal;
             }
         }
 
@@ -331,17 +330,17 @@ namespace Shared.Classes
         private bool CheckIfBot(UserSession session)
         {
             if (session == null || String.IsNullOrEmpty(session.UserAgent))
-                return (false);
+                return false;
 
             string agent = session.UserAgent.ToLower();
 
             foreach (string s in knownBots)
             {
                 if (agent.Contains(s))
-                    return (true);
+                    return true;
             }
 
-            return (false);
+            return false;
         }
 
         #region Event Wrappers
@@ -383,10 +382,10 @@ namespace Shared.Classes
             {
                 UserSessionRequiredArgs args = new UserSessionRequiredArgs(sessionID);
                 OnSessionRetrieve(this, args);
-                return (args.Session);
+                return args.Session;
             }
 
-            return (null);
+            return null;
         }
 
         /// <summary>
@@ -548,7 +547,7 @@ namespace Shared.Classes
                     }
                 }
 
-                return (Result);
+                return Result;
             }
         }
 
@@ -559,7 +558,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_userSessionCacheManager);
+                return _userSessionCacheManager;
             }
         }
 
@@ -570,7 +569,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_userSessionCacheManager.Count);
+                return _userSessionCacheManager.Count;
             }
         }
 
@@ -581,7 +580,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_sessionManager);
+                return _sessionManager;
             }
         }
 
@@ -656,7 +655,7 @@ namespace Shared.Classes
         /// <summary>
         /// Is Mobile Device
         /// </summary>
-        private static Regex MobileCheck = new Regex("android|(android|bb\\d+|meego).+mobile|avantgo|bada\\/|blackberry|blazer|" +
+        private static readonly Regex MobileCheck = new Regex("android|(android|bb\\d+|meego).+mobile|avantgo|bada\\/|blackberry|blazer|" +
             "compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|" +
             "opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\\.(browser|link)|" +
             "vodafone|wap|windows (ce|phone)|xda|xiino",
@@ -665,7 +664,7 @@ namespace Shared.Classes
         /// <summary>
         /// Mobile Version
         /// </summary>
-        private static Regex MobileVersionCheck = new Regex("1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|" +
+        private static readonly Regex MobileVersionCheck = new Regex("1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|" +
             "s\\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\\-m|r |s )|avan|be(ck|ll|nq)|" +
             "bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\\-(n|u)|c55\\/|capi|ccwa|cdm\\-|cell|chtm|cldc|cmd\\-|co(mp|nd)|craw|da(it|ll|" +
             "ng)|dbte|dc\\-s|devi|dica|dmob|do(c|p)o|ds(12|\\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|" +
@@ -689,7 +688,7 @@ namespace Shared.Classes
         /// <summary>
         /// Primary page views
         /// </summary>
-        private List<PageViewData> _pageViews = new List<PageViewData>();
+        private readonly List<PageViewData> _pageViews = new List<PageViewData>();
 
         /// <summary>
         /// Private lock object for when adding pages
@@ -744,7 +743,7 @@ namespace Shared.Classes
             long userID, int screenWidth, int screenHeight, string saleCurrency, decimal saleAmount)
             : this()
         {
-            this.InternalSessionID = id;
+            InternalSessionID = id;
             Created = created;
             SessionID = sessionID;
             UserAgent = userAgent;
@@ -754,8 +753,8 @@ namespace Shared.Classes
             IsMobileDevice = isMobile;
             IsBrowserMobile = isBrowserMobile;
             MobileRedirect = mobileRedirect;
-            this.Referal = referralType;
-            Bounced = Bounced;
+            Referal = referralType;
+            Bounced = bounced;
             IsBot = isBot;
             MobileManufacturer = mobileManufacturer;
             MobileModel = mobileModel;
@@ -923,7 +922,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_pageViews);
+                return _pageViews;
             }
         }
 
@@ -939,7 +938,7 @@ namespace Shared.Classes
                 foreach (PageViewData view in _pageViews)
                     Result += Convert.ToInt32(view.TotalTime.TotalSeconds);
 
-                return (Result);
+                return Result;
             }
         }
 
@@ -1020,7 +1019,7 @@ namespace Shared.Classes
                     Bounced = false;
 
                 previousPage.SaveStatus = Classes.SaveStatus.RequiresSave;
-                this.PageSaveStatus = Classes.SaveStatus.RequiresSave;
+                PageSaveStatus = Classes.SaveStatus.RequiresSave;
             }
 
             CurrentPage = page;
@@ -1102,10 +1101,10 @@ namespace Shared.Classes
         {
             if (!String.IsNullOrEmpty(userAgent) && userAgent.Length >= 4)
             {
-                return (MobileCheck.IsMatch(userAgent) || MobileVersionCheck.IsMatch(userAgent.Substring(0, 4)));
+                return MobileCheck.IsMatch(userAgent) || MobileVersionCheck.IsMatch(userAgent.Substring(0, 4));
             }
 
-            return (false);
+            return false;
         }
 
 
@@ -1233,10 +1232,10 @@ namespace Shared.Classes
         protected override bool Run(object parameters)
         {
             UserSession session = (UserSession)parameters;
-            UserSessionManager manager = (UserSessionManager)this.Parent;
+            UserSessionManager manager = (UserSessionManager)Parent;
 
             if (session == null || manager == null)
-                return (false);
+                return false;
 
             try
             {
@@ -1247,7 +1246,7 @@ namespace Shared.Classes
                 EventLog.Add(err);
             }
 
-            return (false);
+            return false;
         }
     }
 

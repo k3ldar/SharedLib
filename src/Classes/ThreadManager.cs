@@ -29,6 +29,7 @@ namespace Shared.Classes
     /// </summary>
     public class ThreadManager
     {
+#if WINDOWS_ONLY
         #region DLL Imports
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace Shared.Classes
         private static extern IntPtr GetCurrentThreadId();
 
         #endregion DLL Imports
+#endif
 
         #region Private / Internal Static Members
 
@@ -131,7 +133,7 @@ namespace Shared.Classes
         /// <summary>
         /// Determines wether cpu usage is monitored for this thread
         /// </summary>
-        private bool _monitorCPUUsage;
+        private readonly bool _monitorCPUUsage;
 
         /// <summary>
         /// Previous Thread Time (Kernal/User)
@@ -146,7 +148,7 @@ namespace Shared.Classes
         /// <summary>
         /// Indicates wether the thread should delay starting in milliseconds
         /// </summary>
-        private int _delayStart = 0;
+        private readonly int _delayStart = 0;
 
         /// <summary>
         /// Indicates that the thread should cancel
@@ -171,7 +173,7 @@ namespace Shared.Classes
         /// <summary>
         /// Thread parameters
         /// </summary>
-        private object _parameters;
+        private readonly object _parameters;
 
         /// <summary>
         /// Indicates the thread is marked for removal from the collection
@@ -256,7 +258,7 @@ namespace Shared.Classes
         /// <returns></returns>
         public static ThreadManager Get(int Index)
         {
-            return (_threadList[Index]);
+            return _threadList[Index];
         }
 
         /// <summary>
@@ -274,12 +276,12 @@ namespace Shared.Classes
                 {
                     if (item.Name == name && !item.MarkedForRemoval)
                     {
-                        return (true);
+                        return true;
                     }
                 }
             }
 
-            return (false);
+            return false;
         }
 
         /// <summary>
@@ -297,12 +299,12 @@ namespace Shared.Classes
                 {
                     if (item.Name == name && !item.MarkedForRemoval)
                     {
-                        return (item);
+                        return item;
                     }
                 }
             }
 
-            return (null);
+            return null;
         }
 
         /// <summary>
@@ -590,10 +592,10 @@ namespace Shared.Classes
         /// <returns></returns>
         public override string ToString()
         {
-            return (String.Format("Usage Process/System: {5}%/{6}%; Name: {0}; ThreadID: {1}; IsCancelled: {2}; " +
+            return String.Format("Usage Process/System: {5}%/{6}%; Name: {0}; ThreadID: {1}; IsCancelled: {2}; " +
                 "IsUnResponsive: {3}; IsMarkedForRemoval: {4}",
-                this.Name, this.ThreadID, this.Cancelled, this._unresponsive, this._markedForRemoval, 
-                this.ProcessCpuUsage.ToString("n1"), this.SystemCpuUsage.ToString("n1")));
+                Name, ThreadID, Cancelled, _unresponsive, _markedForRemoval, 
+                ProcessCpuUsage.ToString("n1"), SystemCpuUsage.ToString("n1"));
         }
 
         #endregion Public Methods
@@ -607,7 +609,13 @@ namespace Shared.Classes
         protected void ThreadRun(object parameters)
         {
             ThreadID = _thread.ManagedThreadId;
+
+#if WINDOWS_ONLY
+
             ID = (int)GetCurrentThreadId();
+#else
+            ID = ThreadID;
+#endif
 
             if (_monitorCPUUsage)
                 _cpuUsage.ThreadAdd(this);
@@ -697,7 +705,7 @@ namespace Shared.Classes
         /// <returns>true if the thread is to continue, false will casue the thread to terminate</returns>
         protected virtual bool Run(object parameters)
         {
-            return (false);
+            return false;
         }
 
         /// <summary>
@@ -714,7 +722,7 @@ namespace Shared.Classes
             // still alive as we the thread has called this directly
             _lastCommunication = DateTime.Now;
 
-            return (_cancel);
+            return _cancel;
         }
 
         /// <summary>
@@ -725,9 +733,9 @@ namespace Shared.Classes
             _lastCommunication = DateTime.Now;
         }
 
-        #endregion Protected Methods
+#endregion Protected Methods
 
-        #region Internal Methods
+#region Internal Methods
 
         /// <summary>
         /// Long running threads will be pinged every 30 seconds to ensure they are not hanging
@@ -737,7 +745,7 @@ namespace Shared.Classes
         /// <returns></returns>
         protected virtual bool Ping ()
         {
-            return (true);
+            return true;
         }
 
         /// <summary>
@@ -754,7 +762,7 @@ namespace Shared.Classes
                 threadProcessTotalTicks = processTotal;
 
             if (processTotal > 0.00m && threadProcessTotalTicks > 0)
-                ProcessCpuUsage = (100.0m * threadProcessTotalTicks) / processTotal;
+                ProcessCpuUsage = 100.0m * threadProcessTotalTicks / processTotal;
             else
                 ProcessCpuUsage = 0.00m;
 
@@ -768,7 +776,7 @@ namespace Shared.Classes
             Int64 threadSystemTotalTicks = threadTotal.Ticks - _prevThreadTotal.Ticks;
 
             if (systemTotal > 0.00m && threadSystemTotalTicks > 0)
-                SystemCpuUsage = (100.0m * threadSystemTotalTicks) / systemTotal;
+                SystemCpuUsage = 100.0m * threadSystemTotalTicks / systemTotal;
             else
                 SystemCpuUsage = 0.00m;
 
@@ -782,11 +790,11 @@ namespace Shared.Classes
             _prevThreadTotal = threadTotal;
         }
 
-        #endregion Internal Methods
+#endregion Internal Methods
 
-        #region Private Methods
+#region Private Methods
 
-        #region Event Wrappers
+#region Event Wrappers
 
         /// <summary>
         /// Raises an exception event
@@ -896,7 +904,7 @@ namespace Shared.Classes
             }
         }
 
-        #endregion Event Wrappers
+#endregion Event Wrappers
 
         /// <summary>
         /// Get's the memory usage for the thread
@@ -915,7 +923,7 @@ namespace Shared.Classes
             //    }
             //}
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -932,18 +940,18 @@ namespace Shared.Classes
                 if (thread.Id == ID)
                 {
                     threadTotal = thread.TotalProcessorTime;
-                    return (true);
+                    return true;
                 }
             }
 
-            return (false);
+            return false;
         }
 
-        #endregion Private Methods
+#endregion Private Methods
 
-        #region Properties
+#region Properties
 
-        #region Class Properties
+#region Class Properties
 
         /// <summary>
         /// Indicates wether the thread has been cancelled or not
@@ -952,7 +960,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_cancel);
+                return _cancel;
             }
         }
 
@@ -994,7 +1002,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_thread.Name);
+                return _thread.Name;
             }
         }
 
@@ -1005,7 +1013,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_markedForRemoval);
+                return _markedForRemoval;
             }
         }
 
@@ -1022,7 +1030,7 @@ namespace Shared.Classes
         /// <summary>
         /// Indicates wether the thread was unresponsive or not
         /// </summary>
-        public bool UnResponsive { get { return (_unresponsive); } }
+        public bool UnResponsive { get { return _unresponsive; } }
 
         /// <summary>
         /// Hang Timeout for running thread
@@ -1034,12 +1042,12 @@ namespace Shared.Classes
         /// <summary>
         /// Collectin of child threads
         /// </summary>
-        public List<ThreadManager> ChildThreads { get { return (_childThreads); } }
+        public List<ThreadManager> ChildThreads { get { return _childThreads; } }
 
         /// <summary>
         /// Parent thread object
         /// </summary>
-        public ThreadManager Parent { get { return (_parentThread); } }
+        public ThreadManager Parent { get { return _parentThread; } }
 
         /// <summary>
         /// Date/Time the thread Run method was executed
@@ -1048,7 +1056,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_lastRun);
+                return _lastRun;
             }
 
             set
@@ -1082,9 +1090,9 @@ namespace Shared.Classes
         /// </summary>
         public bool CPUUsageChanged { get; internal set; }
 
-        #endregion Class Properties
+#endregion Class Properties
 
-        #region Static Properties
+#region Static Properties
 
         /// <summary>
         /// Returns the number of active threads
@@ -1093,7 +1101,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_countOfThreads);
+                return _countOfThreads;
             }
         }
 
@@ -1104,7 +1112,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_threadPool.Count);
+                return _threadPool.Count;
             }
         }
 
@@ -1115,7 +1123,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_globalCancelRequested);
+                return _globalCancelRequested;
             }
         }
 
@@ -1126,7 +1134,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_maximumRunningThreads);
+                return _maximumRunningThreads;
             }
 
             set
@@ -1143,7 +1151,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_checkForHangingThreads);
+                return _checkForHangingThreads;
             }
 
             set
@@ -1159,7 +1167,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_allowThreadsToPool);
+                return _allowThreadsToPool;
             }
 
             set
@@ -1187,7 +1195,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_maximumThreadPoolSize);
+                return _maximumThreadPoolSize;
             }
 
             set
@@ -1203,7 +1211,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_threadHangTimeoutMinutes);
+                return _threadHangTimeoutMinutes;
             }
 
             set
@@ -1219,7 +1227,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_cpuUsage.GetProcessUsage());
+                return _cpuUsage.GetProcessUsage();
             }
         }
 
@@ -1230,7 +1238,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_cpuUsage.OtherProcessCPUUsage);
+                return _cpuUsage.OtherProcessCPUUsage;
             }
         }
 
@@ -1244,7 +1252,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_threadCPUChangeNotification);
+                return _threadCPUChangeNotification;
             }
 
             set
@@ -1253,11 +1261,11 @@ namespace Shared.Classes
             }
         }
 
-        #endregion Static Properties
+#endregion Static Properties
 
-        #endregion Properties
+#endregion Properties
 
-        #region Class Events
+#region Class Events
 
         /// <summary>
         /// Event raised when the thread starts
@@ -1284,9 +1292,9 @@ namespace Shared.Classes
         /// </summary>
         public event ThreadManagerEventDelegate ThreadCancelRequested;
 
-        #endregion Class Events
+#endregion Class Events
 
-        #region Static Events
+#region Static Events
 
         /// <summary>
         /// Event raised when an exception occurs
@@ -1340,7 +1348,7 @@ namespace Shared.Classes
         /// </summary>
         public static event EventHandler ThreadCpuChanged;
 
-        #endregion Static Events
+#endregion Static Events
     }
 
     /// <summary>
@@ -1348,7 +1356,7 @@ namespace Shared.Classes
     /// </summary>
     internal sealed class ThreadManagerManager : ThreadManager
     {
-        #region Constructors
+#region Constructors
 
         /// <summary>
         /// Constructor, initialises to run thread every 1 second with a delay of 0 seconds between runs
@@ -1359,7 +1367,7 @@ namespace Shared.Classes
             ContinueIfGlobalException = true;
         }
 
-        #endregion Constructors
+#endregion Constructors
 
         protected override bool Run(object parameters)
         {
@@ -1425,7 +1433,7 @@ namespace Shared.Classes
                 }
             }
 
-            return (!HasCancelled());
+            return !HasCancelled();
         }
     }
 
@@ -1437,7 +1445,7 @@ namespace Shared.Classes
     /// </summary>
     internal sealed class ThreadAbortManager : ThreadManager
     {
-        #region Constructors
+#region Constructors
 
         /// <summary>
         /// Constructor, initialises to run thread every 1 second with a delay of 2 seconds between runs
@@ -1448,7 +1456,7 @@ namespace Shared.Classes
             ContinueIfGlobalException = true;
         }
 
-        #endregion Constructors
+#endregion Constructors
 
         protected override bool Run(object parameters)
         {
@@ -1463,10 +1471,10 @@ namespace Shared.Classes
 
                 // play niceley
                 if (HasCancelled())
-                    return (false);
+                    return false;
             }
 
-            return (true);
+            return true;
         }
     }
 
@@ -1487,7 +1495,7 @@ namespace Shared.Classes
         protected override bool Run(object parameters)
         {
             Shared.Classes.CacheManager.CleanAllCaches();
-            return (!HasCancelled());
+            return !HasCancelled();
         }
     }
 

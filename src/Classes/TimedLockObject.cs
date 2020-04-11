@@ -31,7 +31,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_maxAttempts);
+                return _maxAttempts;
             }
 
             set
@@ -72,7 +72,7 @@ namespace Shared.Classes
                 throw new LockTimeoutException();
             }
 
-            return (tl);
+            return tl;
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Shared.Classes
             target = o;
         }
 
-        private object target;
+        private readonly object target;
 
         /// <summary>
         /// Dispose method

@@ -147,7 +147,7 @@ namespace Shared
         /// <returns>true if login allowed, otherwise false</returns>
         protected virtual bool MessageServerLoginAttempt(string userName, string password, string ipAddress)
         {
-            return (false);
+            return false;
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace Shared
         /// <returns>true if allowed, otherwise false</returns>
         protected virtual bool MessageServerAllowConnect(string ipAddress)
         {
-            return (true);
+            return true;
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace Shared
 
             }
 
-            return (serviceBase.MessageServerActive);
+            return serviceBase.MessageServerActive;
         }
 
         #endregion Overridden Methods

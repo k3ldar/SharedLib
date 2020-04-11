@@ -70,7 +70,7 @@ namespace Shared.Classes
         /// <returns>CookiesCollection</returns>
         public System.Net.CookieCollection Cookies(Uri uri)
         {
-            return (_cookieContainer.GetCookies(uri));
+            return _cookieContainer.GetCookies(uri);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Shared.Classes
             TimeSpan span = DateTime.Now.Subtract(StartRead);
             ResponseTime = span.Milliseconds;
 
-            return (request);
+            return request;
         }
 
         #endregion Overridden Methods

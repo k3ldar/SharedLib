@@ -39,7 +39,7 @@ namespace Shared.Logging
             EventLog.ClearCache();
             //EventLog.ArchiveOldLogFiles((int)parameters);
 
-            return (!HasCancelled());
+            return !HasCancelled();
         }
 
         #endregion Overridden Methods

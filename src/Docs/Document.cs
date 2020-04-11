@@ -27,8 +27,9 @@ namespace Shared.Docs
         /// Other document types (Custom etc)
         /// </summary>
         /// <param name="documentType">DocumentType</param>
-        public Document(DocumentType documentType)
-            : base(null, null, documentType)
+        /// <param name="fullMemberName">Full member name of assembly</param>
+        public Document(DocumentType documentType, in string fullMemberName)
+            : base(null, null, documentType, fullMemberName)
         {
             Constructors = new List<DocumentMethod>();
             Methods = new List<DocumentMethod>();
@@ -46,8 +47,9 @@ namespace Shared.Docs
         /// Used when documenting an assembly
         /// </summary>
         /// <param name="assemblyName">Name of assembly</param>
-        public Document(in string assemblyName)
-            : base(assemblyName, null, DocumentType.Assembly)
+        /// <param name="fullMemberName">Full member name of assembly</param>
+        public Document(in string assemblyName, in string fullMemberName)
+            : base(assemblyName, null, DocumentType.Assembly, fullMemberName)
         {
             Constructors = new List<DocumentMethod>();
             Methods = new List<DocumentMethod>();
@@ -68,8 +70,10 @@ namespace Shared.Docs
         /// <param name="assemblyName">Name of assembly containing the class</param>
         /// <param name="namespaceName">Namespace where class can be found</param>
         /// <param name="className">Name of class</param>
-        public Document(in DocumentType documentType, in string assemblyName, in string namespaceName, in string className)
-            : this(documentType)
+        /// <param name="fullMemberName">Full member name of assembly</param>
+        public Document(in DocumentType documentType, in string assemblyName, 
+            in string namespaceName, in string className, in string fullMemberName)
+            : this(documentType, fullMemberName)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));

@@ -28,9 +28,9 @@ namespace Shared.Classes
 
         private List<string> _hookedFolders;
 
-        private static List<FileSystemWatcher> _watchedFolders = new List<FileSystemWatcher>();
+        private static readonly List<FileSystemWatcher> _watchedFolders = new List<FileSystemWatcher>();
 
-        private object _fileLockObject = new object();
+        private readonly object _fileLockObject = new object();
 
         #endregion Private Members
 
@@ -43,7 +43,7 @@ namespace Shared.Classes
         public FileBackup(List<string> folders)
             :base(null, new TimeSpan(0, 0, 1))
         {
-            this.HangTimeout = 10;
+            HangTimeout = 10;
 
             _hookedFolders = folders;
 
@@ -61,7 +61,7 @@ namespace Shared.Classes
         /// <returns>true if to continue, otherwise false to terminate the thread</returns>
         protected override bool Run(object parameters)
         {
-            return (!HasCancelled());
+            return !HasCancelled();
         }
 
         #endregion Overridden Methods

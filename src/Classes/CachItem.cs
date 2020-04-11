@@ -69,7 +69,7 @@ namespace Shared.Classes
             
             get
             {
-                return (_lastUpdated);
+                return _lastUpdated;
             }
         }
 
@@ -101,7 +101,7 @@ namespace Shared.Classes
                     LastUpdated = DateTime.Now;
                 }
 
-                return (_value);
+                return _value;
             }
         }
 
@@ -127,7 +127,7 @@ namespace Shared.Classes
                 LastUpdated = DateTime.Now;
             }
 
-            return (_value);
+            return _value;
         }
 
         #endregion Public Methods

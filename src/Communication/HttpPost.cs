@@ -71,7 +71,7 @@ namespace Shared.Communication
             }
             catch (Exception e)
             {
-                return (e.Message);
+                return e.Message;
             }
 
             //Retrieve the Response returned from the NVP API call to PayPal
@@ -82,7 +82,7 @@ namespace Shared.Communication
                 Result = sr.ReadToEnd();
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Shared.Communication
         /// <returns>text received from web page</returns>
         public static string Post(string url, NVPCodec parameters, uint timeout = 30, NVPCodec additionalHeaders = null)
         {
-            return (Post(url, parameters.Encode(), timeout, additionalHeaders));
+            return Post(url, parameters.Encode(), timeout, additionalHeaders);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Shared.Communication
         public static string Post(string url, NVPCodec parameters, uint timeout, string userAgent,
             NVPCodec additionalHeaders = null)
         {
-            return (Post(url, parameters.Encode(), timeout, additionalHeaders, userAgent));
+            return Post(url, parameters.Encode(), timeout, additionalHeaders, userAgent);
         }
 
 #if NET461

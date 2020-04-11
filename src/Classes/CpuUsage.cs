@@ -25,6 +25,7 @@ namespace Shared.Classes
     /// </summary>
     public class CpuUsage
     {
+#if WINDOWS_ONLY
         #region DLL Imports
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -34,22 +35,24 @@ namespace Shared.Classes
                     out ComTypes.FILETIME lpUserTime);
 
         #endregion DLL Imports
+#endif
 
         #region Private Members
 
-        private static object _lockObject = new object();
+        private static readonly object _lockObject = new object();
 
+#if WINDOWS_ONLY
         private ComTypes.FILETIME _prevSysKernel;
         private ComTypes.FILETIME _prevSysUser;
+        private readonly TimeSpan _prevProcTotal;
+#endif
 
-        private TimeSpan _prevProcTotal;
+        private readonly decimal _cpuUsage;
+        private readonly DateTime _lastRun;
 
-        private decimal _cpuUsage;
-        private DateTime _lastRun;
+        private readonly List<ThreadManager> _watchedThreads = new List<ThreadManager>();
 
-        private List<ThreadManager> _watchedThreads = new List<ThreadManager>();
-
-        private static Dictionary<int, TimeSpan> _threadTimes = new Dictionary<int, TimeSpan>();
+        private static readonly Dictionary<int, TimeSpan> _threadTimes = new Dictionary<int, TimeSpan>();
 
         #endregion Private Members
 
@@ -62,8 +65,11 @@ namespace Shared.Classes
         {
             _cpuUsage = 0.0m;
             _lastRun = DateTime.MinValue;
+#if WINDOWS_ONLY
+
             _prevSysUser.dwHighDateTime = _prevSysUser.dwLowDateTime = 0;
             _prevSysKernel.dwHighDateTime = _prevSysKernel.dwLowDateTime = 0;
+#endif
             InitialiseTimes();
         }
 
@@ -149,7 +155,7 @@ namespace Shared.Classes
         /// <returns></returns>
         public int ThreadUsageCount()
         {
-            return (_watchedThreads.Count);
+            return _watchedThreads.Count;
         }
 
         /// <summary>
@@ -159,7 +165,7 @@ namespace Shared.Classes
         /// <returns>ThreadUsage object</returns>
         public ThreadManager ThreadUsageGet(int index)
         {
-            return (_watchedThreads[index]);
+            return _watchedThreads[index];
         }
 
         /// <summary>
@@ -175,6 +181,7 @@ namespace Shared.Classes
                 return Result;
             }
 
+#if WINDOWS_ONLY
             using (TimedLock.Lock(_lockObject))
             {
                 ThreadCPUChanged = false;
@@ -183,6 +190,7 @@ namespace Shared.Classes
 
                 Process process = Process.GetCurrentProcess();
                 TimeSpan procTime = process.TotalProcessorTime;
+
 
                 if (!GetSystemTimes(out sysIdle, out sysKernel, out sysUser))
                 {
@@ -242,6 +250,7 @@ namespace Shared.Classes
 
             if (ThreadCPUChanged)
                 ThreadManager.RaiseThreadCpuChanged();
+#endif
 
             return Result;
         }
@@ -291,6 +300,8 @@ namespace Shared.Classes
         {
             Process process = Process.GetCurrentProcess();
             TimeSpan procTime = process.TotalProcessorTime;
+#if WINDOWS_ONLY
+
             ComTypes.FILETIME sysIdle, sysKernel, sysUser;
 
             if (GetSystemTimes(out sysIdle, out sysKernel, out sysUser))
@@ -300,6 +311,7 @@ namespace Shared.Classes
             }
             else
                 throw new Exception("Failed to get System Times");
+#endif
         }
 
         private Int64 SubtractTimes(ComTypes.FILETIME a, ComTypes.FILETIME b)

@@ -40,7 +40,7 @@ namespace Shared.Communication
         private bool _running = false;
         private bool _loginRequired;
         private ushort _clientTimeout = 0;
-        private int _port;
+        private readonly int _port;
 
         internal object _messageLockObject = new object();
 
@@ -225,7 +225,7 @@ namespace Shared.Communication
 #endif
             using (TimedLock.Lock(_messageLockObject))
             {
-                return (_clientsDictionary[ClientID].LoginName);
+                return _clientsDictionary[ClientID].LoginName;
             }
         }
 
@@ -241,7 +241,7 @@ namespace Shared.Communication
 #endif
             using (TimedLock.Lock(_messageLockObject))
             {
-                return (_clientsDictionary[ClientID].UserData);
+                return _clientsDictionary[ClientID].UserData;
             }
         }
 
@@ -272,7 +272,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_running);
+                return _running;
             }
 
             internal set
@@ -288,7 +288,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_loginRequired);
+                return _loginRequired;
             }
 
             set
@@ -304,7 +304,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_maxClientConnections);
+                return _maxClientConnections;
             }
 
             set
@@ -320,7 +320,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_clientTimeout);
+                return _clientTimeout;
             }
 
             set
@@ -354,7 +354,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_clientsDictionary);
+                return _clientsDictionary;
             }
         }
 
@@ -365,7 +365,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_port);
+                return _port;
             }
         }
 
@@ -494,7 +494,7 @@ namespace Shared.Communication
 #if DEBUG
             EventLog.Debug("MessageServer.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
-            return (_running);
+            return _running;
         }
 
         /// <summary>
@@ -512,13 +512,13 @@ namespace Shared.Communication
             bool Result = true;
 
             if (String.IsNullOrEmpty(message.ClientID) || !_clientsDictionary.ContainsKey(message.ClientID))
-                return (false);
+                return false;
 
             TcpClient client = _clientsDictionary[message.ClientID].Client;
 
 
             if (String.IsNullOrEmpty(message.ClientID))
-                return (false);
+                return false;
 
             switch (message.Title)
             {
@@ -528,7 +528,7 @@ namespace Shared.Communication
 
                     //if key not found then stop
                     if (!_clientsDictionary.ContainsKey(message.ClientID))
-                        return (Result);
+                        return Result;
 
                     RaiseClientDisconnected(ClientAddress(client), message.ClientID);
 
@@ -537,7 +537,7 @@ namespace Shared.Communication
                     Result = false;
                     string[] loginDetails = message.Contents.Split('$');
 
-                    if ((loginDetails[0].Length == 0 || loginDetails[1].Length == 0) ||
+                    if (loginDetails[0].Length == 0 || loginDetails[1].Length == 0 ||
                         !RaiseOnLogin(ClientAddress(client), loginDetails[0], StringCipher.Decrypt(loginDetails[1], 
                         _clientsDictionary[message.ClientID].RandomPassword)))
                     {
@@ -563,7 +563,7 @@ namespace Shared.Communication
                     break;
             }
 
-            return (Result);
+            return Result;
         }
 
         internal void ProcessFileRequests(Message message)
@@ -631,7 +631,7 @@ namespace Shared.Communication
                 if (!client.Connected)
                 {
                     RaiseClientDisconnected(_clientsDictionary[clientID].ClientIP, clientID);
-                    return (Result);
+                    return Result;
                 }
 
 
@@ -639,7 +639,7 @@ namespace Shared.Communication
                 if (error.Message.Contains("A connection attempt failed because the connected party did not properly " +
                     "respond after a period of time, or established connection failed because connected host has failed to respond"))
                 {
-                    return (true);
+                    return true;
                 }
 
                 if (error.Message == "End of Stream encountered before parsing was completed.")
@@ -677,7 +677,7 @@ namespace Shared.Communication
                 Result = false;
             }
 
-            return (Result);
+            return Result;
         }
 
         internal void newClient_MessageReceived(object sender, Message message)
@@ -709,7 +709,7 @@ namespace Shared.Communication
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         #endregion Internal Methods
@@ -726,7 +726,7 @@ namespace Shared.Communication
 #if DEBUG
             EventLog.Debug("MessageServer.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
-            return (((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
+            return ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
         }
 
         #endregion Private Methods
@@ -747,7 +747,7 @@ namespace Shared.Communication
             if (AllowClientConnect != null)
                 AllowClientConnect(this, args);
 
-            return (args.Allow);
+            return args.Allow;
         }
 
         /// <summary>
@@ -777,7 +777,7 @@ namespace Shared.Communication
             if (OnError != null)
                 OnError(this, args);
 
-            return (args.Continue);
+            return args.Continue;
         }
 
         /// <summary>
@@ -833,7 +833,7 @@ namespace Shared.Communication
             if (ClientLogin != null)
                 ClientLogin(this, args);
 
-            return (args.LoggedIn);
+            return args.LoggedIn;
         }
 
         /// <summary>
@@ -866,7 +866,7 @@ namespace Shared.Communication
             if (FileReceive != null)
                 FileReceive(this, args);
 
-            return (args.FileName);
+            return args.FileName;
         }
 
         #endregion Internal Methods
@@ -935,7 +935,7 @@ namespace Shared.Communication
     internal class MessageServerClientConnectionThread : ThreadManager
     {
         private Int64 _nextClientID = 0;
-        private int _port;
+        private readonly int _port;
         private TcpListener _tcpListener;
 
         #region Constructors
@@ -975,7 +975,7 @@ namespace Shared.Communication
                     try
                     {
                         if (HasCancelled())
-                            return (false);
+                            return false;
 
                         TcpClient connectedTcpClient = _tcpListener.AcceptTcpClient();
 #if DEBUG
@@ -985,7 +985,7 @@ namespace Shared.Communication
                         using (TimedLock.Lock(parentServer._messageLockObject))
                         {
                             if (HasCancelled())
-                                return (false);
+                                return false;
 
                             // assign next client id
                             string activeNewClientID = String.Format("Client:{0}", _nextClientID);
@@ -1075,7 +1075,7 @@ namespace Shared.Communication
 #endif
                 if (err.Message.Contains("Only one usage of each socket address") || 
                     err.Message.Contains("An attempt was made to access a socket in a way forbidden by its access permissions"))
-                    return (false);
+                    return false;
                 else
                     throw;
             }
@@ -1088,7 +1088,7 @@ namespace Shared.Communication
                 _tcpListener = null;
             }
 
-            return (false);
+            return false;
         }
 
         public override void Abort()
@@ -1139,7 +1139,7 @@ namespace Shared.Communication
         /// <returns>ip address of client</returns>
         private string ClientAddress(TcpClient client)
         {
-            return (((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
+            return ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
         }
 
         #endregion Private Methods
@@ -1149,7 +1149,7 @@ namespace Shared.Communication
     {
         #region Private Members
 
-        private MessageServer _parentMessageServer;
+        private readonly MessageServer _parentMessageServer;
 
         #endregion Private Members
 
@@ -1169,7 +1169,7 @@ namespace Shared.Communication
 
         protected override bool Run(object parameters)
         {
-            return (false);
+            return false;
             //MessageServer messageServer = (MessageServer)parameters;
 
             //if (_parentMessageServer.ClientTimeOut > 0)
@@ -1208,9 +1208,9 @@ namespace Shared.Communication
     {
         #region Private Members
 
-        private MessageServer _parentMessageServer;
+        private readonly MessageServer _parentMessageServer;
 
-        private StringBuilder _completeMessage;
+        private readonly StringBuilder _completeMessage;
 
         #endregion Private Members
 
@@ -1244,7 +1244,7 @@ namespace Shared.Communication
 
                     //if client is no longer connected then exit
                     if (!connectedClient.Client.Connected)
-                        return (false);
+                        return false;
 
                     // Block until an instance Message is received
                     byte[] bytes = new byte[(int)connectedClient.BufferSize];
@@ -1304,7 +1304,7 @@ namespace Shared.Communication
                                     if (!_parentMessageServer.ProcessCommand(message, ref shouldExit))
                                     {
                                         if (shouldExit)
-                                            return (false);
+                                            return false;
                                         else
                                             continue;
                                     }
@@ -1348,7 +1348,7 @@ namespace Shared.Communication
                     throw;
             }
 
-            return (!HasCancelled());
+            return !HasCancelled();
         }
 
         #endregion Overridden Methods

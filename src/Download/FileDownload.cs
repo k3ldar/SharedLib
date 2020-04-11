@@ -24,7 +24,7 @@ namespace Shared
     public static class FileDownload
     {
         private static bool _downloading = false;
-        private static object _lockObject = new object();
+        private static readonly object _lockObject = new object();
 
         /// <summary>
         /// Indicates wether a download is in progress or not
@@ -33,7 +33,7 @@ namespace Shared
         {
             get
             {
-                return (_downloading);
+                return _downloading;
             }
         }
 

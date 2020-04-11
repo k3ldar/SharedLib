@@ -6,11 +6,16 @@ namespace Shared.Docs
     {
         #region Constructors
 
-        public BaseDocument(in string assemblyName, in string namespaceName, in DocumentType documentType)
+        public BaseDocument(in string assemblyName, in string namespaceName,
+            in DocumentType documentType, in string fullMemberName)
         {
+            if (String.IsNullOrEmpty(fullMemberName))
+                throw new ArgumentNullException(nameof(fullMemberName));
+
             DocumentType = documentType;
             AssemblyName = assemblyName ?? String.Empty;
             NameSpaceName = namespaceName ?? String.Empty;
+            FullMemberName = fullMemberName;
         }
 
         #endregion Constructors
@@ -26,6 +31,8 @@ namespace Shared.Docs
         public string ShortDescription { get; set; }
 
         public string LongDescription { get; set; }
+
+        public string FullMemberName { get; private set; }
 
         #endregion Properties
     }

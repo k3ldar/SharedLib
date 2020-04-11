@@ -71,7 +71,7 @@ namespace Shared.Communication
             codec.Add("text", message);
             HttpPost.Post("https://rest.textmagic.com/api/v2/messages", codec, 30, headers);
 
-            return (true);
+            return true;
         }
 
         #endregion Public Methods

@@ -128,7 +128,7 @@ namespace Shared.Classes
                 throw new ArgumentOutOfRangeException("index");
             }
 
-            return (name + index);
+            return name + index;
         }
         #endregion
     }

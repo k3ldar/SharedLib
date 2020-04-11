@@ -18,8 +18,8 @@ namespace Shared.Docs
         #region Constructors
 
         public DocumentMethodException(in string assemblyName, in string namespaceName,
-            in string className, in string exceptionName)
-            : base (assemblyName, namespaceName, DocumentType.Exception)
+            in string className, in string exceptionName, in string fullMemberName)
+            : base (assemblyName, namespaceName, DocumentType.Exception, fullMemberName)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));

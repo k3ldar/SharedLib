@@ -24,7 +24,7 @@ namespace Shared.Classes
     {
         #region Private Members
 
-        private List<LogLine> _logEntries = new List<LogLine>();
+        private readonly List<LogLine> _logEntries = new List<LogLine>();
 
         private readonly long _lastPosition;
 
@@ -62,7 +62,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_logEntries);
+                return _logEntries;
             }
         }
 
@@ -92,7 +92,7 @@ namespace Shared.Classes
                     throw new Exception("Invalid File Type");
             }
 
-            return (Result);
+            return Result;
         }
 
         #endregion Public Methods
@@ -148,7 +148,7 @@ namespace Shared.Classes
                 fs = null;
             }
 
-            return (Result);
+            return Result;
         }
 
         private long ProcessFileZillaFile(string fileName, bool loginFailuresOnly)
@@ -175,7 +175,7 @@ namespace Shared.Classes
                         if (parts.Length < 13)
                             continue;
 
-                        if ((!loginFailuresOnly) || (loginFailuresOnly && parts[9] == "530") && parts[13] == "incorrect!")
+                        if ((!loginFailuresOnly) || loginFailuresOnly && parts[9] == "530" && parts[13] == "incorrect!")
                         {
                             LogLine logLine = new LogLine(LogFileType.FileZilla, parts[1], parts[2], parts[8]);
                             _logEntries.Add(logLine);
@@ -198,7 +198,7 @@ namespace Shared.Classes
                 fs = null;
             }
 
-            return (Result);
+            return Result;
         }
 
         #region Event Wrappers

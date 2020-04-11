@@ -101,7 +101,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_clientID);
+                return _clientID;
             }
         }
 
@@ -181,7 +181,7 @@ namespace Shared.Communication
         /// <returns>Message Object</returns>
         public static Message Command(string command, string parameters = "")
         {
-            return (new Message(command, parameters, MessageType.Command));
+            return new Message(command, parameters, MessageType.Command);
         }
 
 
@@ -192,7 +192,7 @@ namespace Shared.Communication
         /// <returns></returns>
         public static Message FeatureNotSupported(string contents = "")
         {
-            return (new Message("FEATURE_NOT_SUPPORTED", contents, MessageType.Error));
+            return new Message("FEATURE_NOT_SUPPORTED", contents, MessageType.Error);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace Shared.Communication
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -236,11 +236,11 @@ namespace Shared.Communication
 
                 string title = stringMessage.Substring(1, sepCharsTitle - 1);
 
-                string clientID = stringMessage.Substring(sepCharsTitle + 3, (sepCharsClientID - 3) - sepCharsTitle);
+                string clientID = stringMessage.Substring(sepCharsTitle + 3, sepCharsClientID - 3 - sepCharsTitle);
                 string contents = stringMessage.Substring(sepCharsClientID + 3).TrimEnd('\0');
                 Message Result = new Message(title.Trim(), contents.Trim(), type);
                 Result.SetClientID(clientID);
-                return (Result);
+                return Result;
             }
             catch (Exception err)
             {
@@ -249,7 +249,7 @@ namespace Shared.Communication
                 EventLog.Debug("Message.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
                 EventLog.Add(err, stringMessage);
-                return (new Message("Error", err.Message, MessageType.Error));
+                return new Message("Error", err.Message, MessageType.Error);
             }
         }
 
@@ -274,11 +274,11 @@ namespace Shared.Communication
                 
                 string title = msgArray.Substring(1, sepCharsTitle - 1);
 
-                string clientID = msgArray.Substring(sepCharsTitle + 3, (sepCharsClientID - 3) - sepCharsTitle);
+                string clientID = msgArray.Substring(sepCharsTitle + 3, sepCharsClientID - 3 - sepCharsTitle);
                 string contents = msgArray.Substring(sepCharsClientID + 3).TrimEnd('\0');
                 Message Result = new Message(title.Trim(), contents.Trim(), type);
                 Result.SetClientID(clientID);
-                return (Result);
+                return Result;
             }
             catch (Exception err)
             {
@@ -287,7 +287,7 @@ namespace Shared.Communication
                 EventLog.Debug("Message.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
                 EventLog.Add(err);
-                return (new Message("Error", err.Message, MessageType.Error));
+                return new Message("Error", err.Message, MessageType.Error);
             }
         }
 
@@ -318,7 +318,7 @@ namespace Shared.Communication
                 EventLog.Debug("Message.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name + " before return");
 #endif
 
-                return (Result);
+                return Result;
             }
             catch (Exception err)
             {
@@ -329,7 +329,7 @@ namespace Shared.Communication
                 string msgBody = String.Format("{3}{0}#A!{1}#B!{2}",
                     message.Title, message.ClientID, err.Message,
                     MessageTypeToChar(MessageType.Error));
-                return (msgBody.ToCharArray());
+                return msgBody.ToCharArray();
             }
         }
 
@@ -346,21 +346,21 @@ namespace Shared.Communication
             switch (type)
             {
                 case 'A':
-                    return (MessageType.Acknowledge);
+                    return MessageType.Acknowledge;
                 case 'B':
-                    return (MessageType.Broadcast);
+                    return MessageType.Broadcast;
                 case 'C':
-                    return (MessageType.Command);
+                    return MessageType.Command;
                 case 'D':
-                    return (MessageType.Error);
+                    return MessageType.Error;
                 case 'E':
-                    return (MessageType.File);
+                    return MessageType.File;
                 case 'F':
-                    return (MessageType.Info);
+                    return MessageType.Info;
                 case 'G':
-                    return (MessageType.User);
+                    return MessageType.User;
                 case 'H':
-                    return (MessageType.Warning);
+                    return MessageType.Warning;
                 default:
 #if DEBUG
             EventLog.Debug("Message.cs - Unknown Message Type" + System.Reflection.MethodBase.GetCurrentMethod().Name);
@@ -383,21 +383,21 @@ namespace Shared.Communication
             switch (type)
             {
                 case MessageType.Acknowledge:
-                    return ('A');
+                    return 'A';
                 case MessageType.Broadcast:
-                    return ('B');
+                    return 'B';
                 case MessageType.Command:
-                    return ('C');
+                    return 'C';
                 case MessageType.Error:
-                    return ('D');
+                    return 'D';
                 case MessageType.File:
-                    return ('E');
+                    return 'E';
                 case MessageType.Info:
-                    return ('F');
+                    return 'F';
                 case MessageType.User:
-                    return ('G');
+                    return 'G';
                 case MessageType.Warning:
-                    return ('H');
+                    return 'H';
                 default:
                     throw new Exception("Invalid Message Type");
             }

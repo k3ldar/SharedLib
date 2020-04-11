@@ -35,12 +35,12 @@ namespace Shared
         /// <summary>
         /// if error is reported more than once in an hour, ignore previous errors
         /// </summary>
-        private static CacheManager _errorCache = new CacheManager("Error Caching", new TimeSpan(1, 0, 0));
+        private static readonly CacheManager _errorCache = new CacheManager("Error Caching", new TimeSpan(1, 0, 0));
 
         /// <summary>
         /// If a log item repeats more than once in 30 minutes, then ignore
         /// </summary>
-        private static CacheManager _logCache = new CacheManager("Log Cache", new TimeSpan(0, 30, 0));
+        private static readonly CacheManager _logCache = new CacheManager("Log Cache", new TimeSpan(0, 30, 0));
 
        
         /// <summary>
@@ -49,7 +49,7 @@ namespace Shared
         private static Int64 _maximumFileSize = 10485760; //10 mb
 
 
-        private static int _maximumReoccuranceCount = 10;
+        private static readonly int _maximumReoccuranceCount = 10;
 
         /// <summary>
         /// Path for log files
@@ -82,7 +82,7 @@ namespace Shared
         {
             get
             {
-                return (_maximumFileSize);
+                return _maximumFileSize;
             }
 
             set
@@ -340,7 +340,7 @@ namespace Shared
                 ThreadManager.ThreadStart(new Shared.Logging.LoggingThread(maximumAge), 
                     "EventLog Thread Manager", System.Threading.ThreadPriority.Lowest);
 
-            return (Path);
+            return Path;
         }
 
         public static string Initialise(int maximumAge, string logPath, string errorPath)
@@ -623,11 +623,11 @@ namespace Shared
 
                     _logPath = Result;
 
-                    return (Result);
+                    return Result;
                 }
                 else
                 {
-                    return (_logPath);
+                    return _logPath;
                 }
             }
         }
@@ -650,10 +650,10 @@ namespace Shared
             if (errorItem != null)
             {
                 if (!CanLogData(errorItem.FileName))
-                    return (false);
+                    return false;
 
                 if (errorItem.NumberOfErrors > _maximumReoccuranceCount)
-                    return (false);
+                    return false;
 
                 // if this error has occurred before, then append the date/time to the existing message
                 StreamWriter w = File.AppendText(errorItem.FileName);
@@ -682,7 +682,7 @@ namespace Shared
 
                 errorItem.IncrementErrors();
 
-                return (false);
+                return false;
             }
             else
             {
@@ -700,13 +700,13 @@ namespace Shared
                     DateTime.Now.ToString("ddMMyyyy HH mm ss ffff"));
 
                 if (!CanLogData(errorItem.FileName))
-                    return (false);
+                    return false;
 
                 if (!_errorCache.Add(error, errorItem))
-                    return(false);
+                    return false;
             }
 
-            return (true);
+            return true;
         }
 
         private static bool CanLogData(string file)
@@ -718,12 +718,12 @@ namespace Shared
             if (File.Exists(file) && info.Length > _maximumFileSize)
                 Result = false;
 
-            return (Result);
+            return Result;
         }
 
         private static string GetLogFileName(string path)
         {
-            return (String.Format("{0}{1}.log", path, DateTime.Now.ToString("ddMMyyyy")));
+            return String.Format("{0}{1}.log", path, DateTime.Now.ToString("ddMMyyyy"));
         }
 
 #if !NET_CORE

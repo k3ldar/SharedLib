@@ -34,7 +34,7 @@ namespace Shared.Classes
         /// <summary>
         /// Lock object
         /// </summary>
-        private static object _lockObject = new object();
+        private static readonly object _lockObject = new object();
 
         #endregion Private Members
 
@@ -119,7 +119,7 @@ namespace Shared.Classes
 
             using (TimedLock.Lock(_lockObject))
             {
-                return (_parameters.ContainsKey(_caseSensitive ? paramName : paramName.ToLower()));
+                return _parameters.ContainsKey(_caseSensitive ? paramName : paramName.ToLower());
             }
         }
 
@@ -140,11 +140,11 @@ namespace Shared.Classes
             {
                 if (_parameters.ContainsKey(_caseSensitive ? paramName : paramName.ToLower()))
                 {
-                    return (_parameters[_caseSensitive ? paramName : paramName.ToLower()]);
+                    return _parameters[_caseSensitive ? paramName : paramName.ToLower()];
                 }
             }
 
-            return (defaultValue);
+            return defaultValue;
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace Shared.Classes
         /// <returns>Parameter value if found, otherwise defaultValue</returns>
         public static bool GetOption(string paramName, bool defaultValue = false)
         {
-            return (Utilities.StrToBool(GetOption(paramName, defaultValue.ToString())));
+            return Utilities.StrToBool(GetOption(paramName, defaultValue.ToString()));
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Shared.Classes
         /// <returns>Parameter value if found, otherwise defaultValue</returns>
         public static double GetOption(string paramName, double defaultValue = 0.0)
         {
-            return (Utilities.StrToDbl(GetOption(paramName, defaultValue.ToString())));
+            return Utilities.StrToDbl(GetOption(paramName, defaultValue.ToString()));
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace Shared.Classes
         /// <returns>Parameter value if found, otherwise defaultValue</returns>
         public static Int64 GetOption(string paramName, Int64 defaultValue = 0)
         {
-            return (Utilities.StrToInt64(GetOption(paramName, defaultValue.ToString()), defaultValue));
+            return Utilities.StrToInt64(GetOption(paramName, defaultValue.ToString()), defaultValue);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Shared.Classes
         /// <returns>Parameter value if found, otherwise defaultValue</returns>
         public static int GetOption(string paramName, int defaultValue = 0)
         {
-            return (Utilities.StrToIntDef(GetOption(paramName, defaultValue.ToString()), defaultValue));
+            return Utilities.StrToIntDef(GetOption(paramName, defaultValue.ToString()), defaultValue);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace Shared.Classes
         /// <returns>Parameter value if found, otherwise defaultValue</returns>
         public static uint GetOption(string paramName, uint defaultValue = 0)
         {
-            return (Utilities.StrToUInt(GetOption(paramName, defaultValue.ToString()), defaultValue));
+            return Utilities.StrToUInt(GetOption(paramName, defaultValue.ToString()), defaultValue);
         }
 
         #endregion Public Methods
@@ -231,7 +231,6 @@ namespace Shared.Classes
         /// i.e. : or space (' ')</param>
         private static void ProcessArgs(string[] args, char paramSeperator, char optionSeperator)
         {
-            bool newEntry = false;
             string newName = String.Empty;
             string currentEntry = String.Empty;
 
@@ -241,7 +240,7 @@ namespace Shared.Classes
 
                 if (s.StartsWith(paramSeperator.ToString()))
                 {
-                    newEntry = true;
+                    bool newEntry = true;
 
                     if (newEntry && !String.IsNullOrEmpty(newName) || !String.IsNullOrEmpty(currentEntry))
                     {
@@ -366,11 +365,11 @@ namespace Shared.Classes
             {
                 if (s.StartsWith(sep.ToString()))
                 {
-                    return (true);
+                    return true;
                 }
             }
 
-            return (false);
+            return false;
         }
 
         /// <summary>
@@ -394,11 +393,11 @@ namespace Shared.Classes
                         beginString = beginString.ToLower();
 
                     endString = s.Substring(posSep + 1);
-                    return (true);
+                    return true;
                 }
             }
 
-            return (false);
+            return false;
         }
 
         #endregion Private Methods

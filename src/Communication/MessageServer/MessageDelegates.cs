@@ -87,9 +87,9 @@ namespace Shared.Communication
         /// <summary>
         /// Used when calculating speed of transfer
         /// </summary>
-        private string[] SPEED_FORMAT = { "{0} bytes/s", "{0} KB/s", "{0} MB/s", "{0} TB/s" };
+        private readonly string[] SPEED_FORMAT = { "{0} bytes/s", "{0} KB/s", "{0} MB/s", "{0} TB/s" };
 
-        private bool _init;
+        private readonly bool _init;
 
         #region Constructors
 
@@ -197,7 +197,7 @@ namespace Shared.Communication
                 if (_init)
                     throw new InvalidProperty();
 
-                return (Received / Total);
+                return Received / Total;
             }
         }
 
@@ -234,7 +234,7 @@ namespace Shared.Communication
                 double remaining = Math.Round(dataLeft / (TransferRate == 0.00 ? 0.01 : TransferRate));
                 TimeSpan Result = DateTime.Now.AddSeconds(remaining) - DateTime.Now;
 
-                return (Result);
+                return Result;
             }
         }
 
@@ -266,7 +266,7 @@ namespace Shared.Communication
                     speed = speed / 1024;
                 }
 
-                return (String.Format(SPEED_FORMAT[i], speed.ToString("N")));
+                return String.Format(SPEED_FORMAT[i], speed.ToString("N"));
             }
         }
 

@@ -26,18 +26,18 @@ namespace Shared.Classes
         /// <summary>
         /// cache lock object
         /// </summary>
-        private object _cacheLockObject = new object();
+        private readonly object _cacheLockObject = new object();
 
         /// <summary>
         /// List of all cache's created by application
         /// </summary>
-        internal static List<CacheManager> _allCaches = new List<CacheManager>();
+        internal static readonly List<CacheManager> _allCaches = new List<CacheManager>();
 
         #endregion Private Static Members
 
         #region Private Members
 
-        private Dictionary<string, CacheItem> _cachedItems = null;
+        private readonly Dictionary<string, CacheItem> _cachedItems = null;
 
         #endregion Private Members
 
@@ -106,7 +106,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (_cachedItems.Count);
+                return _cachedItems.Count;
             }
         }
 
@@ -127,7 +127,7 @@ namespace Shared.Classes
                         Result.Add(item.Value);
                     }
 
-                    return (Result);
+                    return Result;
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace Shared.Classes
         /// <returns></returns>
         public static int GetCount()
         {
-            return (_allCaches.Count);
+            return _allCaches.Count;
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace Shared.Classes
         /// <returns>Cache name</returns>
         public static string GetCacheName(int index)
         {
-            return (_allCaches[index].Name);
+            return _allCaches[index].Name;
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace Shared.Classes
         /// <returns></returns>
         public static TimeSpan GetCacheAge(int index)
         {
-            return (_allCaches[index].MaximumAge);
+            return _allCaches[index].MaximumAge;
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace Shared.Classes
         /// <returns>integer</returns>
         public static int GetCacheCount(int index)
         {
-            return (_allCaches[index].Count);
+            return _allCaches[index].Count;
         }
 
         #endregion Static Public Methods
@@ -229,7 +229,7 @@ namespace Shared.Classes
 
             // is the item is already cached and we are not renewing it
             if (_cachedItems.ContainsKey(name) && !deleteIfExists)
-                    return (false);
+                    return false;
 
             using (TimedLock.Lock(_cacheLockObject))
             {
@@ -239,11 +239,11 @@ namespace Shared.Classes
                     _cachedItems.Remove(name);
                 }
 
-                value.ResetMaximumAge = this.ResetMaximumAge;
+                value.ResetMaximumAge = ResetMaximumAge;
                 _cachedItems.Add(name, value);
                 RaiseAddItem(value);
 
-                return (true);
+                return true;
             }
         }
 
@@ -275,7 +275,7 @@ namespace Shared.Classes
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -302,7 +302,6 @@ namespace Shared.Classes
                 finally
                 {
                     removeItems.Clear();
-                    removeItems = null;
                 }
             }
         }
@@ -354,7 +353,6 @@ namespace Shared.Classes
                 finally
                 {
                     removeItems.Clear();
-                    removeItems = null;
                 }
             }
         }
@@ -388,7 +386,7 @@ namespace Shared.Classes
                 Result = args.CachedItem;
             }
 
-            return (Result);
+            return Result;
         }
 
         #endregion Event Wrappers

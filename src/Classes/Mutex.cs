@@ -26,7 +26,7 @@ namespace Shared.Classes
 
         private Mutex _mutex = null;
 
-        private bool _initialOwner = true;
+        private readonly bool _initialOwner = true;
 
         #endregion Private Members
 
@@ -225,14 +225,14 @@ namespace Shared.Classes
             }
             catch (WaitHandleCannotBeOpenedException)
             {
-                return (false);
+                return false;
             }
             catch (UnauthorizedAccessException)
             {
-                return (true);
+                return true;
             }
 
-            return (false);
+            return false;
         }
 
         #endregion Private Methods
@@ -256,7 +256,7 @@ namespace Shared.Classes
         {
             get
             {
-                return (MutexExists());
+                return MutexExists();
             }
         }
 

@@ -122,7 +122,7 @@ namespace Shared
             if (String.IsNullOrEmpty(Result))
                 throw new FormatException(String.Format("{0} is not of type {1}", validationText, validationType));
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -133,52 +133,52 @@ namespace Shared
         public static AcceptedCreditCardTypes CardType(string cardNumber)
         {
             if (Regex.IsMatch(cardNumber, CARD_TYPE_VISA))
-                return (AcceptedCreditCardTypes.Visa);
+                return AcceptedCreditCardTypes.Visa;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_MASTERCARD))
-                return (AcceptedCreditCardTypes.MasterCard);
+                return AcceptedCreditCardTypes.MasterCard;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_AMEX))
-                    return (AcceptedCreditCardTypes.AmericanExpress);
+                    return AcceptedCreditCardTypes.AmericanExpress;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_CARTE_BLANCH))
-                    return (AcceptedCreditCardTypes.CarteBlanch);
+                    return AcceptedCreditCardTypes.CarteBlanch;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_DINERS_CLUB))
-                    return (AcceptedCreditCardTypes.DinersClub);
+                    return AcceptedCreditCardTypes.DinersClub;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_DISCOVER))
-                    return (AcceptedCreditCardTypes.Discover);
+                    return AcceptedCreditCardTypes.Discover;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_JCB))
-                    return (AcceptedCreditCardTypes.JCB);
+                    return AcceptedCreditCardTypes.JCB;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_VISA_MASTER))
-                    return (AcceptedCreditCardTypes.VisaMaster);
+                    return AcceptedCreditCardTypes.VisaMaster;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_INSTA_PAYMENT))
-                    return (AcceptedCreditCardTypes.InstaPayment);
+                    return AcceptedCreditCardTypes.InstaPayment;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_LASER))
-                    return (AcceptedCreditCardTypes.Laser);
+                    return AcceptedCreditCardTypes.Laser;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_MAESTRO))
-                    return (AcceptedCreditCardTypes.Maestro);
+                    return AcceptedCreditCardTypes.Maestro;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_SOLO))
-                    return (AcceptedCreditCardTypes.Solo);
+                    return AcceptedCreditCardTypes.Solo;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_SWITCH))
-                    return (AcceptedCreditCardTypes.Switch);
+                    return AcceptedCreditCardTypes.Switch;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_UNION_PAY))
-                    return (AcceptedCreditCardTypes.UnionPay);
+                    return AcceptedCreditCardTypes.UnionPay;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_KOREAN_LOCAL))
-                    return (AcceptedCreditCardTypes.KoreanLocal);
+                    return AcceptedCreditCardTypes.KoreanLocal;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_BC_GLOBAL))
-                    return (AcceptedCreditCardTypes.BCGlobal);
+                    return AcceptedCreditCardTypes.BCGlobal;
 
             throw new Exception("Could not determine credit card type");
         }
@@ -221,7 +221,7 @@ namespace Shared
                     Result += c.ToString();
             }
 
-            return (Result);
+            return Result;
         }
 
         //private static string ValidateNumeric(string validationText)
@@ -240,16 +240,16 @@ namespace Shared
 
             // Compute checksum of every other digit starting from right-most digit
             for (i = cardNumber.Length - 1; i >= 0; i -= 2)
-                checkSum += (cardNumber[i] - '0');
+                checkSum += cardNumber[i] - '0';
 
             // Now take digits not included in first checksum, multiple by two,
             // and compute checksum of resulting digits
             for (i = cardNumber.Length - 2; i >= 0; i -= 2)
             {
-                int val = ((cardNumber[i] - '0') * 2);
+                int val = (cardNumber[i] - '0') * 2;
                 while (val > 0)
                 {
-                    checkSum += (val % 10);
+                    checkSum += val % 10;
                     val /= 10;
                 }
             }

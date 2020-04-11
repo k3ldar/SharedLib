@@ -28,8 +28,8 @@ namespace Shared.Communication
     {
         #region Private / Internal Membes
 
-        private int _port;
-        private string _server;
+        private readonly int _port;
+        private readonly string _server;
         private bool _running;
         private string _clientID;
         private bool _ignoreBroadcasts;
@@ -39,7 +39,7 @@ namespace Shared.Communication
 
         internal TcpClient _tcpClient;
 
-        private object _messageLockObject = new object();
+        private readonly object _messageLockObject = new object();
 
         #endregion Private / Internal Members
 
@@ -226,14 +226,14 @@ namespace Shared.Communication
             if (_timeout)
             {
                 RaiseDisconnected();
-                return (true);
+                return true;
             }
 
             //if it doesn't respond in time to the request?
             if (error.Message.Contains("A connection attempt failed because the connected party did not properly respond " +
                 "after a period of time, or established connection failed because connected host has failed to respond"))
             {
-                return (true);
+                return true;
             }
 
             if (error.Message.Contains("does not contain a valid BinaryHeader") || 
@@ -245,37 +245,37 @@ namespace Shared.Communication
                 if (_tcpClient != null)
                     _tcpClient.Close();
 
-                return (true);
+                return true;
             }
 
             if (error.Message.Contains("An established connection was aborted by the software in your host machine"))
             {
                 RaiseDisconnected();
-                return (true);
+                return true;
             }
 
             if (error.Message.Contains("An existing connection was forcibly closed by the remote host"))
             {
                 RaiseDisconnected();
-                return (true);
+                return true;
             }
 
             if (error.Message.Contains("End of Stream encountered before parsing was completed"))
             {
                 RaiseDisconnected();
-                return (true);
+                return true;
             }
 
             if (error.Message.Contains("The operation is not allowed on non-connected sockets."))
             {
                 RaiseDisconnected();
-                return (true);
+                return true;
             }
 
             if (error.Message.Contains("not access a disposed object"))
             {
                 RaiseDisconnected();
-                return (true);
+                return true;
             }
 
             //trying to send message when connection closed
@@ -287,10 +287,10 @@ namespace Shared.Communication
                     RaiseDisconnected();
                 }
 
-                return (true);
+                return true;
             }
 
-            return (RaiseError(error));
+            return RaiseError(error);
         }
 
         #endregion Private Methods
@@ -304,7 +304,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_timeout);
+                return _timeout;
             }
 
             set
@@ -361,7 +361,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_ignoreBroadcasts);
+                return _ignoreBroadcasts;
             }
 
             set
@@ -378,7 +378,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_running);
+                return _running;
             }
         }
 
@@ -389,7 +389,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_clientID);
+                return _clientID;
             }
 
             internal set
@@ -406,9 +406,9 @@ namespace Shared.Communication
             get
             {
                 if (IsRunning)
-                    return (_server);
+                    return _server;
                 else
-                    return ("Not Connected");
+                    return "Not Connected";
             }
         }
 
@@ -420,9 +420,9 @@ namespace Shared.Communication
             get
             {
                 if (_tcpClient == null)
-                    return (false);
+                    return false;
                 else
-                    return (_tcpClient.Connected);
+                    return _tcpClient.Connected;
             }
         }
 
@@ -433,7 +433,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_bufferSize);
+                return _bufferSize;
             }
 
             set
@@ -452,7 +452,7 @@ namespace Shared.Communication
         {
             get
             {
-                return (_loggedIn);
+                return _loggedIn;
             }
         }
 
@@ -505,7 +505,7 @@ namespace Shared.Communication
             if (OnError != null)
                 OnError(this, args);
 
-            return (args.Continue);
+            return args.Continue;
         }
 
         /// <summary>
@@ -527,7 +527,7 @@ namespace Shared.Communication
                     Result = String.Format("{0}${1}", args.Username, StringCipher.Encrypt(args.Password, passwordCode));
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -589,7 +589,7 @@ namespace Shared.Communication
             if (FileReceive != null)
                 FileReceive(this, args);
 
-            return (args.FileName);
+            return args.FileName;
         }
 
         #endregion Internal Methods
@@ -659,8 +659,8 @@ namespace Shared.Communication
     {
         #region Private Members
 
-        private StringBuilder _completeMessage;
-        private MessageClient _parentMessageClient;
+        private readonly StringBuilder _completeMessage;
+        private readonly MessageClient _parentMessageClient;
 
         #endregion Private Members
 
@@ -726,7 +726,7 @@ namespace Shared.Communication
 
                         //have we stopped running?
                         if (!_parentMessageClient.IsRunning)
-                            return (false);
+                            return false;
 
                         if (MessageReceived != null && message != null)
                         {
@@ -808,7 +808,7 @@ namespace Shared.Communication
                 EventLog.Debug("MessageClient.cs ObjectDisposedException " + 
                     System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
-                return (false);
+                return false;
             }
             catch (Exception err)
             {
@@ -821,7 +821,7 @@ namespace Shared.Communication
                     throw;
             }
 
-            return (!HasCancelled());
+            return !HasCancelled();
         }
 
         public override void Abort()

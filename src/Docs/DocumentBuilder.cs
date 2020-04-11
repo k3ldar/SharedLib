@@ -58,7 +58,7 @@ namespace Shared.Docs
             if (assemblyNode.NextSibling == null)
             {
                 // custom document add a custom document 
-                Document doc = new Document(DocumentType.Custom);
+                Document doc = new Document(DocumentType.Custom, nameof(DocumentType.Custom));
                 doc.Title = assemblyNode.InnerText;
                 doc.ShortDescription = doc.Title;
 
@@ -94,8 +94,6 @@ namespace Shared.Docs
             Document document = null;
             string namespaceName;
             string className;
-            string memberName;
-            
 
             if (memberParts[0] == "T")
             {
@@ -106,10 +104,10 @@ namespace Shared.Docs
 
                 if (documents.Where(d => d.DocumentType == DocumentType.Assembly && d.AssemblyName == ns).FirstOrDefault() == null)
                 {
-                    documents.Add(new Document(assemblyName));
+                    documents.Add(new Document(assemblyName, memberNameParts));
                 }
 
-                document = new Document(DocumentType.Class, assemblyName, namespaceName, className);
+                document = new Document(DocumentType.Class, assemblyName, namespaceName, className, memberNameParts);
                 documents.Add(document);
 
                 if (memberNode.HasChildNodes)
@@ -118,7 +116,7 @@ namespace Shared.Docs
             else 
             {
                 document = GetMemberDocument(documents, memberParts[1], 
-                    out namespaceName, out className, out memberName);
+                    out namespaceName, out className, out string memberName);
 
                 if (document == null)
                     return;
@@ -127,7 +125,7 @@ namespace Shared.Docs
                 {
                     DocumentMethod method = new DocumentMethod(
                         memberName.StartsWith("#ctor") ? DocumentType.Constructor : DocumentType.Method,
-                        assemblyName, namespaceName, className, memberName);
+                        assemblyName, namespaceName, className, memberName, memberNameParts);
 
                     if (method.IsConstructor)
                         document.Constructors.Add(method);
@@ -136,12 +134,12 @@ namespace Shared.Docs
 
                     if (memberNode.HasChildNodes)
                         ProcessMethodChildNodes(method, memberNode, assemblyName, 
-                            namespaceName, className, memberName);
+                            namespaceName, className, memberName, memberNameParts);
                 }
                 else if (memberParts[0] == "P")
                 {
                     DocumentProperty property = new DocumentProperty(assemblyName,
-                        namespaceName, className, memberName);
+                        namespaceName, className, memberName, memberNameParts);
                     document.Properties.Add(property);
 
                     if (memberNode.HasChildNodes)
@@ -151,7 +149,7 @@ namespace Shared.Docs
                 else if (memberParts[0] == "F")
                 {
                     DocumentField field = new DocumentField(assemblyName, 
-                        namespaceName, className, memberName);
+                        namespaceName, className, memberName, memberNameParts);
                     document.Fields.Add(field);
 
                     if (memberNode.HasChildNodes)
@@ -194,7 +192,7 @@ namespace Shared.Docs
 
         private void ProcessMethodChildNodes(in DocumentMethod method, in XmlNode node,
             in string assemblyName, in string namespaceName, in string className,
-            in string memberName)
+            in string memberName, in string fullMemberName)
         {
             for (int i = 0; i < node.ChildNodes.Count; i++)
             {
@@ -216,7 +214,7 @@ namespace Shared.Docs
                         paramName = childNode.Attributes.GetNamedItem("name").InnerText;
 
                     DocumentMethodParameter param = new DocumentMethodParameter(assemblyName,
-                        namespaceName, className, memberName, paramName);
+                        namespaceName, className, memberName, paramName, fullMemberName);
                     method.Parameters.Add(param);
                     param.Summary = childNode.InnerText.Trim();
                 }

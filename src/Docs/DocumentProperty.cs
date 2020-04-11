@@ -21,8 +21,8 @@ namespace Shared.Docs
         #region Constructors
 
         public DocumentProperty(in string assemblyName, in string namespaceName,
-            in string className, in string propertyName)
-            : base (assemblyName, namespaceName, DocumentType.Property)
+            in string className, in string propertyName, in string fullMemberName)
+            : base (assemblyName, namespaceName, DocumentType.Property, fullMemberName)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));

@@ -119,7 +119,7 @@ namespace Shared.Classes
                 type = EntryType.Folder;
 
             if (type == EntryType.Unknown)
-                return (false);
+                return false;
 
             string[] parts = line.Split(' ');
             string name = parts[parts.Length - 1];
@@ -135,7 +135,7 @@ namespace Shared.Classes
             else
                 entry = new FTPEntry(name);
 
-            return (true);
+            return true;
         }
 
         #endregion Static Methods
