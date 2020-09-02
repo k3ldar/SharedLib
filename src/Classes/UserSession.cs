@@ -4,7 +4,7 @@
  *
  *  The Original Code was created by Simon Carter (s1cart3r@gmail.com)
  *
- *  Copyright (c) 2015 - 2017 Simon Carter
+ *  Copyright (c) 2015 - 2020 Simon Carter
  *
  *  Purpose:  Session Manager - Used to manage web sessions
  *
@@ -24,20 +24,20 @@ namespace Shared.Classes
     /// Class to manage user web sessions
     /// </summary>
     [Serializable]
-    public class UserSessionManager : ThreadManager, IDisposable
+    public class UserSessionManager : ThreadManager
     {
         #region Private Members
 
-        private static readonly string[] knownBots = { ".co.uk/bot", ".com/bot", ".net/bot", "googlebot", "bingpreview", 
+        private static readonly string[] knownBots = { ".co.uk/bot", ".com/bot", ".net/bot", "googlebot", "bingpreview",
                 "/bingbot.htm", "ahrefs.com", "yandex.com", "semrushbot",
-                "google.com/bot.html", "baidu.com/search/spider.html", "baidu.", "girafabot", 
-                "buzzbot", "experibot", "livelapbot", "mediatoolkitbot", "stashbot", "applebot", "tweetmemebot", 
-                "leikibot", "rogerbot", "msnbot", "istellabot", "vebot", "uxcrawlerbot", "twitterbot", 
-                "socialrankiobot", "safednsbot", "yandexmobilebot", "laserlikebot", "yoozbot", "spbot", "obot", 
-                "linkdexbot", "aihitbot", "yandexmetrika", "yandexbot", "tt_snbreact_bot", "uptimebot", "veoozbot", 
-                "linkisbot", "mail.ru_bot", "mj12bot", "paperlibot", "seokicks-robot", "semrushbot", "seznambot", 
-                "dotbot", "duckduckgo", "everyonesocialbot", "exabot", "thefind.com/crawler", "fatbot", "bot@linkfluence.net", 
-                "http://www.trendiction.de/bot", "+http://duckduckgo.com", "leikibot", "surveybot", "trendictionbot", 
+                "google.com/bot.html", "baidu.com/search/spider.html", "baidu.", "girafabot",
+                "buzzbot", "experibot", "livelapbot", "mediatoolkitbot", "stashbot", "applebot", "tweetmemebot",
+                "leikibot", "rogerbot", "msnbot", "istellabot", "vebot", "uxcrawlerbot", "twitterbot",
+                "socialrankiobot", "safednsbot", "yandexmobilebot", "laserlikebot", "yoozbot", "spbot", "obot",
+                "linkdexbot", "aihitbot", "yandexmetrika", "yandexbot", "tt_snbreact_bot", "uptimebot", "veoozbot",
+                "linkisbot", "mail.ru_bot", "mj12bot", "paperlibot", "seokicks-robot", "semrushbot", "seznambot",
+                "dotbot", "duckduckgo", "everyonesocialbot", "exabot", "thefind.com/crawler", "fatbot", "bot@linkfluence.net",
+                "http://www.trendiction.de/bot", "+http://duckduckgo.com", "leikibot", "surveybot", "trendictionbot",
                 "blexbot", "cliqzbot", ") webmonitor", "sieradelta", "sdbot", "mojeekbot", ".ly/bot",
                 "onpagebot", "surdotlybot", "favico.be/bot", "companiesintheuk.co.uk/bot", ".k39.us/bot",
                 "seozoom.it/bot"};
@@ -64,10 +64,10 @@ namespace Shared.Classes
         /// Constructor
         /// </summary>
         public UserSessionManager()
-            :base(null, new TimeSpan(0, 0, 5))
+            : base(null, new TimeSpan(0, 0, 5))
         {
             HangTimeout = 0;
-            Classes.ThreadManager.ThreadStart(this, "UserSessionManager", 
+            Classes.ThreadManager.ThreadStart(this, "UserSessionManager",
                 System.Threading.ThreadPriority.Lowest);
         }
 
@@ -85,7 +85,7 @@ namespace Shared.Classes
             // move sessions from temp storage to processing storage
             using (TimedLock.Lock(_tempLockObject))
             {
-                for (int i = _tempUserSessions.Count -1; i >= 0; i--)
+                for (int i = _tempUserSessions.Count - 1; i >= 0; i--)
                 {
                     using (TimedLock.Lock(_sessionLockObject))
                     {
@@ -99,7 +99,7 @@ namespace Shared.Classes
 
             using (TimedLock.Lock(_sessionLockObject))
             {
-                for (int i = _userSessions.Count -1; i >= 0; i--)
+                for (int i = _userSessions.Count - 1; i >= 0; i--)
                 {
                     UserSession session = _userSessions[i];
 
@@ -117,7 +117,6 @@ namespace Shared.Classes
                         case SessionStatus.Closing:
                             FinaliseSession(session);
                             _userSessions.Remove(session);
-                            session.Dispose();
                             break;
                     }
                 }
@@ -182,29 +181,6 @@ namespace Shared.Classes
         }
 
         /// <summary>
-        /// Dispose Method
-        /// </summary>
-        public void Dispose()
-        {
-#if DEBUG
-            System.GC.SuppressFinalize(this);
-#endif
-            using (TimedLock.Lock(_sessionLockObject))
-            {
-                List<CacheItem> allSessions = _userSessionCacheManager.Items;
-
-                for (int i = allSessions.Count - 1; i >= 0; i--)
-                {
-                    UserSession session = (UserSession)allSessions[i].Value;
-
-                    FinaliseSession(session);
-                    session.Dispose();
-                    session = null;
-                }
-            }
-        }
-
-        /// <summary>
         /// Called in a seperate thread, updates thread with basic data to stop blocking
         /// </summary>
         /// <param name="session"></param>
@@ -216,7 +192,7 @@ namespace Shared.Classes
             try
             {
                 RaiseGetIPDetails(session);
-                
+
                 // is it a bot
                 session.IsBot = CheckIfBot(session);
 
@@ -268,7 +244,7 @@ namespace Shared.Classes
                 case "lm.facebook.com":
                 case "fb.me":
                     return ReferalType.Facebook;
-               
+
                 case "r.search.yahoo.com":
                 case "uk.search.yahoo.com":
                 case "search.yahoo.com":
@@ -413,7 +389,7 @@ namespace Shared.Classes
 
                 IPAddressDetails(this, args);
 
-                session.UpdateIPDetails(args.IPUniqueID, args.Latitude, args.Longitude, 
+                session.UpdateIPDetails(args.IPUniqueID, args.Latitude, args.Longitude,
                     args.Region, args.CityName, args.CountryCode);
             }
         }
@@ -472,7 +448,7 @@ namespace Shared.Classes
             if (_userSessionCacheManager == null)
                 throw new Exception("SessionManager has not been initialised!");
 
-            _userSessionCacheManager.Add(session.SessionID, 
+            _userSessionCacheManager.Add(session.SessionID,
                 new CacheItem(session.SessionID, session));
         }
 
@@ -516,7 +492,7 @@ namespace Shared.Classes
         static void _userSessionCacheManager_ItemNotFound(object sender, CacheItemNotFoundArgs e)
         {
             if (Instance != null)
-            { 
+            {
                 UserSession session = Instance.RaiseSessionRequired(e.Name);
 
                 if (session != null)
@@ -648,7 +624,7 @@ namespace Shared.Classes
     /// Stores information about user sessions
     /// </summary>
     [Serializable]
-    public class UserSession : IDisposable
+    public class UserSession
     {
         #region Private Members
 
@@ -935,8 +911,11 @@ namespace Shared.Classes
             {
                 int Result = 0;
 
-                foreach (PageViewData view in _pageViews)
-                    Result += Convert.ToInt32(view.TotalTime.TotalSeconds);
+                using (TimedLock.Lock(_pageViewLockObject))
+                {
+                    foreach (PageViewData view in _pageViews)
+                        Result += Convert.ToInt32(view.TotalTime.TotalSeconds);
+                }
 
                 return Result;
             }
@@ -1006,12 +985,12 @@ namespace Shared.Classes
                 }
             }
 
-            int pages = _pageViews.Count -1;
+            int pages = _pageViews.Count - 1;
 
             if (pages >= 1)
             {
                 // calculate page time for previous page
-                PageViewData previousPage = _pageViews[pages -1];
+                PageViewData previousPage = _pageViews[pages - 1];
                 previousPage.TotalTime = DateTime.Now - previousPage.TimeStamp;
 
                 // not a bounce as already moved onto another page
@@ -1063,7 +1042,7 @@ namespace Shared.Classes
             SaveStatus = Classes.SaveStatus.RequiresSave;
 
             if (UserSessionManager.SaveImmediately)
-                UserSessionManager.Instance.RaiseSessionSave(this);   
+                UserSessionManager.Instance.RaiseSessionSave(this);
         }
 
         /// <summary>
@@ -1075,7 +1054,7 @@ namespace Shared.Classes
         /// <param name="regionName">Region for IP Address</param>
         /// <param name="cityName">City for IP Address</param>
         /// <param name="countryCode">Country Code for IP Address</param>
-        public void UpdateIPDetails(Int64 id, decimal latitude, decimal longitude, string regionName, 
+        public void UpdateIPDetails(Int64 id, decimal latitude, decimal longitude, string regionName,
             string cityName, string countryCode)
         {
             CityID = id;
@@ -1110,20 +1089,6 @@ namespace Shared.Classes
 
         #endregion Private Methods
 
-        #region IDisposable
-
-        /// <summary>
-        /// Dispose method
-        /// </summary>
-        public void Dispose()
-        {
-#if DEBUG
-            System.GC.SuppressFinalize(this);
-#endif
-            _pageViews.Clear();
-        }
-
-        #endregion IDisposable
     }
 
     /// <summary>
@@ -1253,23 +1218,23 @@ namespace Shared.Classes
     /// <summary>
     /// Referral Types
     /// </summary>
-    public enum ReferalType 
-    { 
+    public enum ReferalType
+    {
         /// <summary>
         /// Not a clue
         /// </summary>
-        Unknown = 0, 
-        
+        Unknown = 0,
+
         /// <summary>
         /// User typed url directly into the browser
         /// </summary>
-        Direct = 1, 
-        
+        Direct = 1,
+
         /// <summary>
         /// Referral from a search engine
         /// </summary>
-        Organic = 2, 
-        
+        Organic = 2,
+
         /// <summary>
         /// From a.n. other website
         /// </summary>
@@ -1304,47 +1269,47 @@ namespace Shared.Classes
     /// <summary>
     /// Session Status
     /// </summary>
-    public enum SessionStatus 
-    { 
+    public enum SessionStatus
+    {
         /// <summary>
         /// Initialising
         /// </summary>
-        Initialising, 
-        
+        Initialising,
+
         /// <summary>
         /// Updated
         /// </summary>
-        Updated, 
-        
+        Updated,
+
         /// <summary>
         /// About to be closed
         /// </summary>
-        Closing, 
-        
+        Closing,
+
         /// <summary>
         /// Session has been reloaded for continuing
         /// </summary>
-        Continuing 
+        Continuing
     }
 
     /// <summary>
     /// Save status for current item
     /// </summary>
-    public enum SaveStatus 
-    { 
+    public enum SaveStatus
+    {
         /// <summary>
         /// Data has already been saved
         /// </summary>
-        Saved, 
-        
+        Saved,
+
         /// <summary>
         /// Item is ready to be saved, no further updates anticipated
         /// </summary>
-        RequiresSave, 
-        
+        RequiresSave,
+
         /// <summary>
         /// Awaiting more information before save can proceed
         /// </summary>
-        Pending 
+        Pending
     }
 }

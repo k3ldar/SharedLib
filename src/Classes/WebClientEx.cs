@@ -99,7 +99,7 @@ namespace Shared.Classes
         /// <returns>Uri for request</returns>
         protected override WebRequest GetWebRequest(Uri address)
         {
-            DateTime StartRead = DateTime.Now;
+            DateTime StartRead = DateTime.UtcNow;
 
             WebRequest request = base.GetWebRequest(address);
 
@@ -110,7 +110,7 @@ namespace Shared.Classes
                 ((HttpWebRequest)request).Timeout = Timeout;
             }
 
-            TimeSpan span = DateTime.Now.Subtract(StartRead);
+            TimeSpan span = DateTime.UtcNow.Subtract(StartRead);
             ResponseTime = span.Milliseconds;
 
             return request;

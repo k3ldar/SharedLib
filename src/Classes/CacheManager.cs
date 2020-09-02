@@ -335,7 +335,7 @@ namespace Shared.Classes
                 {
                     foreach (KeyValuePair<string, CacheItem> item in _cachedItems)
                     {
-                        TimeSpan age = DateTime.Now - item.Value.LastUpdated;
+                        TimeSpan age = DateTime.UtcNow - item.Value.LastUpdated;
 
                         if (age.TotalSeconds > MaximumAge.TotalSeconds)
                             removeItems.Add(item.Key);

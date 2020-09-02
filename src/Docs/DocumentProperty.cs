@@ -20,9 +20,17 @@ namespace Shared.Docs
     {
         #region Constructors
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="assemblyName">Asembly name</param>
+        /// <param name="namespaceName">Namespace where property belongs</param>
+        /// <param name="className">Name of class</param>
+        /// <param name="propertyName">Name of property</param>
+        /// <param name="fullMemberName">Full member name as supplied by C# compiler</param>
         public DocumentProperty(in string assemblyName, in string namespaceName,
             in string className, in string propertyName, in string fullMemberName)
-            : base (assemblyName, namespaceName, DocumentType.Property, fullMemberName)
+            : base(assemblyName, namespaceName, DocumentType.Property, fullMemberName)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));
@@ -73,7 +81,7 @@ namespace Shared.Docs
         internal void PostProcess(in Document document)
         {
 
-            
+
         }
 
         #endregion Internal Methods

@@ -115,11 +115,6 @@ namespace Shared.Docs
         public string Summary { get; set; }
 
         /// <summary>
-        /// Any remarkable information for class
-        /// </summary>
-        public string Remarks { get; set; }
-
-        /// <summary>
         /// Return Value if required
         /// </summary>
         public string Returns { get; set; }

@@ -13,37 +13,25 @@ using System;
 
 namespace Shared.Docs
 {
-    public sealed class DocumentMethodException : BaseDocument
+    public sealed class DocumentException
     {
         #region Constructors
 
-        public DocumentMethodException(in string assemblyName, in string namespaceName,
-            in string className, in string exceptionName, in string fullMemberName)
-            : base (assemblyName, namespaceName, DocumentType.Exception, fullMemberName)
+        public DocumentException(in string exceptionName, in string summary)
         {
-            if (String.IsNullOrEmpty(assemblyName))
-                throw new ArgumentNullException(nameof(assemblyName));
-
-            if (String.IsNullOrEmpty(namespaceName))
-                throw new ArgumentNullException(nameof(namespaceName));
-
-            if (String.IsNullOrEmpty(className))
-                throw new ArgumentNullException(nameof(className));
+            if (String.IsNullOrEmpty(summary))
+                throw new ArgumentNullException(nameof(summary));
 
             if (String.IsNullOrEmpty(exceptionName))
                 throw new ArgumentNullException(nameof(exceptionName));
 
-            AssemblyName = assemblyName;
-            NameSpaceName = namespaceName;
-            ClassName = className;
             ExceptionName = exceptionName;
+            Summary = summary;
         }
 
         #endregion Constructors
 
         #region Properties
-
-        public string ClassName { get; set; }
 
         public string ExceptionName { get; set; }
 

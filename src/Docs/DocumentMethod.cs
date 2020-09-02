@@ -43,7 +43,7 @@ namespace Shared.Docs
             MethodName = methodName;
             IsConstructor = methodName.StartsWith("#ctor");
             Parameters = new List<DocumentMethodParameter>();
-            Exceptions = new List<DocumentMethodException>();
+            Exceptions = new List<DocumentException>();
             ExampleUseage = String.Empty;
         }
 
@@ -79,7 +79,7 @@ namespace Shared.Docs
         /// <summary>
         /// Exceptions that can be raised within the method
         /// </summary>
-        public List<DocumentMethodException> Exceptions { get; private set; }
+        public List<DocumentException> Exceptions { get; private set; }
 
         /// <summary>
         /// Determines if the method is a constructor
@@ -109,6 +109,9 @@ namespace Shared.Docs
 
                 for (int i = 0; i < Parameters.Count; i++)
                 {
+                    if (i > paramTypes.Count)
+                        continue;
+
                     if (paramTypes[i].EndsWith("@"))
                         Parameters[i].IsByRef = true;
 

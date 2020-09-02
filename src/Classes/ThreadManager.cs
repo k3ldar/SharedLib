@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using System.Runtime.InteropServices;
 
 #pragma warning disable IDE1005 // Delegate invocation can be simplified
 #pragma warning disable IDE1006 // naming rule violation
@@ -218,7 +217,7 @@ namespace Shared.Classes
         /// 
         /// If runInterval is quite long, i.e. 30 minutes and runAtStart is false then the first time the thread would run would be after 30 minutes</param>
         /// <param name="monitorCPUUsage">if true cpu usage for the thread will be monitored both for system and process percentage</param>
-        public ThreadManager(object parameters, TimeSpan runInterval, ThreadManager parent = null, int delayStart = 0, 
+        public ThreadManager(object parameters, TimeSpan runInterval, ThreadManager parent = null, int delayStart = 0,
             int sleepInterval = 200, bool runAtStart = true, bool monitorCPUUsage = true)
         {
             if (runInterval == null)
@@ -232,7 +231,13 @@ namespace Shared.Classes
             _parameters = parameters;
             ContinueIfGlobalException = true;
             _parentThread = parent;
+
+#if WINDOWS_ONLY
             _monitorCPUUsage = monitorCPUUsage;
+#else
+            _monitorCPUUsage = false;
+#endif
+
             PreviousProcessCpuUsage = 0.0m;
 
             // each thread can have it's own timeout period, set as default to global value 
@@ -245,11 +250,11 @@ namespace Shared.Classes
             SystemCpuUsage = 0;
         }
 
-        #endregion Constructors
+#endregion Constructors
 
-        #region Static Methods
+#region Static Methods
 
-        #region Public Static Methods
+#region Public Static Methods
 
         /// <summary>
         /// Retrieves the Nth thread in the list
@@ -450,9 +455,9 @@ namespace Shared.Classes
             }
         }
 
-        #endregion Public Static Methods
+#endregion Public Static Methods
 
-        #region Private Static Methods
+#region Private Static Methods
 
         /// <summary>
         /// Starts a new thread
@@ -473,7 +478,7 @@ namespace Shared.Classes
 
             if (addToList)
             {
-                lock(_lockObject)
+                lock (_lockObject)
                 {
                     if (_threadList.Count >= _maximumRunningThreads)
                     {
@@ -511,9 +516,9 @@ namespace Shared.Classes
             }
         }
 
-        #endregion Private Static Methods
+#endregion Private Static Methods
 
-        #region Internal Static Methods
+#region Internal Static Methods
 
         /// <summary>
         /// Event method to remove from list of threads
@@ -537,12 +542,12 @@ namespace Shared.Classes
                 ThreadQueueRemoveItem(null, new ThreadManagerEventArgs(thread));
         }
 
-        #endregion Internal Static Methods
+#endregion Internal Static Methods
 
-        #endregion Static Methods
+#endregion Static Methods
 
-        #region Public Methods
-        
+#region Public Methods
+
         /// <summary>
         /// Indicates that the thread should cancel
         /// </summary>
@@ -594,13 +599,13 @@ namespace Shared.Classes
         {
             return String.Format("Usage Process/System: {5}%/{6}%; Name: {0}; ThreadID: {1}; IsCancelled: {2}; " +
                 "IsUnResponsive: {3}; IsMarkedForRemoval: {4}",
-                Name, ThreadID, Cancelled, _unresponsive, _markedForRemoval, 
+                Name, ThreadID, Cancelled, _unresponsive, _markedForRemoval,
                 ProcessCpuUsage.ToString("n1"), SystemCpuUsage.ToString("n1"));
         }
 
-        #endregion Public Methods
+#endregion Public Methods
 
-        #region Protected Methods
+#region Protected Methods
 
         /// <summary>
         /// Thread execution method
@@ -613,12 +618,12 @@ namespace Shared.Classes
 #if WINDOWS_ONLY
 
             ID = (int)GetCurrentThreadId();
-#else
-            ID = ThreadID;
-#endif
 
             if (_monitorCPUUsage)
                 _cpuUsage.ThreadAdd(this);
+#else
+            ID = ThreadID;
+#endif
 
             TimeStart = DateTime.Now;
 
@@ -743,7 +748,7 @@ namespace Shared.Classes
         /// Descendants should override and call IndicateNotHanging() method
         /// </summary>
         /// <returns></returns>
-        protected virtual bool Ping ()
+        protected virtual bool Ping()
         {
             return true;
         }
@@ -956,7 +961,7 @@ namespace Shared.Classes
         /// <summary>
         /// Indicates wether the thread has been cancelled or not
         /// </summary>
-        public bool Cancelled 
+        public bool Cancelled
         {
             get
             {
@@ -1119,7 +1124,7 @@ namespace Shared.Classes
         /// <summary>
         /// Indicates that a request to cancel all threads has been made
         /// </summary>
-        public static bool CancelRequested 
+        public static bool CancelRequested
         {
             get
             {
@@ -1248,7 +1253,7 @@ namespace Shared.Classes
         /// 0 = no notification
         /// 50 is maximum value
         /// </summary>
-        public static int ThreadCpuChangeNotification 
+        public static int ThreadCpuChangeNotification
         {
             get
             {
@@ -1361,7 +1366,7 @@ namespace Shared.Classes
         /// <summary>
         /// Constructor, initialises to run thread every 1 second with a delay of 0 seconds between runs
         /// </summary>
-        public ThreadManagerManager () 
+        public ThreadManagerManager()
             : base(null, new TimeSpan(0, 0, 0, 1), null, 0, 100)
         {
             ContinueIfGlobalException = true;
@@ -1391,7 +1396,7 @@ namespace Shared.Classes
                             item.CancelThread(10000, true);
                         }
                     }
-                    
+
                     if (item.MarkedForRemoval)
                     {
                         item.ThreadFinishing -= ThreadManager.thread_ThreadFinishing;
@@ -1418,7 +1423,7 @@ namespace Shared.Classes
                     }
 
                     // if there is enought space, can we run one of the threads in the pool?
-                    if (ThreadManager.AllowThreadPool && ThreadManager._threadPool.Count > 0) 
+                    if (ThreadManager.AllowThreadPool && ThreadManager._threadPool.Count > 0)
                     {
                         while (ThreadManager._threadList.Count < ThreadManager.MaximumRunningThreads)
                         {
@@ -1450,7 +1455,7 @@ namespace Shared.Classes
         /// <summary>
         /// Constructor, initialises to run thread every 1 second with a delay of 2 seconds between runs
         /// </summary>
-        public ThreadAbortManager () 
+        public ThreadAbortManager()
             : base(null, new TimeSpan(0, 0, 0, 1), null, 2000, 100)
         {
             ContinueIfGlobalException = true;
@@ -1478,7 +1483,7 @@ namespace Shared.Classes
         }
     }
 
-    
+
     /// <summary>
     /// thread that clears cached values
     /// </summary>
@@ -1498,5 +1503,4 @@ namespace Shared.Classes
             return !HasCancelled();
         }
     }
-
 }

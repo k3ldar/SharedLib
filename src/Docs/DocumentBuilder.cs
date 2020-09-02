@@ -12,9 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
-
 using System.Linq;
+using System.Xml;
 
 namespace Shared.Docs
 {
@@ -43,7 +42,7 @@ namespace Shared.Docs
 
         #region Private Methods
 
-        private void BuildDocumentList(in List<Document> currentDocuments, 
+        private void BuildDocumentList(in List<Document> currentDocuments,
             XmlDocument document)
         {
             if (!document.HasChildNodes)
@@ -77,7 +76,7 @@ namespace Shared.Docs
             currentDocuments.ForEach(r => r.PostProcess());
         }
 
-        private void ProcessMember(in List<Document> documents, 
+        private void ProcessMember(in List<Document> documents,
             in string assemblyName, in XmlNode memberNode)
         {
             if (memberNode.Attributes.Count != 1)
@@ -113,9 +112,9 @@ namespace Shared.Docs
                 if (memberNode.HasChildNodes)
                     ProcessChildNodes(document, memberNode);
             }
-            else 
+            else
             {
-                document = GetMemberDocument(documents, memberParts[1], 
+                document = GetMemberDocument(documents, memberParts[1],
                     out namespaceName, out className, out string memberName);
 
                 if (document == null)
@@ -133,7 +132,7 @@ namespace Shared.Docs
                         document.Methods.Add(method);
 
                     if (memberNode.HasChildNodes)
-                        ProcessMethodChildNodes(method, memberNode, assemblyName, 
+                        ProcessMethodChildNodes(method, memberNode, assemblyName,
                             namespaceName, className, memberName, memberNameParts);
                 }
                 else if (memberParts[0] == "P")
@@ -148,7 +147,7 @@ namespace Shared.Docs
                 }
                 else if (memberParts[0] == "F")
                 {
-                    DocumentField field = new DocumentField(assemblyName, 
+                    DocumentField field = new DocumentField(assemblyName,
                         namespaceName, className, memberName, memberNameParts);
                     document.Fields.Add(field);
 
@@ -156,15 +155,11 @@ namespace Shared.Docs
                         ProcessFieldChildNodes(field, memberNode, assemblyName,
                             namespaceName, className, memberName);
                 }
-                else
-                {
-
-                }
             }
         }
 
-        private Document GetMemberDocument(in List<Document> documents, 
-            in string memberNameParts, out string namespaceName, 
+        private Document GetMemberDocument(in List<Document> documents,
+            in string memberNameParts, out string namespaceName,
             out string className, out string memberName)
         {
             string mnParts = memberNameParts;
@@ -200,11 +195,11 @@ namespace Shared.Docs
 
                 if (childNode.Name == "summary")
                 {
-                    method.Summary = childNode.InnerText.Trim();
+                    method.Summary = childNode.InnerXml.Trim();
                 }
                 else if (childNode.Name == "returns")
                 {
-                    method.Returns = childNode.InnerText.Trim();
+                    method.Returns = childNode.InnerXml.Trim();
                 }
                 else if (childNode.Name == "param")
                 {
@@ -216,7 +211,19 @@ namespace Shared.Docs
                     DocumentMethodParameter param = new DocumentMethodParameter(assemblyName,
                         namespaceName, className, memberName, paramName, fullMemberName);
                     method.Parameters.Add(param);
-                    param.Summary = childNode.InnerText.Trim();
+                    param.Summary = childNode.InnerXml.Trim();
+                }
+                else if (childNode.Name == "exception")
+                {
+                    method.Exception.Add(new DocumentException(childNode.Attributes.GetNamedItem("cref").InnerText, childNode.InnerXml));
+                }
+                else if (childNode.Name == "example")
+                {
+                    method.Examples.Add(new DocumentExample(childNode.InnerXml));
+                }
+                else if (childNode.Name == "remarks")
+                {
+                    method.Remarks = childNode.InnerXml;
                 }
             }
         }
@@ -231,15 +238,23 @@ namespace Shared.Docs
 
                 if (childNode.Name == "summary")
                 {
-                    property.Summary = childNode.InnerText.Trim();
+                    property.Summary = childNode.InnerXml.Trim();
                 }
                 else if (childNode.Name == "value")
                 {
-                    property.Value = childNode.InnerText.Trim();
+                    property.Value = childNode.InnerXml.Trim();
                 }
-                else
+                else if (childNode.Name == "exception")
                 {
-                    
+                    property.Exception.Add(new DocumentException(childNode.Attributes.GetNamedItem("cref").InnerText, childNode.InnerXml));
+                }
+                else if (childNode.Name == "example")
+                {
+                    property.Examples.Add(new DocumentExample(childNode.InnerXml));
+                }
+                else if (childNode.Name == "remarks")
+                {
+                    property.Remarks = childNode.InnerXml;
                 }
             }
         }
@@ -254,15 +269,19 @@ namespace Shared.Docs
 
                 if (childNode.Name == "summary")
                 {
-                    field.Summary = childNode.InnerText.Trim();
+                    field.Summary = childNode.InnerXml.Trim();
                 }
                 else if (childNode.Name == "value")
                 {
-                    field.Value = childNode.InnerText.Trim();
+                    field.Value = childNode.InnerXml.Trim();
                 }
-                else
+                else if (childNode.Name == "example")
                 {
-
+                    field.Examples.Add(new DocumentExample(childNode.InnerXml));
+                }
+                else if (childNode.Name == "remarks")
+                {
+                    field.Remarks = childNode.InnerXml;
                 }
             }
         }
@@ -275,7 +294,15 @@ namespace Shared.Docs
 
                 if (childNode.Name == "summary")
                 {
-                    document.Summary = childNode.InnerText.Trim();
+                    document.Summary = childNode.InnerXml.Trim();
+                }
+                else if (childNode.Name == "example")
+                {
+                    document.Examples.Add(new DocumentExample(childNode.InnerXml));
+                }
+                else if (childNode.Name == "remarks")
+                {
+                    document.Remarks = childNode.InnerXml;
                 }
             }
         }
