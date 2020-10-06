@@ -99,7 +99,7 @@ namespace Shared.Classes
             get
             {
                 const int minimumElapsedMS = 500;
-                TimeSpan sinceLast = DateTime.Now - _lastRun;
+                TimeSpan sinceLast = DateTime.UtcNow - _lastRun;
                 return sinceLast.TotalMilliseconds > minimumElapsedMS;
             }
         }
@@ -243,7 +243,7 @@ namespace Shared.Classes
                 }
 
                 OtherProcessCPUUsage = Utilities.CheckMinMax(100 - otherUsage, 0.0m, 100.00m); //_cpuUsage - otherUsage;
-                _lastRun = DateTime.Now;
+                _lastRun = DateTime.UtcNow;
 
                 Result = _cpuUsage;
             }

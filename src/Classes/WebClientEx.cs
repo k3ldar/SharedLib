@@ -146,7 +146,7 @@ namespace Shared.Classes
             UserAgents.Add("Opera/9.64 (X11; Linux x86_64; U; en) Presto/2.1.1");
 
             Random r = new Random();
-            this.UserAgent = UserAgents[r.Next(0, UserAgents.Count)];
+            UserAgent = UserAgents[r.Next(0, UserAgents.Count)];
 
             UserAgents = null;
         }

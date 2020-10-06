@@ -21,7 +21,7 @@
     <Copyright>Copyright © 2010 - 2020.  Simon Carter All rights reserved.</Copyright>
     <PackageId>SC.Shared.Library.Core</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.16.0</Version>
+    <Version>2.17.0</Version>
     <Authors>Simon Carter</Authors>
     <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
     <PackageTags>Shared Library ThreadManager CacheManager</PackageTags>
@@ -214,10 +214,5 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <PackageReference Include="System.Security.AccessControl" Version="4.5.0" />
   </ItemGroup>
-
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="..\..\..\..\..\GitProjects\Builds\NetBuildTools\Release\UpdateVersion.exe /out=&quot;$(ProjectDir)Properties\ver.txt&quot; /$(ConfigurationName) /path=&quot;$(ProjectDir)" />
-  </Target>
 
 </Project>

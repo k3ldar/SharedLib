@@ -46,7 +46,7 @@ namespace Shared
         internal void IncrementErrors()
         {
             NumberOfErrors++;
-            LastUpdated = DateTime.Now;
+            LastUpdated = DateTime.UtcNow;
         }
 
         #endregion Internal Methds

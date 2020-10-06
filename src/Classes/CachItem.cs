@@ -39,7 +39,7 @@ namespace Shared.Classes
         /// <param name="value">Cached Item</param>
         public CacheItem(string name, object value)
         {
-            Created = DateTime.Now;
+            Created = DateTime.UtcNow;
             _lastUpdated = Created;
             _resetCount = 0;
             Name = name;
@@ -60,13 +60,13 @@ namespace Shared.Classes
         /// <summary>
         /// Date/Time cached item last updated
         /// </summary>
-        public DateTime LastUpdated 
-        { 
+        public DateTime LastUpdated
+        {
             protected set
             {
                 _lastUpdated = value;
             }
-            
+
             get
             {
                 return _lastUpdated;
@@ -86,8 +86,8 @@ namespace Shared.Classes
         /// <summary>
         /// Cached item
         /// </summary>
-        public object Value 
-        { 
+        public object Value
+        {
             private set
             {
                 _value = value;
@@ -98,7 +98,7 @@ namespace Shared.Classes
                 if (ResetMaximumAge)
                 {
                     _resetCount++;
-                    LastUpdated = DateTime.Now;
+                    LastUpdated = DateTime.UtcNow;
                 }
 
                 return _value;
@@ -124,7 +124,7 @@ namespace Shared.Classes
             if (!ignoreReset && ResetMaximumAge)
             {
                 _resetCount++;
-                LastUpdated = DateTime.Now;
+                LastUpdated = DateTime.UtcNow;
             }
 
             return _value;

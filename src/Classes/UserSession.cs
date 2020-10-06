@@ -697,7 +697,7 @@ namespace Shared.Classes
         /// <param name="created"></param>
         /// <param name="sessionID"></param>
         /// <param name="userAgent"></param>
-        /// <param name="initialReferer"></param>
+        /// <param name="initialReferrer"></param>
         /// <param name="ipAddress"></param>
         /// <param name="hostName"></param>
         /// <param name="isMobile"></param>
@@ -713,7 +713,7 @@ namespace Shared.Classes
         /// <param name="screenHeight"></param>
         /// <param name="saleCurrency"></param>
         /// <param name="saleAmount"></param>
-        public UserSession(long id, DateTime created, string sessionID, string userAgent, string initialReferer,
+        public UserSession(long id, DateTime created, string sessionID, string userAgent, string initialReferrer,
             string ipAddress, string hostName, bool isMobile, bool isBrowserMobile, bool mobileRedirect,
             ReferalType referralType, bool bounced, bool isBot, string mobileManufacturer, string mobileModel,
             long userID, int screenWidth, int screenHeight, string saleCurrency, decimal saleAmount)
@@ -723,7 +723,7 @@ namespace Shared.Classes
             Created = created;
             SessionID = sessionID;
             UserAgent = userAgent;
-            InitialReferrer = initialReferer;
+            InitialReferrer = initialReferrer;
             IPAddress = ipAddress;
             HostName = hostName;
             IsMobileDevice = isMobile;
@@ -991,7 +991,7 @@ namespace Shared.Classes
             {
                 // calculate page time for previous page
                 PageViewData previousPage = _pageViews[pages - 1];
-                previousPage.TotalTime = DateTime.Now - previousPage.TimeStamp;
+                previousPage.TotalTime = DateTime.UtcNow - previousPage.TimeStamp;
 
                 // not a bounce as already moved onto another page
                 if (Bounced)
@@ -1113,7 +1113,7 @@ namespace Shared.Classes
             URL = url;
             Referrer = referringPage;
             IsPostBack = isPostBack;
-            TimeStamp = DateTime.Now;
+            TimeStamp = DateTime.UtcNow;
             SaveStatus = SaveStatus.Pending;
         }
 

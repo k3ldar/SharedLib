@@ -429,15 +429,15 @@ namespace Shared.Classes
                 ThreadCancellAll(null, EventArgs.Empty);
 
             // provide a certain number of seconds for everything to clean up
-            DateTime cancelInitiated = DateTime.Now;
-            TimeSpan span = DateTime.Now - cancelInitiated;
+            DateTime cancelInitiated = DateTime.UtcNow;
+            TimeSpan span = DateTime.UtcNow - cancelInitiated;
 
             while (span.TotalSeconds <= timeOutSeconds)
             {
                 if (_threadList.Count == 0)
                     break;
 
-                span = DateTime.Now - cancelInitiated;
+                span = DateTime.UtcNow - cancelInitiated;
             }
 
         }
@@ -508,7 +508,7 @@ namespace Shared.Classes
             {
                 using (TimedLock.Lock(_lockObject))
                 {
-                    thread._lastCommunication = DateTime.Now;
+                    thread._lastCommunication = DateTime.UtcNow;
 
                     _countOfThreads++;
                     _threadList.Add(thread);
@@ -562,7 +562,7 @@ namespace Shared.Classes
 
             _cancel = true;
             _cancelTimeoutMilliseconds = timeout;
-            _cancelRequested = DateTime.Now;
+            _cancelRequested = DateTime.UtcNow;
 
             _unresponsive = isUnResponsive;
 
@@ -625,16 +625,16 @@ namespace Shared.Classes
             ID = ThreadID;
 #endif
 
-            TimeStart = DateTime.Now;
+            TimeStart = DateTime.UtcNow;
 
             // is the start being delayed
             if (_delayStart > 0)
             {
                 // need to ensure that if the app is closed prior to the thread being
                 // run then we provide a mechanism for the thread to close
-                DateTime continueTime = DateTime.Now.AddMilliseconds(_delayStart);
+                DateTime continueTime = DateTime.UtcNow.AddMilliseconds(_delayStart);
 
-                while (continueTime > DateTime.Now)
+                while (continueTime > DateTime.UtcNow)
                 {
                     Thread.Sleep(100);
 
@@ -643,8 +643,8 @@ namespace Shared.Classes
                 }
             }
 
-            _lastRun = DateTime.Now.AddDays(RunAtStartup ? -1 : 0);
-            DateTime lastPing = DateTime.Now;
+            _lastRun = DateTime.UtcNow.AddDays(RunAtStartup ? -1 : 0);
+            DateTime lastPing = DateTime.UtcNow;
 
             RaiseThreadStart(this);
             try
@@ -657,7 +657,7 @@ namespace Shared.Classes
                         if (_cancel)
                             return;
 
-                        TimeSpan span = DateTime.Now - _lastRun;
+                        TimeSpan span = DateTime.UtcNow - _lastRun;
 
                         // run the thread
                         if (span.TotalMilliseconds > RunInterval.TotalMilliseconds)
@@ -665,14 +665,14 @@ namespace Shared.Classes
                             if (!Run(_parameters))
                                 return;
 
-                            _lastRun = DateTime.Now;
+                            _lastRun = DateTime.UtcNow;
                         }
 
-                        span = DateTime.Now - lastPing;
+                        span = DateTime.UtcNow - lastPing;
 
                         if (span.TotalSeconds > 30)
                         {
-                            lastPing = DateTime.Now;
+                            lastPing = DateTime.UtcNow;
                             Ping();
                         }
 
@@ -694,7 +694,7 @@ namespace Shared.Classes
             }
             finally
             {
-                TimeFinish = DateTime.Now;
+                TimeFinish = DateTime.UtcNow;
 
                 if (_monitorCPUUsage)
                     _cpuUsage.ThreadRemove(this);
@@ -725,7 +725,7 @@ namespace Shared.Classes
                 return true;
 
             // still alive as we the thread has called this directly
-            _lastCommunication = DateTime.Now;
+            _lastCommunication = DateTime.UtcNow;
 
             return _cancel;
         }
@@ -735,7 +735,7 @@ namespace Shared.Classes
         /// </summary>
         protected void IndicateNotHanging()
         {
-            _lastCommunication = DateTime.Now;
+            _lastCommunication = DateTime.UtcNow;
         }
 
 #endregion Protected Methods
@@ -1387,7 +1387,7 @@ namespace Shared.Classes
 
                     if (ThreadManager._checkForHangingThreads)
                     {
-                        TimeSpan hangingSpan = DateTime.Now - item._lastCommunication;
+                        TimeSpan hangingSpan = DateTime.UtcNow - item._lastCommunication;
 
                         if (item.HangTimeout > 0 && !item._cancel && hangingSpan.TotalMinutes > item.HangTimeout)
                         {
@@ -1406,7 +1406,7 @@ namespace Shared.Classes
 
                     if (item._cancel)
                     {
-                        TimeSpan span = DateTime.Now - item._cancelRequested;
+                        TimeSpan span = DateTime.UtcNow - item._cancelRequested;
 
                         if (span.TotalMilliseconds > item._cancelTimeoutMilliseconds)
                         {
