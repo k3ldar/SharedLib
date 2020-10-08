@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
+
 using Shared.Classes;
 
 namespace Shared.Communication
@@ -94,7 +93,7 @@ namespace Shared.Communication
                     string cookieName = cookie[0].Split('=')[0];
                     NVPCodec cookieNvp = new NVPCodec();
                     cookieNvp.Decode(String.Join("&", cookie));
-                    
+
                     Cookies.Add(cookieName, Convert.ToBase64String(UrlEncoding.GetBytes(cookieNvp[cookieName])));
                 }
             }

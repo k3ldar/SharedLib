@@ -11,6 +11,8 @@
  */
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 #pragma warning disable IDE1005 // Delegate invocation can be simplified
@@ -40,7 +42,7 @@ namespace Shared.Classes
                 "http://www.trendiction.de/bot", "+http://duckduckgo.com", "leikibot", "surveybot", "trendictionbot",
                 "blexbot", "cliqzbot", ") webmonitor", "sieradelta", "sdbot", "mojeekbot", ".ly/bot",
                 "onpagebot", "surdotlybot", "favico.be/bot", "companiesintheuk.co.uk/bot", ".k39.us/bot",
-                "seozoom.it/bot"};
+                "seozoom.it/bot", "petalbot", "barkrowler", "tpradstxtcrawler", "ahrefsbot" };
 
         private static readonly UserSessionManager _sessionManager = new UserSessionManager();
 
@@ -56,6 +58,8 @@ namespace Shared.Classes
 
         private static Int64 _loopCounter = Int64.MinValue;
 
+        private readonly string[] _knownBots;
+
         #endregion Private Members
 
         #region Constructors
@@ -67,8 +71,8 @@ namespace Shared.Classes
             : base(null, new TimeSpan(0, 0, 5))
         {
             HangTimeout = 0;
-            Classes.ThreadManager.ThreadStart(this, "UserSessionManager",
-                System.Threading.ThreadPriority.Lowest);
+            ThreadManager.ThreadStart(this, "UserSessionManager", System.Threading.ThreadPriority.Normal);
+            _knownBots = LoadKnownBotsList();
         }
 
         #endregion Constructors
@@ -310,7 +314,7 @@ namespace Shared.Classes
 
             string agent = session.UserAgent.ToLower();
 
-            foreach (string s in knownBots)
+            foreach (string s in _knownBots)
             {
                 if (agent.Contains(s))
                     return true;
@@ -318,6 +322,25 @@ namespace Shared.Classes
 
             return false;
         }
+
+        private string[] LoadKnownBotsList()
+        {
+            string botFile = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(UserSessionManager)).Location), "knownbots.dat");
+            try
+            {
+                if (File.Exists(botFile))
+                {
+                    return File.ReadAllLines(botFile);
+                }
+
+                return knownBots;
+            }
+            catch
+            {
+                return knownBots;
+            }
+        }
+
 
         #region Event Wrappers
 
