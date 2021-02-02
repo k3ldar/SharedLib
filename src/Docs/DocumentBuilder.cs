@@ -215,7 +215,15 @@ namespace Shared.Docs
                 }
                 else if (childNode.Name == "exception")
                 {
-                    method.Exception.Add(new DocumentException(childNode.Attributes.GetNamedItem("cref").InnerText, childNode.InnerXml));
+                    if (childNode.Attributes.Count > 0)
+                    {
+                        method.Exception.Add(new DocumentException(childNode.Attributes.GetNamedItem("cref").InnerText, childNode.InnerXml));
+                    }
+                    else
+                    {
+                        method.Exception.Add(new DocumentException("missing exception cref", childNode.InnerXml));
+                    }
+                    
                 }
                 else if (childNode.Name == "example")
                 {

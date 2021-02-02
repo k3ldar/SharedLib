@@ -1604,7 +1604,7 @@ namespace Shared
         /// <returns>string</returns>
         public static string FileSize(long bytes, int decimalPlaces)
         {
-            if (bytes == 0)
+            if (bytes < 1)
                 return "0 b";
 
             decimalPlaces = CheckMinMax(decimalPlaces, 0, 6);

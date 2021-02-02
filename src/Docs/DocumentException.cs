@@ -19,14 +19,14 @@ namespace Shared.Docs
 
         public DocumentException(in string exceptionName, in string summary)
         {
-            if (String.IsNullOrEmpty(summary))
+            if (summary == null)
                 throw new ArgumentNullException(nameof(summary));
 
             if (String.IsNullOrEmpty(exceptionName))
                 throw new ArgumentNullException(nameof(exceptionName));
 
             ExceptionName = exceptionName;
-            Summary = summary;
+            Summary = String.IsNullOrEmpty(summary) ? "Summary is missing" : summary;
         }
 
         #endregion Constructors

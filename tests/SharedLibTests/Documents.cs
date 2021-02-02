@@ -21,10 +21,12 @@ namespace SharedLibTests
             DocumentBuilder builder = new DocumentBuilder();
             List<Document> documents = new List<Document>();
 
-            builder.LoadDocuments(documents, "c:\\GitProjects\\.NetCorePluginManager\\Docs\\XmlFiles\\Modular.xml");
-            builder.LoadDocuments(documents, "c:\\GitProjects\\.NetCorePluginManager\\Docs\\XmlFiles\\SharedPluginFeatures.xml");
-            builder.LoadDocuments(documents, "c:\\GitProjects\\.NetCorePluginManager\\Docs\\XmlFiles\\BadEgg.Plugin.xml");
-            builder.LoadDocuments(documents, "c:\\GitProjects\\.NetCorePluginManager\\Docs\\XmlFiles\\Middleware.xml");
+            string[] files = System.IO.Directory.GetFiles("c:\\GitProjects\\.NetCorePluginManager\\Docs\\XmlFiles\\", "*.xml");
+
+            foreach (string file in files)
+            {
+                builder.LoadDocuments(documents, file);
+            }
         }
     }
 }
