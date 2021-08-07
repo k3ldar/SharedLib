@@ -1,40 +1,40 @@
-/*
+﻿/*
+ *  The contents of this file are subject to MIT Licence.  Please
+ *  view License.txt for further details. 
  *
- *  The Original Code was created by Ben Watson
- *  http://www.philosophicalgeek.com/2009/01/03/determine-cpu-usage-of-current-process-c-and-c/
+ *  The Original Code was created by Simon Carter (s1cart3r@gmail.com)
  *
- *  Copyright (c) 2009 Ben Watson
+ *  Copyright (c) 2014 Simon Carter
  *
- *  Purpose:  Integrates with ThreadManager for monitoring CPU usage on manged threads
- *  
- *  Modified by Simon Carter 2016
+ *  Purpose:  Managed Threads and thread manager class
  *
  */
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-#if WINDOWS_ONLY
-using System.Runtime.InteropServices;
+using Shared;
+using Shared.Classes;
 
-using static System.Runtime.InteropServices.ComTypes;
-#endif
+using ct = System.Runtime.InteropServices.ComTypes;
 
-#pragma warning disable IDE0018 // variable can be inlined
-
-namespace Shared.Classes
+namespace SharedLib.Win
 {
     /// <summary>
-    /// Class to get CPU Usage for current process
+    /// Windows specific implementation of ICpuUsage, allows the collection of thread cpu usage
     /// </summary>
-    public sealed class CpuUsage : ICpuUsage
+    public class WindowsCpuUsage : ICpuUsage
     {
         #region Private Members
 
         private readonly object _lockObject = new object();
 
-        private readonly decimal _cpuUsage;
-        private readonly DateTime _lastRun;
+        private ct.FILETIME _prevSysKernel;
+        private ct.FILETIME _prevSysUser;
+        private TimeSpan _prevProcTotal;
+
+        private decimal _cpuUsage;
+        private DateTime _lastRun;
 
         private readonly List<ThreadManager> _watchedThreads = new List<ThreadManager>();
 
@@ -47,15 +47,14 @@ namespace Shared.Classes
         /// <summary>
         /// Constructor
         /// </summary>
-        public CpuUsage()
+        public WindowsCpuUsage()
         {
             _cpuUsage = 0.0m;
             _lastRun = DateTime.MinValue;
-#if WINDOWS_ONLY
 
             _prevSysUser.dwHighDateTime = _prevSysUser.dwLowDateTime = 0;
             _prevSysKernel.dwHighDateTime = _prevSysKernel.dwLowDateTime = 0;
-#endif
+
             InitialiseTimes();
         }
 
@@ -161,24 +160,22 @@ namespace Shared.Classes
         public decimal GetProcessUsage()
         {
             decimal Result = _cpuUsage;
-
+            Debug.Print(nameof(GetProcessUsage));
             if (!EnoughTimePassed)
             {
+                Debug.Print("not enough time has passed");
                 return Result;
             }
 
-#if WINDOWS_ONLY
             using (TimedLock.Lock(_lockObject))
             {
                 ThreadCPUChanged = false;
-
-                ComTypes.FILETIME sysIdle, sysKernel, sysUser;
 
                 Process process = Process.GetCurrentProcess();
                 TimeSpan procTime = process.TotalProcessorTime;
 
 
-                if (!GetSystemTimes(out sysIdle, out sysKernel, out sysUser))
+                if (!WinDLLImports.GetSystemTimes(out ct.FILETIME sysIdle, out ct.FILETIME sysKernel, out ct.FILETIME sysUser))
                 {
                     return (Result);
                 }
@@ -228,31 +225,26 @@ namespace Shared.Classes
                     otherUsage += watchedThread.ProcessCpuUsage;
                 }
 
-                OtherProcessCPUUsage = Utilities.CheckMinMax(100 - otherUsage, 0.0m, 100.00m); //_cpuUsage - otherUsage;
+                OtherProcessCPUUsage = Utilities.CheckMinMax(100 - otherUsage, 0.0m, 100.00m);
                 _lastRun = DateTime.UtcNow;
 
                 Result = _cpuUsage;
             }
 
+            Debug.Print("Processing cpu usage");
+
             if (ThreadCPUChanged)
+            {
+                Debug.Print("Thread CPU Changed");
                 ThreadManager.RaiseThreadCpuChanged();
-#endif
+            }
 
             return Result;
         }
 
         public int GetCurrentThreadId()
         {
-#if WINDOWS_ONLY
-
-            ID = (int)GetCurrentThreadId();
-
-            if (_monitorCPUUsage)
-                _cpuUsage.ThreadAdd(this);
-#else
-            return System.Threading.Thread.CurrentThread.ManagedThreadId;
-#endif
-
+            return (int)WinDLLImports.GetCurrentThreadId();
         }
         #endregion Public Methods
 
@@ -299,29 +291,24 @@ namespace Shared.Classes
         {
             Process process = Process.GetCurrentProcess();
             TimeSpan procTime = process.TotalProcessorTime;
-#if WINDOWS_ONLY
 
-            ComTypes.FILETIME sysIdle, sysKernel, sysUser;
 
-            if (GetSystemTimes(out sysIdle, out sysKernel, out sysUser))
+            if (WinDLLImports.GetSystemTimes(out ct.FILETIME sysIdle, out ct.FILETIME sysKernel, out ct.FILETIME sysUser))
             {
                 _prevSysKernel = sysKernel;
                 _prevSysUser = sysUser;
             }
             else
                 throw new Exception("Failed to get System Times");
-#endif
         }
 
-#if WINDOWS_ONLY
-        private Int64 SubtractTimes(ComTypes.FILETIME a, ComTypes.FILETIME b)
+        private Int64 SubtractTimes(ct.FILETIME a, ct.FILETIME b)
         {
             Int64 aInt = ((Int64)(a.dwHighDateTime << 32)) | (Int64)a.dwLowDateTime;
             Int64 bInt = ((Int64)(b.dwHighDateTime << 32)) | (Int64)b.dwLowDateTime;
 
             return aInt - bInt;
         }
-#endif
 
         #endregion Private Methods
     }

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,6 +9,7 @@ using Shared.Docs;
 namespace SharedLibTests
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DocumentTests
     {
         [TestMethod]
@@ -27,6 +30,9 @@ namespace SharedLibTests
             {
                 builder.LoadDocuments(documents, file);
             }
+
+            Document a = documents.Where(d => d.ClassName != null && d.ClassName.Equals("ILicenseLoader")).Single();
+            Assert.IsTrue(false);
         }
     }
 }
