@@ -11,7 +11,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
 namespace Shared.Classes
@@ -268,6 +267,10 @@ namespace Shared.Classes
 
         public static void Initialise(ICpuUsage cpuUsage)
         {
+            // only initialize once
+            if (_cpuUsage != null)
+                return;
+
             _cpuUsage = cpuUsage ?? throw new ArgumentNullException(nameof(cpuUsage));
 
             using (TimedLock.Lock(_lockObject))
@@ -389,7 +392,7 @@ namespace Shared.Classes
                     if (_threadList.Count == 0)
                         break;
 
-                    for (int i = _threadList.Count -1; i >= 0; i--)
+                    for (int i = _threadList.Count - 1; i >= 0; i--)
                     {
                         if (_threadList[i] == null)
                         {

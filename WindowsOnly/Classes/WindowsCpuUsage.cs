@@ -246,6 +246,7 @@ namespace SharedLib.Win
         {
             return (int)WinDLLImports.GetCurrentThreadId();
         }
+
         #endregion Public Methods
 
         #region Private Methods
@@ -290,7 +291,7 @@ namespace SharedLib.Win
         private void InitialiseTimes()
         {
             Process process = Process.GetCurrentProcess();
-            TimeSpan procTime = process.TotalProcessorTime;
+            //TimeSpan procTime = process.TotalProcessorTime;
 
 
             if (WinDLLImports.GetSystemTimes(out ct.FILETIME sysIdle, out ct.FILETIME sysKernel, out ct.FILETIME sysUser))

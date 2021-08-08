@@ -217,7 +217,7 @@ namespace Shared.Classes
             ThreadID = _cpuUsage.GetCurrentThreadId();
 
 
-            ID = _cpuUsage.GetCurrentThreadId();
+            ID = Thread.CurrentThread.ManagedThreadId;
 
             if (_monitorCPUUsage)
                 _cpuUsage.ThreadAdd(this);
@@ -603,7 +603,7 @@ namespace Shared.Classes
         public int ThreadID { get; private set; }
 
         /// <summary>
-        /// Actual ID for thread being watched
+        /// Actual Managed ID for thread being watched
         /// </summary>
         public int ID { get; private set; }
 
