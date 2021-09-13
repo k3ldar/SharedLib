@@ -19,23 +19,14 @@ namespace Shared.Classes
     /// <summary>
     /// Cache Manager
     /// </summary>
-    public class CacheManager
+    public partial class CacheManager
     {
-        #region Private Static Members
+        #region Private Members
 
         /// <summary>
         /// cache lock object
         /// </summary>
         private readonly object _cacheLockObject = new object();
-
-        /// <summary>
-        /// List of all cache's created by application
-        /// </summary>
-        internal static readonly List<CacheManager> _allCaches = new List<CacheManager>();
-
-        #endregion Private Static Members
-
-        #region Private Members
 
         private readonly Dictionary<string, CacheItem> _cachedItems = null;
 
@@ -58,11 +49,11 @@ namespace Shared.Classes
             ResetMaximumAge = resetMaximumAge;
             AllowClearAll = allowClearAll;
 
-            if (maximumAge.TotalSeconds == 0.00d)
+            if (maximumAge.TotalSeconds <= 0.00d)
                 maximumAge = new TimeSpan(2, 0, 0);
 
             MaximumAge = maximumAge;
-            _allCaches.Add(this);
+            AddCache(cacheName, this);
         }
 
         /// <summary>
@@ -70,7 +61,7 @@ namespace Shared.Classes
         /// </summary>
         ~CacheManager()
         {
-            _allCaches.Remove(this);
+            _allCaches.Remove(Name);
         }
 
         #endregion Constructors / Destructors
@@ -133,86 +124,6 @@ namespace Shared.Classes
         }
 
         #endregion Properties
-
-        #region Static Public Methods
-
-        /// <summary>
-        /// Forces a clean up of all caches, removing older items that have expired
-        /// </summary>
-        public static void CleanAllCaches()
-        {
-            foreach (CacheManager cManager in _allCaches)
-            {
-                try
-                {
-                    cManager.CleanCachedItems();
-                }
-                catch (Exception err)
-                {
-                    EventLog.Add(err);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Forces a clean up of all caches, removing all items
-        /// </summary>
-        public static void ClearAllCaches()
-        {
-            foreach (CacheManager cManager in _allCaches)
-            {
-                try
-                {
-                    if (cManager.AllowClearAll)
-                        cManager.Clear();
-                }
-                catch (Exception err)
-                {
-                    EventLog.Add(err);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Returns the numer of caches
-        /// </summary>
-        /// <returns></returns>
-        public static int GetCount()
-        {
-            return _allCaches.Count;
-        }
-
-        /// <summary>
-        /// Get's the name of the cache
-        /// </summary>
-        /// <param name="index">Index of the caches</param>
-        /// <returns>Cache name</returns>
-        public static string GetCacheName(int index)
-        {
-            return _allCaches[index].Name;
-        }
-
-        /// <summary>
-        /// Get's the maximum age of a cache
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public static TimeSpan GetCacheAge(int index)
-        {
-            return _allCaches[index].MaximumAge;
-        }
-
-        /// <summary>
-        /// Returns the number of items in the cache
-        /// </summary>
-        /// <param name="index">Index of cache</param>
-        /// <returns>integer</returns>
-        public static int GetCacheCount(int index)
-        {
-            return _allCaches[index].Count;
-        }
-
-        #endregion Static Public Methods
 
         #region Public Methods
 

@@ -198,7 +198,7 @@ namespace SharedLib.Win
                 Int64 processTotal = procTime.Ticks - _prevProcTotal.Ticks;
 
                 if (sysTotal > 0 && processTotal > 0)
-                    _cpuUsage = (100.0m * processTotal) / sysTotal;
+                    _cpuUsage = 100.0m * processTotal / sysTotal;
                 else
                     _cpuUsage = 0;
 
