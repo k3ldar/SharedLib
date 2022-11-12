@@ -345,3 +345,4 @@ ASALocalRun/
 /DemoWebsite/NetCorePluginDemoWebsite/Views/Product/
 /DemoWebsite/NetCorePluginDemoWebsite/Views/Cart/Checkout.cshtml
 /old/
+/tests/SharedLibTests/MailTestData/

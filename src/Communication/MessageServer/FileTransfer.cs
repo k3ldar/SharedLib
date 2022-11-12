@@ -22,32 +22,32 @@ namespace Shared.Communication
     /// <summary>
     /// Available buffer sizes for transferring files
     /// </summary>
-    public enum FileBufferSize 
-    { 
+    public enum FileBufferSize
+    {
         /// <summary>
         /// 1024 bytes
         /// </summary>
-        Size1024 = 1024, 
-        
+        Size1024 = 1024,
+
         /// <summary>
         /// 2048 bytes
         /// </summary>
-        Size2048 = 2048, 
-        
+        Size2048 = 2048,
+
         /// <summary>
         /// 4096 bytes
         /// </summary>
-        Size4096 = 4096, 
-        
+        Size4096 = 4096,
+
         /// <summary>
         /// 8192 bytes
         /// </summary>
-        Size8192 = 8192, 
-        
+        Size8192 = 8192,
+
         /// <summary>
         /// 16384 bytes
         /// </summary>
-        Size16384 = 16384 
+        Size16384 = 16384
     }
 
 
@@ -134,7 +134,7 @@ namespace Shared.Communication
 
                         if (server.MaximumFileSize > 0 && fileSize > server.MaximumFileSize)
                         {
-                            server.sendMessage(client.ClientID, client.Client, new Message("FILE_TOO_BIG", 
+                            server.sendMessage(client.ClientID, client.Client, new Message("FILE_TOO_BIG",
                                 message.Contents, MessageType.Error));
                         }
                         else
@@ -143,7 +143,7 @@ namespace Shared.Communication
                                 fileDetails[0]), client.ClientID);
 
                             //tell the client we are ready to receive
-                            server.sendMessage(client.ClientID, client.Client, new Message("SEND_FILE", 
+                            server.sendMessage(client.ClientID, client.Client, new Message("SEND_FILE",
                                 message.Contents, MessageType.File));
 
                             //receive the file
@@ -258,7 +258,7 @@ namespace Shared.Communication
 
                     TimeSpan span = DateTime.Now - start;
                     double speed = span.Seconds > 0 && totalReceived > 0 ? totalReceived / (ulong)span.Seconds : 0;
-                    RaiseFileReceived(this, new TransferFileEventArgs(FileName, 
+                    RaiseFileReceived(this, new TransferFileEventArgs(FileName,
                         totalReceived, FileSize, span, speed, client.ClientID));
                 }
             }
@@ -288,7 +288,7 @@ namespace Shared.Communication
             try
             {
                 DateTime start = DateTime.Now;
-                int packets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(fStream.Length) / 
+                int packets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(fStream.Length) /
                     Convert.ToDouble((uint)BufferSize)));
 
                 uint totalLength = (uint)fStream.Length;
@@ -342,7 +342,7 @@ namespace Shared.Communication
             try
             {
                 DateTime start = DateTime.Now;
-                int packets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(fStream.Length) / 
+                int packets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(fStream.Length) /
                     Convert.ToDouble((uint)BufferSize)));
 
                 uint totalLength = (uint)fStream.Length;
@@ -372,7 +372,7 @@ namespace Shared.Communication
 
                     TimeSpan span = DateTime.Now - start;
                     double speed = span.Seconds > 0 && totalSent > 0 ? totalSent / span.Seconds : 0.00;
-                    RaiseFileReceived(this, new TransferFileEventArgs(FileName, totalSent, 
+                    RaiseFileReceived(this, new TransferFileEventArgs(FileName, totalSent,
                         (uint)fStream.Length, span, speed, client.ClientID));
                 }
             }

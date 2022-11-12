@@ -87,7 +87,7 @@ namespace Shared.Communication
         {
             foreach (string s in headers)
             {
-                if (s.StartsWith("Set-Cookie"))
+                if (s.StartsWith("Set-Cookie", StringComparison.InvariantCultureIgnoreCase))
                 {
                     string[] cookie = s.Substring(12).Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                     string cookieName = cookie[0].Split('=')[0];

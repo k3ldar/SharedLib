@@ -41,7 +41,7 @@ namespace Shared.Classes
         /// </summary>
         /// <param name="folders">List of folders to watch/monitor</param>
         public FileBackup(List<string> folders)
-            :base(null, new TimeSpan(0, 0, 1))
+            : base(null, new TimeSpan(0, 0, 1))
         {
             HangTimeout = 10;
 
@@ -86,8 +86,8 @@ namespace Shared.Classes
 
         private void HookFolders()
         {
-            using (TimedLock.Lock (_fileLockObject))
-            { 
+            using (TimedLock.Lock(_fileLockObject))
+            {
                 foreach (string path in _hookedFolders)
                 {
                     FileSystemWatcher watcher = new System.IO.FileSystemWatcher(path);
@@ -104,23 +104,23 @@ namespace Shared.Classes
 
         private void watcher_Created(object sender, FileSystemEventArgs e)
         {
-            
+
         }
 
         private void watcher_Renamed(object sender, RenamedEventArgs e)
         {
-            
+
         }
 
         private void watcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            
+
         }
 
         private void watcher_Changed(object sender, FileSystemEventArgs e)
         {
- 	        
-        }   
+
+        }
 
 
         private void UnHookFolders()

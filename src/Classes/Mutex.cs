@@ -10,7 +10,7 @@
  *  Purpose:  Extende Mutex class
  *
  */
-#if !NET_CORE
+#if NET_FW
 using System;
 using System.Security.AccessControl;
 using System.Threading;
@@ -58,7 +58,7 @@ namespace Shared.Classes
         /// <param name="name"></param>
         /// <param name="initialOwner"></param>
         public MutexEx(string name, bool initialOwner)
-            : this (name)
+            : this(name)
         {
             _initialOwner = initialOwner;
         }
@@ -193,7 +193,7 @@ namespace Shared.Classes
 #if TRACE
                 catch (UnauthorizedAccessException ex)
                 {
-                    Console.WriteLine("Unable to change permissions: {0}",  ex.Message);
+                    Console.WriteLine("Unable to change permissions: {0}", ex.Message);
                 }
 #else
                 catch

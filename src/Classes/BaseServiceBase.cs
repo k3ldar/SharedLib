@@ -10,7 +10,7 @@
  *
  */
 
-#if NET461
+#if NET_FW
 using System;
 using System.ServiceProcess;
 
@@ -20,7 +20,7 @@ using Shared.Communication;
 
 namespace Shared
 {
-#if NET461
+#if NET_FW
     /// <summary>
     /// Base service class
     /// 
@@ -203,7 +203,7 @@ namespace Shared
         /// </summary>
         internal void InitializeTCPServer()
         {
-            Shared.EventLog.Add(String.Format("Initialising TCP: Port: {0}; Timeout: {1}", 
+            Shared.EventLog.Add(String.Format("Initialising TCP: Port: {0}; Timeout: {1}",
                 MessageServerPort, MessageServerTimeOut));
             InitializeTCPServer(MessageServerPort, MessageServerTimeOut);
         }
@@ -236,7 +236,7 @@ namespace Shared
             if (!Classes.ThreadManager.Exists("Service Message Server Manager"))
             {
                 MessageServerManagementThread thread = new MessageServerManagementThread(this);
-                Classes.ThreadManager.ThreadStart(thread, "Service Message Server Manager", 
+                Classes.ThreadManager.ThreadStart(thread, "Service Message Server Manager",
                     System.Threading.ThreadPriority.Lowest);
             }
         }
@@ -342,7 +342,7 @@ namespace Shared
 
                     case "STOPAPPLICATION":
                         StopRequested = true;
-                        
+
                         break;
 
                     default:
@@ -369,9 +369,9 @@ namespace Shared
         #region Constructor
 
         internal MessageServerManagementThread(BaseService serviceBase)
-            : base (serviceBase, new TimeSpan(0, 0, 20), null, 2000, 200, false)
+            : base(serviceBase, new TimeSpan(0, 0, 20), null, 2000, 200, false)
         {
-            this.HangTimeout = 0;
+            HangTimeout = 0;
         }
 
         #endregion Constructor
@@ -394,7 +394,7 @@ namespace Shared
                     serviceBase._messageServer = null;
                 }
 
-                if ((serviceBase._messageServer != null && !serviceBase._messageServer.Running) || 
+                if ((serviceBase._messageServer != null && !serviceBase._messageServer.Running) ||
                     (serviceBase._messageServer == null))
                 {
                     serviceBase.InitializeTCPServer();

@@ -20,7 +20,7 @@ namespace Shared
         #region Constructor
 
         internal LoggingErrorCacheItem(string name, object value)
-            : base (name, value)
+            : base(name, value)
         {
             NumberOfErrors = 0;
         }

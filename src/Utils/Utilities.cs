@@ -22,7 +22,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 
-#if !NET_CORE
+#if NET_FW
 using System.Drawing;
 using System.ServiceProcess;
 using System.Management;
@@ -39,7 +39,7 @@ namespace Shared
     public static class Utilities
     {
         #region Windows System Users
-#if !NET_CORE
+#if NET_FW
         /// <summary>
         /// Get's account names for local users
         /// </summary>
@@ -387,7 +387,7 @@ namespace Shared
                 return value;
         }
 
-#if !NET_CORE
+#if NET_FW
         /// <summary>
         /// Measures text
         /// 
@@ -503,7 +503,7 @@ namespace Shared
         #endregion Text Manipulation
 
         #region Service Methods
-#if !NET_CORE
+#if NET_FW
         /// <summary>
         /// Retrieves the version information for a service application
         /// </summary>

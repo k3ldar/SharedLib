@@ -23,7 +23,7 @@ namespace Shared.Communication
     /// <summary>
     /// Send email class
     /// </summary>
-    public sealed class Email
+    public sealed class Email : IEmail
     {
         #region Private Members
 

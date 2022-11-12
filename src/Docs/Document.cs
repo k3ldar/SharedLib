@@ -11,12 +11,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Shared.Docs
 {
     /// <summary>
     /// Contains documentation for a class/type or custom documentation
     /// </summary>
+    [DebuggerDisplay("Title: {Title}")]
     public sealed class Document : BaseDocument
     {
         #region Constructors
@@ -71,7 +73,7 @@ namespace Shared.Docs
         /// <param name="namespaceName">Namespace where class can be found</param>
         /// <param name="className">Name of class</param>
         /// <param name="fullMemberName">Full member name of assembly</param>
-        public Document(in DocumentType documentType, in string assemblyName, 
+        public Document(in DocumentType documentType, in string assemblyName,
             in string namespaceName, in string className, in string fullMemberName)
             : this(documentType, fullMemberName)
         {

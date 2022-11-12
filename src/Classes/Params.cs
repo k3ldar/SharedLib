@@ -54,7 +54,7 @@ namespace Shared.Classes
         /// 
         /// i.e. : or space</param>
         /// <param name="caseSensitiveArgName">Indicates whether argument names are case sensitive</param>
-        public static void Initialise(string[] args, char[] paramSeperators, 
+        public static void Initialise(string[] args, char[] paramSeperators,
             char[] optionSeperators, bool caseSensitiveArgName = false)
         {
             using (TimedLock.Lock(_lockObject))
@@ -82,7 +82,7 @@ namespace Shared.Classes
         /// 
         /// i.e. : or space</param>
         /// <param name="caseSensitiveArgName">Indicates wether argument names are case sensitive</param>
-        public static void Initialise(string[] args, char paramSeperator, 
+        public static void Initialise(string[] args, char paramSeperator,
             char optionSeperator, bool caseSensitiveArgName = false)
         {
             using (TimedLock.Lock(_lockObject))
@@ -345,7 +345,7 @@ namespace Shared.Classes
                 }
 
                 // don't forget last entry in the array
-                if (i == args.Length -1)
+                if (i == args.Length - 1)
                 {
                     if (!String.IsNullOrEmpty(newName))
                         _parameters.Add(newName, currentEntry);

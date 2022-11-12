@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Shared.Communication;
 
 namespace SharedLibTests
@@ -12,6 +14,7 @@ namespace SharedLibTests
     [ExcludeFromCodeCoverage]
     public class WebSocketTests
     {
+        [Ignore("Requires running socket")]
         [TestMethod]
         public void PerformGetRequest()
         {

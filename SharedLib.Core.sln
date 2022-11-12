@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLib.Core", "src\SharedLib.Core.csproj", "{D338244B-965A-4EFA-9780-8EB3234ED624}"
 EndProject
@@ -27,7 +27,6 @@ Global
 		{F7A98626-BBBC-46D4-BE32-579B80EF12AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F7A98626-BBBC-46D4-BE32-579B80EF12AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7A98626-BBBC-46D4-BE32-579B80EF12AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7A98626-BBBC-46D4-BE32-579B80EF12AF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EE356A75-6164-4918-A8A5-6113C67F2B16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EE356A75-6164-4918-A8A5-6113C67F2B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE356A75-6164-4918-A8A5-6113C67F2B16}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -41,7 +41,7 @@ namespace Shared.Classes
         /// <param name="maximumAge">Maximum age of items within the cache</param>
         /// <param name="resetMaximumAge">Reset age of item when retrieved</param>
         /// <param name="allowClearAll">Allows the cache to be cleared automatically</param>
-        public CacheManager (string cacheName, TimeSpan maximumAge, 
+        public CacheManager(string cacheName, TimeSpan maximumAge,
             bool resetMaximumAge = false, bool allowClearAll = true)
         {
             _cachedItems = new Dictionary<string, CacheItem>();
@@ -140,7 +140,7 @@ namespace Shared.Classes
 
             // is the item is already cached and we are not renewing it
             if (_cachedItems.ContainsKey(name) && !deleteIfExists)
-                    return false;
+                return false;
 
             using (TimedLock.Lock(_cacheLockObject))
             {
@@ -165,7 +165,7 @@ namespace Shared.Classes
         /// </summary>
         /// <param name="name">Name of cached item</param>
         /// <returns>CacheItem if found, otherwise null</returns>
-        public CacheItem Get (string name)
+        public CacheItem Get(string name)
         {
             CacheItem Result = null;
 
@@ -293,7 +293,7 @@ namespace Shared.Classes
                 CacheItemNotFoundArgs args = new CacheItemNotFoundArgs(name);
 
                 ItemNotFound(this, args);
-                
+
                 Result = args.CachedItem;
             }
 

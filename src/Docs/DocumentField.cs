@@ -22,7 +22,7 @@ namespace Shared.Docs
 
         public DocumentField(in string assemblyName, in string namespaceName,
             in string className, in string fieldName, in string fullMemberName)
-            : base (assemblyName, namespaceName, DocumentType.Field, fullMemberName)
+            : base(assemblyName, namespaceName, DocumentType.Field, fullMemberName)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));
@@ -72,7 +72,7 @@ namespace Shared.Docs
 
         internal void PostProcess(in Document document)
         {
-            
+
         }
 
         #endregion Internal Methods

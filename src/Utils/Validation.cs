@@ -139,46 +139,46 @@ namespace Shared
                 return AcceptedCreditCardTypes.MasterCard;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_AMEX))
-                    return AcceptedCreditCardTypes.AmericanExpress;
+                return AcceptedCreditCardTypes.AmericanExpress;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_CARTE_BLANCH))
-                    return AcceptedCreditCardTypes.CarteBlanch;
+                return AcceptedCreditCardTypes.CarteBlanch;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_DINERS_CLUB))
-                    return AcceptedCreditCardTypes.DinersClub;
+                return AcceptedCreditCardTypes.DinersClub;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_DISCOVER))
-                    return AcceptedCreditCardTypes.Discover;
+                return AcceptedCreditCardTypes.Discover;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_JCB))
-                    return AcceptedCreditCardTypes.JCB;
+                return AcceptedCreditCardTypes.JCB;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_VISA_MASTER))
-                    return AcceptedCreditCardTypes.VisaMaster;
+                return AcceptedCreditCardTypes.VisaMaster;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_INSTA_PAYMENT))
-                    return AcceptedCreditCardTypes.InstaPayment;
+                return AcceptedCreditCardTypes.InstaPayment;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_LASER))
-                    return AcceptedCreditCardTypes.Laser;
+                return AcceptedCreditCardTypes.Laser;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_MAESTRO))
-                    return AcceptedCreditCardTypes.Maestro;
+                return AcceptedCreditCardTypes.Maestro;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_SOLO))
-                    return AcceptedCreditCardTypes.Solo;
+                return AcceptedCreditCardTypes.Solo;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_SWITCH))
-                    return AcceptedCreditCardTypes.Switch;
+                return AcceptedCreditCardTypes.Switch;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_UNION_PAY))
-                    return AcceptedCreditCardTypes.UnionPay;
+                return AcceptedCreditCardTypes.UnionPay;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_KOREAN_LOCAL))
-                    return AcceptedCreditCardTypes.KoreanLocal;
+                return AcceptedCreditCardTypes.KoreanLocal;
 
             if (Regex.IsMatch(cardNumber, CARD_TYPE_BC_GLOBAL))
-                    return AcceptedCreditCardTypes.BCGlobal;
+                return AcceptedCreditCardTypes.BCGlobal;
 
             throw new Exception("Could not determine credit card type");
         }

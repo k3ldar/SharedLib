@@ -9,10 +9,11 @@
  *  Purpose:  XML Wrapper Functions
  *
  */
-using Shared.Classes;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+
+using Shared.Classes;
 
 namespace Shared
 {

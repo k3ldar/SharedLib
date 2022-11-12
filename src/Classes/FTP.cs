@@ -10,8 +10,8 @@
  *
  */
 using System;
-using System.Net;
 using System.IO;
+using System.Net;
 
 #pragma warning disable IDE1005 // Delegate invocation can be simplified
 #pragma warning disable IDE1006 // naming rule violation

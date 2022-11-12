@@ -11,7 +11,7 @@
  */
 using System;
 
-#if !NET_CORE
+#if NET_FW
 using System.Windows.Forms;
 #endif
 
@@ -207,18 +207,18 @@ namespace Shared
     /// <param name="e"></param>
     public delegate void AddToLogFileHandler(object sender, AddToLogFileArgs e);
 
-#if !NET_CORE
+#if NET_FW
 
     /// <summary>
     /// Tooltip Event Arguments
     /// </summary>
     public class ToolTipEventArgs : EventArgs
     {
-    #region Private Members
+        #region Private Members
 
-    #endregion Private Members
+        #endregion Private Members
 
-    #region Constructor
+        #region Constructor
 
         /// <summary>
         /// Constructor
@@ -243,9 +243,9 @@ namespace Shared
             ListViewItem = null;
         }
 
-    #endregion Constructor
+        #endregion Constructor
 
-    #region Properties
+        #region Properties
 
         /// <summary>
         /// Determines if balloon type hint is shown
@@ -277,7 +277,7 @@ namespace Shared
         /// </summary>
         public ListViewItem ListViewItem { get; set; }
 
-    #endregion Properties
+        #endregion Properties
     }
 
     /// <summary>
@@ -744,7 +744,7 @@ namespace Shared
     /// <param name="e"></param>
     public delegate void LogScannerDelegate(object sender, LogScannerArgs e);
 
-#if !NET_CORE
+#if NET_FW
     /// <summary>
     /// Price column override event arguments
     /// </summary>
@@ -822,7 +822,7 @@ namespace Shared
     /// </summary>
     public sealed class SettingsLoadArgs
     {
-    #region Constructor
+        #region Constructor
 
         /// <summary>
         /// Constructor
@@ -833,16 +833,16 @@ namespace Shared
             Parent = parent;
         }
 
-    #endregion Constructor
+        #endregion Constructor
 
-    #region Properties
+        #region Properties
 
         /// <summary>
         /// Parent Node
         /// </summary>
         public TreeNode Parent { get; private set; }
 
-    #endregion Properties
+        #endregion Properties
     }
 
     /// <summary>

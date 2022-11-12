@@ -19,7 +19,7 @@ namespace Shared.Docs
 
         public DocumentMethodParameter(in string assemblyName, in string namespaceName,
             in string className, in string methodName, in string parameterName, in string fullMemberName)
-            : base (assemblyName, namespaceName, DocumentType.Parameter, fullMemberName)
+            : base(assemblyName, namespaceName, DocumentType.Parameter, fullMemberName)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));

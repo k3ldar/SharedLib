@@ -92,7 +92,7 @@ namespace SharedLibTests.CpuUsage
     public class TestThread : ThreadManager
     {
         public TestThread()
-            : base (null, new TimeSpan(0, 0, 0, 0, 50))
+            : base(null, new TimeSpan(0, 0, 0, 0, 50))
         {
 
         }

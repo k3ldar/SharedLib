@@ -42,7 +42,7 @@ namespace Shared
         /// </summary>
         private static readonly CacheManager _logCache = new CacheManager("Log Cache", new TimeSpan(0, 30, 0));
 
-       
+
         /// <summary>
         /// Maximum size of log/error file, after this is exceeded, nothing will be logged
         /// </summary>
@@ -133,8 +133,8 @@ namespace Shared
 
 
             string msg = String.Format("Date: {0}\r\n\r\nError Message: {1}\r\n" +
-                "\r\nParameters: \r\n\r\n{2}\r\n\r\nStackTrace\r\n\r\n{3}\r\n\r\nInnerException\r\n\r\n{4}", 
-                DateTime.Now.ToString("g"), ex.Message, parameters, 
+                "\r\nParameters: \r\n\r\n{2}\r\n\r\nStackTrace\r\n\r\n{3}\r\n\r\nInnerException\r\n\r\n{4}",
+                DateTime.Now.ToString("g"), ex.Message, parameters,
                 ex.StackTrace == null ? "No Stack Trace" : ex.StackTrace.ToString(),
                 ex.InnerException == null ? "No Inner Exception" : ex.InnerException.ToString());
 
@@ -337,7 +337,7 @@ namespace Shared
             maximumAge = Utilities.CheckMinMax(maximumAge, 1, 60);
 
             if (!ThreadManager.Exists("EventLog Thread Manager"))
-                ThreadManager.ThreadStart(new Shared.Logging.LoggingThread(maximumAge), 
+                ThreadManager.ThreadStart(new Shared.Logging.LoggingThread(maximumAge),
                     "EventLog Thread Manager", System.Threading.ThreadPriority.Lowest);
 
             return Path;
@@ -428,7 +428,7 @@ namespace Shared
 
                     // add this error to the cache
                     previousError = new LoggingErrorCacheItem(e.Message, e.Message);
-                    previousError.FileName = _errorPath + String.Format("{0}.log", 
+                    previousError.FileName = _errorPath + String.Format("{0}.log",
                         DateTime.Now.ToString("ddMMyyyy HH mm ss ffff"));
 
                     if (!CanLogData(previousError.FileName))
@@ -517,7 +517,7 @@ namespace Shared
                         return;
 
                     _logCache.Add(text, new CacheItem(text, text));
-                    
+
                     string LogPath = Path;
 
                     if (!Directory.Exists(LogPath))
@@ -527,7 +527,7 @@ namespace Shared
 
                     if (!CanLogData(fileName))
                         return;
-                    
+
                     StreamWriter w = File.AppendText(fileName);
                     try
                     {
@@ -568,7 +568,7 @@ namespace Shared
                     if (!Directory.Exists(LogPath))
                         Directory.CreateDirectory(LogPath);
 
-                    string fileName = GetLogFileName(LogPath); 
+                    string fileName = GetLogFileName(LogPath);
 
                     if (!CanLogData(fileName))
                         return;
@@ -726,7 +726,7 @@ namespace Shared
             return String.Format("{0}{1}.log", path, DateTime.Now.ToString("ddMMyyyy"));
         }
 
-#if !NET_CORE
+#if NET_FW
         [Obsolete()]
         private static void CompressLogFile(string zipFile, string logFile, string logFileName)
         {

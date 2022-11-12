@@ -14,7 +14,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-#if NET461
+#if NET_FW
 using System.Web;
 #endif
 
@@ -39,7 +39,7 @@ namespace Shared.Communication
         /// <param name="userAgent">User agent to be sent with the request</param>
         /// <param name="contentType">Content type</param>
         /// <returns>string data returned by webpage</returns>
-        public static string Post(string url, string parameters, uint timeout = 30, 
+        public static string Post(string url, string parameters, uint timeout = 30,
             NVPCodec additionalHeaders = null,
             string userAgent = "Mozilla/4.0 (Compatible; Windows NT 5.1; MSIE 6.0)",
             string contentType = "application/x-www-form-urlencoded")
@@ -53,7 +53,7 @@ namespace Shared.Communication
             objRequest.Timeout = (int)timeout * 1000;
             objRequest.UserAgent = userAgent;
             objRequest.ContentType = contentType;
-            objRequest.ContentLength = data.Length;            
+            objRequest.ContentLength = data.Length;
 
             if (additionalHeaders != null)
             {
@@ -113,7 +113,7 @@ namespace Shared.Communication
             return Post(url, parameters.Encode(), timeout, additionalHeaders, userAgent);
         }
 
-#if NET461
+#if NET_FW
         /// <summary>
         /// Performs a post to a web page and redirects to the webpage
         /// </summary>

@@ -48,7 +48,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="SC.Shared.Library.Core" Version="3.0.0" />
+    <PackageReference Include="SC.Shared.Library.Core" Version="3.4.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug'">

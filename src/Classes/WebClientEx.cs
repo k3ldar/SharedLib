@@ -35,7 +35,7 @@ namespace Shared.Classes
         /// </summary>
         /// <param name="userAgent">User Agent</param>
         public WebClientEx(string userAgent)
-            :this()
+            : this()
         {
             UserAgent = userAgent;
         }

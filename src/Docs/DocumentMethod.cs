@@ -23,7 +23,7 @@ namespace Shared.Docs
 
         public DocumentMethod(in DocumentType documentType, in string assemblyName, in string namespaceName,
             in string className, in string methodName, in string fullMemberName)
-            : base (assemblyName, namespaceName, documentType, fullMemberName)
+            : base(assemblyName, namespaceName, documentType, fullMemberName)
         {
             if (String.IsNullOrEmpty(assemblyName))
                 throw new ArgumentNullException(nameof(assemblyName));

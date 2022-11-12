@@ -270,8 +270,8 @@ namespace Shared.Communication
                 string msgArray = new string(charArray);
                 int sepCharsTitle = msgArray.IndexOf("#A!");
                 int sepCharsClientID = msgArray.IndexOf("#B!");
-                
-                
+
+
                 string title = msgArray.Substring(1, sepCharsTitle - 1);
 
                 string clientID = msgArray.Substring(sepCharsTitle + 3, sepCharsClientID - 3 - sepCharsTitle);
@@ -306,7 +306,7 @@ namespace Shared.Communication
 #if DEBUG
                 EventLog.Debug("Message.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name + " After MessageTypeToChar");
 #endif
-                string msgBody = String.Format("{3}{0}#A!{1}#B!{2}#END#", 
+                string msgBody = String.Format("{3}{0}#A!{1}#B!{2}#END#",
                     message.Title, message.ClientID, message.Contents,
                     MessageTypeToChar(message.Type));
 #if DEBUG
@@ -363,7 +363,7 @@ namespace Shared.Communication
                     return MessageType.Warning;
                 default:
 #if DEBUG
-            EventLog.Debug("Message.cs - Unknown Message Type" + System.Reflection.MethodBase.GetCurrentMethod().Name);
+                    EventLog.Debug("Message.cs - Unknown Message Type" + System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
                     throw new Exception("Invalid Message Type");
             }

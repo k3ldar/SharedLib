@@ -223,7 +223,7 @@ namespace Shared.Docs
                     {
                         method.Exception.Add(new DocumentException("missing exception cref", childNode.InnerXml));
                     }
-                    
+
                 }
                 else if (childNode.Name == "example")
                 {

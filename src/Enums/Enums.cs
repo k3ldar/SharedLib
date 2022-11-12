@@ -49,7 +49,7 @@ namespace Shared
         /// <summary>
         /// No Event
         /// </summary>
-        None, 
+        None,
 
         /// <summary>
         /// timeout
@@ -186,63 +186,63 @@ namespace Shared
     /// <summary>
     /// Type of Validation
     /// </summary>
-    public enum ValidationTypes 
-    { 
+    public enum ValidationTypes
+    {
         /// <summary>
         /// Credit card validation check
         /// </summary>
         CreditCard,
- 
+
         /// <summary>
         /// Is numeric input validation check
         /// </summary>
-        IsNumeric, 
+        IsNumeric,
 
         /// <summary>
         /// Alpha numeric validation check
         /// </summary>
-        AlphaNumeric, 
+        AlphaNumeric,
 
         /// <summary>
         /// A to Z validation check
         /// </summary>
-        AtoZ, 
+        AtoZ,
 
         /// <summary>
         /// Name validation check
         /// </summary>
-        Name, 
+        Name,
 
         /// <summary>
         /// Credit card valid from validation check
         /// </summary>
-        CardValidFrom, 
+        CardValidFrom,
 
         /// <summary>
         /// Credit card valid to validation check
         /// </summary>
-        CardValidTo, 
+        CardValidTo,
 
         /// <summary>
         /// File name validation check
         /// </summary>
-        FileName 
+        FileName
     }
 
     /// <summary>
     /// Credit Card Types
     /// </summary>
-    public enum AcceptedCreditCardTypes 
-    { 
+    public enum AcceptedCreditCardTypes
+    {
         /// <summary>
         /// Visa card
         /// </summary>
-        Visa = 1, 
+        Visa = 1,
 
         /// <summary>
         /// Master card
         /// </summary>
-        MasterCard = 2, 
+        MasterCard = 2,
 
         /// <summary>
         /// Visa Debit card
@@ -323,27 +323,27 @@ namespace Shared
     /// <summary>
     /// Case Type
     /// </summary>
-    public enum CaseType 
-    { 
+    public enum CaseType
+    {
         /// <summary>
         /// Ignore case type
         /// </summary>
-        Ignore, 
-        
+        Ignore,
+
         /// <summary>
         /// Upper case
         /// </summary>
-        Upper, 
-        
+        Upper,
+
         /// <summary>
         /// Lower case
         /// </summary>
-        Lower, 
-        
+        Lower,
+
         /// <summary>
         /// Proper case
         /// </summary>
-        Proper 
+        Proper
     }
 
     /// <summary>

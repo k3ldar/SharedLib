@@ -17,7 +17,7 @@ namespace SharedLibTests
         [TestCleanup]
         public void FinaliseTest()
         {
-            
+
         }
 
         [TestMethod]

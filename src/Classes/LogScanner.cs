@@ -226,12 +226,12 @@ namespace Shared.Classes
     /// <summary>
     /// Type of log file
     /// </summary>
-    public enum LogFileType 
-    { 
+    public enum LogFileType
+    {
         /// <summary>
         /// MailEnable log file
         /// </summary>
-        MailEnable, 
+        MailEnable,
 
         /// <summary>
         /// FileZilla Server Log Files

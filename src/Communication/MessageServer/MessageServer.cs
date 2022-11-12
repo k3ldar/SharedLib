@@ -11,8 +11,8 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -101,8 +101,8 @@ namespace Shared.Communication
                                 if (!_loginRequired || (_loginRequired && clients[activeClientID].LoggedIn))
                                 {
                                     // is the client ignoring broadcast messages
-                                    if (message.Type != MessageType.Broadcast || 
-                                        (!clients[activeClientID].IgnoreBroadcastMessages && 
+                                    if (message.Type != MessageType.Broadcast ||
+                                        (!clients[activeClientID].IgnoreBroadcastMessages &&
                                         message.Type == MessageType.Broadcast))
                                     {
                                         sendMessage(activeClientID, clients[activeClientID].Client, message);
@@ -110,14 +110,14 @@ namespace Shared.Communication
                                 }
                             }
                         }
-                        catch 
+                        catch
 #if DEBUG
                             (Exception err)
 #endif
                         {
 #if DEBUG
                             EventLog.Debug(err);
-                            EventLog.Debug("MessageServer.cs Exception1 " + 
+                            EventLog.Debug("MessageServer.cs Exception1 " +
                                 System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
                             RaiseClientDisconnected(ClientAddress(activeClient.Client), activeClientID);
@@ -401,7 +401,7 @@ namespace Shared.Communication
 
                     char[] characters = Message.MessageToStringArray(message);
                     byte[] toSend = System.Text.Encoding.UTF8.GetBytes(characters, 0, characters.Length);
-                    
+
                     client.GetStream().Write(toSend, 0, toSend.Length);
 
                     //update last sent time
@@ -413,10 +413,10 @@ namespace Shared.Communication
                 }
                 catch (Exception err)
                 {
-                    if (err.Message.Contains("Unable to write data to the transport connection") || 
+                    if (err.Message.Contains("Unable to write data to the transport connection") ||
                         err.Message.Contains("無法寫入資料至傳輸連接")) // windows Taiwan locale
                     {
-                        ThreadManager.Cancel(String.Format("Client Connection - {0} {1}", 
+                        ThreadManager.Cancel(String.Format("Client Connection - {0} {1}",
                             clientID, client.Client.RemoteEndPoint.ToString()));
                         client.Close();
                     }
@@ -475,7 +475,7 @@ namespace Shared.Communication
             {
                 if (!err.Message.Contains("An existing connection was forcibly closed by the remote host"))
                 {
-                   EventLog.Add(err);
+                    EventLog.Add(err);
                 }
 
 #if DEBUG
@@ -538,7 +538,7 @@ namespace Shared.Communication
                     string[] loginDetails = message.Contents.Split('$');
 
                     if (loginDetails[0].Length == 0 || loginDetails[1].Length == 0 ||
-                        !RaiseOnLogin(ClientAddress(client), loginDetails[0], StringCipher.Decrypt(loginDetails[1], 
+                        !RaiseOnLogin(ClientAddress(client), loginDetails[0], StringCipher.Decrypt(loginDetails[1],
                         _clientsDictionary[message.ClientID].RandomPassword)))
                     {
                         sendMessage(message.ClientID, client, Message.Command("LOGIN_FAILED"));
@@ -592,8 +592,8 @@ namespace Shared.Communication
                                 bw.Write(rebin);
                         }
 
-                        RaiseFileReceived(this, new TransferFileEventArgs(newFileName, 
-                            (ulong)message.Contents.Length, (ulong)message.Contents.Length, 
+                        RaiseFileReceived(this, new TransferFileEventArgs(newFileName,
+                            (ulong)message.Contents.Length, (ulong)message.Contents.Length,
                             new TimeSpan(), 0.0, message.ClientID));
                         MessageReceived(this, message);
                         message.Contents = String.Empty;
@@ -603,7 +603,7 @@ namespace Shared.Communication
                     catch (Exception err)
                     {
                         HandleClientException(err, message.ClientID, _clientsDictionary[message.ClientID].Client);
-                        sendMessage(message.ClientID, _clientsDictionary[message.ClientID].Client, 
+                        sendMessage(message.ClientID, _clientsDictionary[message.ClientID].Client,
                             new Message(err.Message, err.StackTrace.ToString(), MessageType.Error));
                     }
 
@@ -649,23 +649,23 @@ namespace Shared.Communication
                 }
                 else
                     if (error.Message.Contains("An existing connection was forcibly closed by the remote host"))
+                {
+                    //remove the client from the list as its disconnected
+                    Message msg = Message.Command("CLOSING");
+                    msg.SetClientID(clientID);
+                    bool shouldExit = false;
+                    ProcessCommand(msg, ref shouldExit);
+                    RaiseClientDisconnected(ClientAddress(client), clientID);
+                }
+                else
+                {
+                    //something else happened?
+                    if (!RaiseError(error))
                     {
-                        //remove the client from the list as its disconnected
-                        Message msg = Message.Command("CLOSING");
-                        msg.SetClientID(clientID);
-                        bool shouldExit = false;
-                        ProcessCommand(msg, ref shouldExit);
-                        RaiseClientDisconnected(ClientAddress(client), clientID);
+                        RaiseStopped();
+                        Result = false;
                     }
-                    else
-                    {
-                        //something else happened?
-                        if (!RaiseError(error))
-                        {
-                            RaiseStopped();
-                            Result = false;
-                        }
-                    }
+                }
             }
             catch
             {
@@ -940,8 +940,8 @@ namespace Shared.Communication
 
         #region Constructors
 
-        internal MessageServerClientConnectionThread (MessageServer parent, int port)
-            : base (parent, new TimeSpan())
+        internal MessageServerClientConnectionThread(MessageServer parent, int port)
+            : base(parent, new TimeSpan())
         {
             HangTimeout = 0;
             ContinueIfGlobalException = false;
@@ -999,10 +999,10 @@ namespace Shared.Communication
                             try
                             {
                                 // are there too many clients connected.
-                                if (parentServer._maxClientConnections > 0 && 
+                                if (parentServer._maxClientConnections > 0 &&
                                     (parentServer.ConnectedClientCount() >= parentServer._maxClientConnections))
                                 {
-                                    parentServer.sendMessage(activeNewClientID, connectedTcpClient, 
+                                    parentServer.sendMessage(activeNewClientID, connectedTcpClient,
                                         new Message("Error", "Too Many Clients", MessageType.Error));
                                     connectedTcpClient.Close();
                                     continue;
@@ -1019,8 +1019,8 @@ namespace Shared.Communication
                                     ClientMessageListeningThread newClient = new ClientMessageListeningThread(
                                         client, parentServer, this);
                                     newClient.MessageReceived += parentServer.newClient_MessageReceived;
-                                    ThreadManager.ThreadStart(newClient, String.Format("Client Connection - {0} {1}", 
-                                        activeNewClientID, connectedTcpClient.Client.RemoteEndPoint.ToString()), 
+                                    ThreadManager.ThreadStart(newClient, String.Format("Client Connection - {0} {1}",
+                                        activeNewClientID, connectedTcpClient.Client.RemoteEndPoint.ToString()),
                                         ThreadPriority.Lowest);
 
                                     parentServer.sendMessage(activeNewClientID, connectedTcpClient, Message.Command(
@@ -1029,7 +1029,7 @@ namespace Shared.Communication
                                     parentServer.RaiseClientConnected(ClientAddress(connectedTcpClient), activeNewClientID);
 
                                     if (parentServer.LoginRequird)
-                                        parentServer.sendMessage(activeNewClientID, connectedTcpClient, 
+                                        parentServer.sendMessage(activeNewClientID, connectedTcpClient,
                                             Message.Command("LOGIN_REQUIRED", client.RandomPassword));
                                 }
                                 else
@@ -1073,7 +1073,7 @@ namespace Shared.Communication
                 EventLog.Debug(err);
                 EventLog.Debug("MessageServer.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
-                if (err.Message.Contains("Only one usage of each socket address") || 
+                if (err.Message.Contains("Only one usage of each socket address") ||
                     err.Message.Contains("An attempt was made to access a socket in a way forbidden by its access permissions"))
                     return false;
                 else
@@ -1216,9 +1216,9 @@ namespace Shared.Communication
 
         #region Constructors
 
-        internal ClientMessageListeningThread(ConnectedClient connectedClient, 
+        internal ClientMessageListeningThread(ConnectedClient connectedClient,
                 MessageServer parent, MessageServerClientConnectionThread parentThread)
-            :base (connectedClient, new TimeSpan(), parentThread)
+            : base(connectedClient, new TimeSpan(), parentThread)
         {
             HangTimeout = 0;
             _parentMessageServer = parent;
@@ -1284,7 +1284,7 @@ namespace Shared.Communication
                         Message message = Message.StringToMessage(msg);
 
 #if DEBUG
-                    EventLog.Debug("MessageServer.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
+                        EventLog.Debug("MessageServer.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
 
                         connectedClient.LastReceived = DateTime.Now;
@@ -1340,8 +1340,8 @@ namespace Shared.Communication
             catch (Exception err)
             {
 #if DEBUG
-            EventLog.Debug(err);
-            EventLog.Debug("MessageServer.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
+                EventLog.Debug(err);
+                EventLog.Debug("MessageServer.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
                 //if the error is not handled then pass it on
                 if (!_parentMessageServer.HandleClientException(err, connectedClient.ClientID, connectedClient.Client))

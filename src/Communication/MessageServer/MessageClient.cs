@@ -10,10 +10,10 @@
  *
  */
 using System;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.IO;
 
 using Shared.Classes;
 
@@ -149,7 +149,7 @@ namespace Shared.Communication
 
                     RaiseDisconnected();
                     _tcpClient.Close();
-                    
+
                     ThreadManager.Cancel(String.Format("Client Listening Thread {0}", _server));
                 }
 
@@ -165,7 +165,7 @@ namespace Shared.Communication
         {
 #if DEBUG
             EventLog.Debug("MessageClient.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
-            EventLog.Debug(String.Format("{0} - {1} - {2} - {3}", 
+            EventLog.Debug(String.Format("{0} - {1} - {2} - {3}",
                 message.Type.ToString(), message.ClientID, message.Title, message.Contents));
 #endif
             using (TimedLock.Lock(_messageLockObject))
@@ -236,7 +236,7 @@ namespace Shared.Communication
                 return true;
             }
 
-            if (error.Message.Contains("does not contain a valid BinaryHeader") || 
+            if (error.Message.Contains("does not contain a valid BinaryHeader") ||
                 error.Message.Contains("The input stream is not a valid binary format."))
             {
                 //we have sent/received junk, disconnect the client
@@ -279,7 +279,7 @@ namespace Shared.Communication
             }
 
             //trying to send message when connection closed
-            if (error.Message.Contains("Unable to read data from the transport connection") || 
+            if (error.Message.Contains("Unable to read data from the transport connection") ||
                 error.Message.Contains("無法從傳輸連接讀取資料:")) // occurred on windows in Taiwan!
             {
                 if (_running)
@@ -342,8 +342,8 @@ namespace Shared.Communication
             catch (Exception err)
             {
 #if DEBUG
-            EventLog.Debug(err);
-            EventLog.Debug("MessageClient.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
+                EventLog.Debug(err);
+                EventLog.Debug("MessageClient.cs " + System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
                 if (!HandleClientException(err))
                     throw;
@@ -665,7 +665,7 @@ namespace Shared.Communication
         #endregion Private Members
 
         internal MessageClientListeningThread(MessageClient parent)
-            : base (parent, new TimeSpan())
+            : base(parent, new TimeSpan())
         {
             HangTimeout = 0;
             _parentMessageClient = parent;
@@ -796,8 +796,8 @@ namespace Shared.Communication
                     }
                 }
             }
-            catch 
-#if DEBUG 
+            catch
+#if DEBUG
                 (ObjectDisposedException errDisposed)
 #else
                 (ObjectDisposedException)
@@ -805,7 +805,7 @@ namespace Shared.Communication
             {
 #if DEBUG
                 EventLog.Debug(errDisposed);
-                EventLog.Debug("MessageClient.cs ObjectDisposedException " + 
+                EventLog.Debug("MessageClient.cs ObjectDisposedException " +
                     System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
                 return false;
@@ -814,7 +814,7 @@ namespace Shared.Communication
             {
 #if DEBUG
                 EventLog.Debug(err);
-                EventLog.Debug("MessageClient.cs Exception " + 
+                EventLog.Debug("MessageClient.cs Exception " +
                     System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
                 if (!_parentMessageClient.HandleClientException(err))

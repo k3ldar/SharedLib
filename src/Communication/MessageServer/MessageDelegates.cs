@@ -142,7 +142,7 @@ namespace Shared.Communication
         /// <param name="timeTaken">Time taken to transfer file at current speed</param>
         /// <param name="transferRate">Number of bytes transferred per second</param>
         /// <param name="clientID">ID of client sending/receiving file</param>
-        public TransferFileEventArgs(string fileName, ulong received, ulong total, 
+        public TransferFileEventArgs(string fileName, ulong received, ulong total,
             TimeSpan timeTaken, double transferRate, string clientID)
         {
             FileName = fileName;

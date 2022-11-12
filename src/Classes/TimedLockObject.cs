@@ -46,9 +46,9 @@ namespace Shared.Classes
         /// </summary>
         /// <param name="o">lock object</param>
         /// <returns>TimedLock instance</returns>
-        public static TimedLock Lock (object o)
+        public static TimedLock Lock(object o)
         {
-            return Lock (o, TimeSpan.FromSeconds(10));
+            return Lock(o, TimeSpan.FromSeconds(10));
         }
 
         /// <summary>
@@ -57,12 +57,12 @@ namespace Shared.Classes
         /// <param name="o">lock object</param>
         /// <param name="timeout">timeout in seconds</param>
         /// <returns>TimedLock instance</returns>
-        public static TimedLock Lock (object o, TimeSpan timeout)
+        public static TimedLock Lock(object o, TimeSpan timeout)
         {
-            TimedLock tl = new TimedLock (o);
+            TimedLock tl = new TimedLock(o);
             sbyte attempt = 0;
 
-            while (!Monitor.TryEnter (o, timeout))
+            while (!Monitor.TryEnter(o, timeout))
             {
                 attempt++;
 
@@ -79,7 +79,7 @@ namespace Shared.Classes
         /// Constructor
         /// </summary>
         /// <param name="o"></param>
-        private TimedLock (object o)
+        private TimedLock(object o)
         {
             target = o;
         }
@@ -89,10 +89,10 @@ namespace Shared.Classes
         /// <summary>
         /// Dispose method
         /// </summary>
-        public void Dispose ()
+        public void Dispose()
         {
 #if DEBUG
-        GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
 #endif
             Monitor.Exit(target);
         }
@@ -106,7 +106,7 @@ namespace Shared.Classes
         /// <summary>
         /// Constructor
         /// </summary>
-        public LockTimeoutException () 
+        public LockTimeoutException()
             : base("Timeout waiting for lock")
         {
         }
