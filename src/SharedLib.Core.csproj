@@ -17,10 +17,10 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <AssemblyOriginatorKeyFile>Shared.Key.pfx</AssemblyOriginatorKeyFile>
-    <Copyright>Copyright © 2010 - 2022.  Simon Carter All rights reserved.</Copyright>
+    <Copyright>Copyright © 2010 - 2023.  Simon Carter All rights reserved.</Copyright>
     <PackageId>SC.Shared.Library.Core</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.8.0</Version>
+    <Version>3.9.0</Version>
     <Authors>Simon Carter</Authors>
     <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
     <PackageTags>Shared Library ThreadManager CacheManager</PackageTags>
