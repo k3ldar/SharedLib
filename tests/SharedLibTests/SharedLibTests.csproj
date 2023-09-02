@@ -6,8 +6,6 @@
     <IsPackable>false</IsPackable>
 
     <SignAssembly>False</SignAssembly>
-
-    <AssemblyOriginatorKeyFile>Shared.Key.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

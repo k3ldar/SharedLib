@@ -1,11 +1,7 @@
-﻿namespace Shared
+﻿namespace Shared.Classes
 {
     public interface IRunProgram
     {
-        int Run(string programName);
-
-        int Run(string programName, string parameters);
-
-        int Run(string programName, string parameters, bool useShellExecute);
+        int Run(string programName, string parameters, bool useShellExecute, bool waitForFinish, int timeoutMilliseconds);
     }
 }
