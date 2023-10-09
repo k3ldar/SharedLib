@@ -17,10 +17,10 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <AssemblyOriginatorKeyFile>C:\GitProjects\sharedlib.snk</AssemblyOriginatorKeyFile>
-    <Copyright>Copyright © 2010 - 2023.  Simon Carter All rights reserved.</Copyright>
+    <Copyright>Copyright © 2010 - 2023 Simon Carter. All rights reserved.</Copyright>
     <PackageId>SC.Shared.Library.Core</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.10.0</Version>
+    <Version>3.10.2</Version>
     <Authors>Simon Carter</Authors>
     <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
     <PackageTags>Shared Library ThreadManager CacheManager</PackageTags>
@@ -38,182 +38,182 @@
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net7.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETCOREAPP3_1;NET_CORE;NET7;NET6;NET5;WINDOWS_ONLY_</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net7.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>RELEASE;NETCOREAPP3_1;NET_CORE;NET5;NET6;NET7</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net6.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETCOREAPP3_1;NET_CORE;NET6;NET5;WINDOWS_ONLY_</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net6.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>RELEASE;NETCOREAPP3_1;NET_CORE;NET5;NET6</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net5.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETCOREAPP3_1;NET_CORE;NET5;WINDOWS_ONLY_</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net5.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>RELEASE;NETCOREAPP3_1;NET_CORE;NET5</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'netstandard2.1'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETSTANDARD;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'netstandard2.1'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>RELEASE;NETSTANDARD;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'netstandard2.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETSTANDARD;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'netstandard2.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>RELEASE;NETSTANDARD;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp3.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETCOREAPP3_0;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp3.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>RELEASE;NETCOREAPP3_0;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp3.1'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETCOREAPP3_1;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp3.1'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>RELEASE;NETCOREAPP3_1;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp1.1'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETCOREAPP1_1;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp1.1'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>RELEASE;NETCOREAPP1_1;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp2.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp2.0'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>RELEASE;NETCOREAPP2_0;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp2.1'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETCOREAPP2_1;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp2.1'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>none</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <DefineConstants>RELEASE;NETCOREAPP2_1;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp2.2'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NETCOREAPP2_2;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp2.2'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>RELEASE;NETCOREAPP2_2;NET_CORE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net48'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>none</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <DefineConstants>RELEASE;NET_FW</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net48'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NET_FW</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net461'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>none</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <DefineConstants>RELEASE;NET_FW</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net461'">
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>TRACE;DEBUG;NET_FW</DefineConstants>
   </PropertyGroup>
@@ -232,6 +232,34 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
     <DocumentationFile>..\..\.NetCorePluginManager\Docs\XmlFiles\SharedLib.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
