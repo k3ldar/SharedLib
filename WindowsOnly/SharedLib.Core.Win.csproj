@@ -16,12 +16,12 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Shared.Key.pfx</AssemblyOriginatorKeyFile>
-    <Copyright>Copyright © 2022.  Simon Carter All rights reserved.</Copyright>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>C:\GitProjects\sharedlib.snk</AssemblyOriginatorKeyFile>
+    <Copyright>Copyright © 2023.  Simon Carter All rights reserved.</Copyright>
     <PackageId>SC.Shared.Library.Core.Windows</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
+    <Version>1.2.1</Version>
     <Authors>Simon Carter</Authors>
     <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
     <PackageTags>Windows specific Shared Library implementations for ThreadManager</PackageTags>
@@ -47,12 +47,32 @@
     <DocumentationFile>..\..\.NetCorePluginManager\Docs\XmlFiles\SharedLib.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
   <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="SC.Shared.Library.Core" Version="3.6.0" />
+    <PackageReference Include="SC.Shared.Library.Core" Version="3.10.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
     <ProjectReference Include="..\src\SharedLib.Core.csproj" />
   </ItemGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(CodeSignAssembly)'=='true'">
+    <Exec Command="call &quot;..\..\SignLibrary.bat&quot; &quot;$(TargetDir)$(TargetName)$(TargetExt)&quot;" />
+  </Target>
 
 </Project>

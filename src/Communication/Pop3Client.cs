@@ -198,6 +198,7 @@ namespace Shared.Communication
             // refuse connection
             return false;
         }
+
         private string ReadLine()
         {
             ValidateConnection(true);

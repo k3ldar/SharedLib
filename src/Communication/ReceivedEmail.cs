@@ -22,7 +22,7 @@ namespace Shared.Communication
     {
         private readonly List<string> _fields;
 
-        internal ReceivedEmail(StringBuilder rawMail)
+        public ReceivedEmail(StringBuilder rawMail)
         {
             if (rawMail == null)
                 throw new ArgumentNullException(nameof(rawMail));
@@ -138,20 +138,31 @@ namespace Shared.Communication
                     continue;
 
                 if (field.StartsWith("MIME-Version:", StringComparison.InvariantCultureIgnoreCase))
-                    MimeVersion = field[14..].Trim();
+                    MimeVersion = GetFieldValue(field, 14);
                 else if (field.StartsWith("Date:", StringComparison.InvariantCultureIgnoreCase))
-                    Date = field[5..].Trim();
+                    Date = GetFieldValue(field, 5);
                 else if (field.StartsWith("Message-ID:", StringComparison.InvariantCultureIgnoreCase))
-                    MessageId = field[12..].Trim();
+                    MessageId = GetFieldValue(field, 12);
                 else if (field.StartsWith("Subject:", StringComparison.InvariantCultureIgnoreCase))
-                    Subject = field[8..].Trim();
+                    Subject = GetFieldValue(field, 8);
                 else if (field.StartsWith("From:", StringComparison.InvariantCultureIgnoreCase))
-                    From = field[5..].Trim().Replace("\t", " ");
+                    From = GetFieldValue(field, 5).Replace("\t", " ");
                 else if (field.StartsWith("To:", StringComparison.InvariantCultureIgnoreCase))
-                    To = field[3..].Trim();
+                    To = GetFieldValue(field, 3);
                 else if (field.StartsWith("Content-Type:", StringComparison.InvariantCultureIgnoreCase))
-                    ContentType.Add(new ContentTypeData(field[13..].Trim(), i));
+                    ContentType.Add(new ContentTypeData(GetFieldValue(field, 13), i));
             }
+        }
+
+        private string GetFieldValue(string field, int startPosition)
+        {
+            if (String.IsNullOrEmpty(field))
+                return String.Empty;
+
+            if (field.Length < startPosition) 
+                return String.Empty;
+
+            return field[startPosition..].Trim();
         }
 
         private void InternalInitialParseEmail(StringBuilder rawMail)

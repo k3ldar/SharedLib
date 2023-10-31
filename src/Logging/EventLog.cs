@@ -65,20 +65,10 @@ namespace Shared
 
         #region Public Properties
 
-
-        /// <summary>
-        /// Archives old log files, older than days
-        /// </summary>
-        /// <param name="days">Age of file in days</param>
-        [Obsolete()]
-        public static void ArchiveOldLogFiles(int days = 7)
-        {
-        }
-
         /// <summary>
         /// Maximum size of log/error file
         /// </summary>
-        public static Int64 MaximumFileSize
+        public static long MaximumFileSize
         {
             get
             {
@@ -629,6 +619,19 @@ namespace Shared
                 {
                     return _logPath;
                 }
+            }
+
+            set
+            {
+                _logPath = System.IO.Path.Combine(value, "Logs");
+
+                if (!Directory.Exists(_logPath))
+                    Directory.CreateDirectory(_logPath);
+
+                _errorPath = System.IO.Path.Combine(value, "Errors");
+
+                if (!Directory.Exists(_errorPath))
+                    Directory.CreateDirectory(_errorPath);
             }
         }
 
