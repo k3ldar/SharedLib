@@ -33,5 +33,25 @@ namespace SharedLib.Win.Classes
             Process.Start(processStartInfo);
             return Int32.MinValue;
         }
+
+        public string Run(string programName, string parameters)
+        {
+            StringBuilder result = new();
+            ProcessStartInfo processStartInfo = new(programName, parameters)
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+
+            Process process = new Process();
+            process.StartInfo = processStartInfo;
+            process.Start();
+
+            while (!process.StandardOutput.EndOfStream)
+                result.AppendLine(process.StandardOutput.ReadLine());
+
+            return result.ToString();
+        }
     }
 }
