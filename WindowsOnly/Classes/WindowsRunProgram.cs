@@ -53,5 +53,27 @@ namespace SharedLib.Win.Classes
 
             return result.ToString();
         }
+
+        public string Run(string programName, string parameters, out int exitCode)
+        {
+            StringBuilder response = new();
+            ProcessStartInfo processStartInfo = new(programName, parameters)
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+
+            Process process = new Process();
+            process.StartInfo = processStartInfo;
+            process.Start();
+
+            while (!process.StandardOutput.EndOfStream)
+                response.AppendLine(process.StandardOutput.ReadLine());
+
+            exitCode = process.ExitCode;
+
+            return response.ToString();
+        }
     }
 }

@@ -20,5 +20,14 @@
         /// <param name="parameters">Parameters</param>
         /// <returns></returns>
         string Run(string programName, string parameters);
+
+        /// <summary>
+        /// Runs an executable (command line) and returns the output
+        /// </summary>
+        /// <param name="programName">Name of program to run</param>
+        /// <param name="parameters">Parameters</param>
+        /// <param name="exitCode">Result of call to exe</param>
+        /// <returns></returns>
+        string Run(string programName, string parameters, out int exitCode);
     }
 }

@@ -21,7 +21,7 @@
     <Copyright>Copyright © 2023.  Simon Carter All rights reserved.</Copyright>
     <PackageId>SC.Shared.Library.Core.Windows</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.3.0</Version>
+    <Version>1.4.0</Version>
     <Authors>Simon Carter</Authors>
     <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
     <PackageTags>Windows specific Shared Library implementations for ThreadManager</PackageTags>
@@ -64,7 +64,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="SC.Shared.Library.Core" Version="3.11.0" />
+    <PackageReference Include="SC.Shared.Library.Core" Version="3.12.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
