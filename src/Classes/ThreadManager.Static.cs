@@ -33,12 +33,12 @@ namespace Shared.Classes
         /// <summary>
         /// Thread pool to hold threads if MaximumRunningThreads is exceeded
         /// </summary>
-        internal static List<ThreadManager> _threadPool = new List<ThreadManager>();
+        internal readonly static List<ThreadManager> _threadPool = new List<ThreadManager>();
 
         /// <summary>
         /// List of threads to abort
         /// </summary>
-        internal static List<ThreadManager> _abortPool = new List<ThreadManager>();
+        internal readonly static List<ThreadManager> _abortPool = new List<ThreadManager>();
 
         /// <summary>
         /// Number of managed threads
@@ -48,7 +48,7 @@ namespace Shared.Classes
         /// <summary>
         /// Object used for exclusive locking
         /// </summary>
-        internal static object _lockObject = new object();
+        internal readonly static object _lockObject = new object();
 
         /// <summary>
         /// Thread which manages the other threads in the list
@@ -683,6 +683,8 @@ namespace Shared.Classes
                 _threadCPUChangeNotification = Utilities.CheckMinMax(value, 0, 50);
             }
         }
+
+        public static bool IsInitialized => _cpuUsage != null;
 
         #endregion Static Properties
 
