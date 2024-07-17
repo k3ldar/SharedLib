@@ -46,7 +46,7 @@ namespace Shared.Classes
                     {
                         TimeSpan hangingSpan = DateTime.UtcNow - item._lastCommunication;
 
-                        if (item.HangTimeout > 0 && !item._cancel && hangingSpan.TotalMinutes > item.HangTimeout)
+                        if (item.HangTimeoutSpan.TotalMilliseconds > 0 && !item._cancel && hangingSpan.TotalMilliseconds > item.HangTimeoutSpan.TotalMilliseconds)
                         {
                             //set time out long enough for the thread to clear itself out
                             // if it doesn't then we will force the closure

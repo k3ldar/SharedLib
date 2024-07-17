@@ -667,7 +667,7 @@ namespace Shared.Communication
         internal MessageClientListeningThread(MessageClient parent)
             : base(parent, new TimeSpan())
         {
-            HangTimeout = 0;
+            HangTimeoutSpan = TimeSpan.Zero;
             _parentMessageClient = parent;
             ContinueIfGlobalException = false;
             _completeMessage = new StringBuilder();

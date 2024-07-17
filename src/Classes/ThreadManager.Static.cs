@@ -630,7 +630,7 @@ namespace Shared.Classes
         /// <summary>
         /// Number of minutes a thread will timeout if it does not communicate and is deemed to have hanged
         /// </summary>
-        public static int ThreadHangTimeout
+        public static int DefaultThreadHangTimeout
         {
             get
             {
@@ -642,6 +642,11 @@ namespace Shared.Classes
                 _threadHangTimeoutMinutes = Utilities.CheckMinMax(value, 1, 30);
             }
         }
+
+        /// <summary>
+        /// Hang timeout timespan
+        /// </summary>
+        public static TimeSpan ThreadHangTimeout { get; set; } 
 
         /// <summary>
         /// Retrieves the CPU Usage for the process

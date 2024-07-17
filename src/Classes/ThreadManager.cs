@@ -89,11 +89,6 @@ namespace Shared.Classes
         internal DateTime _lastCommunication;
 
         /// <summary>
-        /// Date/Time thread last executed
-        /// </summary>
-        private DateTime _lastRun;
-
-        /// <summary>
         /// Parent Thread, if set
         /// </summary>
         internal ThreadManager _parentThread = null;
@@ -136,7 +131,7 @@ namespace Shared.Classes
             PreviousProcessCpuUsage = 0.0m;
 
             // each thread can have it's own timeout period, set as default to global value 
-            HangTimeout = ThreadHangTimeout;
+            HangTimeoutSpan = ThreadHangTimeout;
 
             if (parent != null)
                 parent.ChildThreads.Add(this);
@@ -178,7 +173,9 @@ namespace Shared.Classes
         /// </summary>
         public virtual void Abort()
         {
+#if !NET_CORE
             _thread.Abort();
+#endif
         }
 
         /// <summary>
@@ -204,7 +201,7 @@ namespace Shared.Classes
                 ProcessCpuUsage.ToString("n1"), SystemCpuUsage.ToString("n1"));
         }
 
-        #endregion Public Methods
+#endregion Public Methods
 
         #region Protected Methods
 
@@ -240,7 +237,7 @@ namespace Shared.Classes
                 }
             }
 
-            _lastRun = DateTime.UtcNow.AddDays(RunAtStartup ? -1 : 0);
+            LastRun = DateTime.UtcNow.AddDays(RunAtStartup ? -1 : 0);
             DateTime lastPing = DateTime.UtcNow;
 
             using (TimedLock.Lock(_lockObject))
@@ -261,7 +258,7 @@ namespace Shared.Classes
                         if (_cancel)
                             return;
 
-                        TimeSpan span = DateTime.UtcNow - _lastRun;
+                        TimeSpan span = DateTime.UtcNow - LastRun;
 
                         // run the thread
                         if (span.TotalMilliseconds > RunInterval.TotalMilliseconds)
@@ -269,7 +266,7 @@ namespace Shared.Classes
                             if (!Run(_parameters))
                                 return;
 
-                            _lastRun = DateTime.UtcNow;
+                            LastRun = DateTime.UtcNow;
                         }
 
                         span = DateTime.UtcNow - lastPing;
@@ -617,7 +614,10 @@ namespace Shared.Classes
         /// 
         /// A value of 0 (zero) indicates the thread will not be checked for hanging
         /// </summary>
-        public int HangTimeout { get; set; }
+        [Obsolete("Replaced with HangTimeoutSpan, will be removed in future version", true)]
+        public int HangTimeout { get => Convert.ToInt32(HangTimeoutSpan.TotalMinutes); set => HangTimeoutSpan = TimeSpan.FromMinutes(value); }
+
+        public TimeSpan HangTimeoutSpan { get; set; }
 
         /// <summary>
         /// Collectin of child threads
@@ -632,18 +632,7 @@ namespace Shared.Classes
         /// <summary>
         /// Date/Time the thread Run method was executed
         /// </summary>
-        protected DateTime LastRun
-        {
-            get
-            {
-                return _lastRun;
-            }
-
-            set
-            {
-                _lastRun = value;
-            }
-        }
+        protected DateTime LastRun { get; private set; }
 
         /// <summary>
         /// Threads usage within the process

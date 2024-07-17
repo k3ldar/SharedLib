@@ -22,7 +22,7 @@ namespace Shared.Classes
             : base(null, new TimeSpan(0, 0, 15))
         {
             RunAtStartup = false;
-            HangTimeout = 30; // no response for 30 minutes then kill
+            HangTimeoutSpan = TimeSpan.FromMinutes(30); // no response for 30 minutes then kill
             ContinueIfGlobalException = true;
         }
 

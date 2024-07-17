@@ -943,7 +943,7 @@ namespace Shared.Communication
         internal MessageServerClientConnectionThread(MessageServer parent, int port)
             : base(parent, new TimeSpan())
         {
-            HangTimeout = 0;
+            HangTimeoutSpan = TimeSpan.Zero;
             ContinueIfGlobalException = false;
 
             _port = port;
@@ -1158,7 +1158,7 @@ namespace Shared.Communication
         internal MessageServerMaintenance(MessageServer parent)
             : base(parent, new TimeSpan(0, 0, 5))
         {
-            HangTimeout = 3;
+            HangTimeoutSpan = TimeSpan.FromMinutes(3);
 
             _parentMessageServer = parent;
         }
@@ -1220,7 +1220,7 @@ namespace Shared.Communication
                 MessageServer parent, MessageServerClientConnectionThread parentThread)
             : base(connectedClient, new TimeSpan(), parentThread)
         {
-            HangTimeout = 0;
+            HangTimeoutSpan = TimeSpan.Zero;
             _parentMessageServer = parent;
             _completeMessage = new StringBuilder();
         }

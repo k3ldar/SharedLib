@@ -70,7 +70,7 @@ namespace Shared.Classes
         public UserSessionManager()
             : base(null, new TimeSpan(0, 0, 5))
         {
-            HangTimeout = 0;
+            HangTimeoutSpan = TimeSpan.Zero;
             ThreadManager.ThreadStart(this, "UserSessionManager", System.Threading.ThreadPriority.Normal);
             _knownBots = LoadKnownBotsList();
         }

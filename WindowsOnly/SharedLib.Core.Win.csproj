@@ -18,10 +18,10 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>C:\GitProjects\sharedlib.snk</AssemblyOriginatorKeyFile>
-    <Copyright>Copyright © 2023.  Simon Carter All rights reserved.</Copyright>
+    <Copyright>Copyright © 2024.  Simon Carter All rights reserved.</Copyright>
     <PackageId>SC.Shared.Library.Core.Windows</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.5.0</Version>
+    <Version>1.6.0</Version>
     <Authors>Simon Carter</Authors>
     <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
     <PackageTags>Windows specific Shared Library implementations for ThreadManager</PackageTags>
@@ -64,7 +64,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="SC.Shared.Library.Core" Version="3.12.0" />
+    <PackageReference Include="SC.Shared.Library.Core" Version="3.16.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug'">

@@ -27,7 +27,7 @@ namespace Shared.Logging
         internal LoggingThread(int maximumLogAge)
             : base(maximumLogAge, new TimeSpan(0, 5, 0))
         {
-            this.HangTimeout = 60;
+            this.HangTimeoutSpan = TimeSpan.FromMinutes(60);
         }
 
         #endregion Constructors

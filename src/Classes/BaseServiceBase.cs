@@ -371,7 +371,7 @@ namespace Shared
         internal MessageServerManagementThread(BaseService serviceBase)
             : base(serviceBase, new TimeSpan(0, 0, 20), null, 2000, 200, false)
         {
-            HangTimeout = 0;
+            HangTimeoutSpan = TimeSpan.Zero;
         }
 
         #endregion Constructor

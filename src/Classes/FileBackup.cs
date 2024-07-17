@@ -43,7 +43,7 @@ namespace Shared.Classes
         public FileBackup(List<string> folders)
             : base(null, new TimeSpan(0, 0, 1))
         {
-            HangTimeout = 10;
+            HangTimeoutSpan = TimeSpan.FromMinutes(10);
 
             _hookedFolders = folders;
 
