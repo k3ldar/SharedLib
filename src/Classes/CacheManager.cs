@@ -19,7 +19,7 @@ namespace Shared.Classes
     /// <summary>
     /// Cache Manager
     /// </summary>
-    public partial class CacheManager
+    public sealed partial class CacheManager : ICacheManager
     {
         #region Private Members
 
@@ -28,7 +28,7 @@ namespace Shared.Classes
         /// </summary>
         private readonly object _cacheLockObject = new object();
 
-        private readonly Dictionary<string, CacheItem> _cachedItems = null;
+        private readonly Dictionary<string, ICacheItem> _cachedItems = null;
 
         #endregion Private Members
 
@@ -44,7 +44,7 @@ namespace Shared.Classes
         public CacheManager(string cacheName, TimeSpan maximumAge,
             bool resetMaximumAge = false, bool allowClearAll = true)
         {
-            _cachedItems = new Dictionary<string, CacheItem>();
+            _cachedItems = new();
             Name = cacheName;
             ResetMaximumAge = resetMaximumAge;
             AllowClearAll = allowClearAll;
@@ -105,15 +105,15 @@ namespace Shared.Classes
         /// Returns a list of all cached items
         /// </summary>
         /// <returns>List of CacheItem's if found, otherwise null</returns>
-        public List<CacheItem> Items
+        public List<ICacheItem> Items
         {
             get
             {
                 using (TimedLock.Lock(_cacheLockObject))
                 {
-                    List<CacheItem> Result = new List<CacheItem>();
+                    List<ICacheItem> Result = new();
 
-                    foreach (KeyValuePair<string, CacheItem> item in _cachedItems)
+                    foreach (KeyValuePair<string, ICacheItem> item in _cachedItems)
                     {
                         Result.Add(item.Value);
                     }
@@ -133,14 +133,14 @@ namespace Shared.Classes
         /// <param name="name">Name of cached item</param>
         /// <param name="value">Cached item value</param>
         /// <param name="deleteIfExists">if true and the list contains a value with the same name, then the existing item is deleted</param>
-        public bool Add(string name, CacheItem value, bool deleteIfExists = false)
+        public ICacheItem Add(string name, object value, bool deleteIfExists = false)
         {
-            if (value == null)
-                throw new Exception("invalid value parameter");
+            if (value is ICacheItem)
+                throw new ArgumentException("value can not be of type ICacheItem", nameof(value));
 
             // is the item is already cached and we are not renewing it
             if (_cachedItems.ContainsKey(name) && !deleteIfExists)
-                return false;
+                return null;
 
             using (TimedLock.Lock(_cacheLockObject))
             {
@@ -150,11 +150,13 @@ namespace Shared.Classes
                     _cachedItems.Remove(name);
                 }
 
-                value.ResetMaximumAge = ResetMaximumAge;
-                _cachedItems.Add(name, value);
-                RaiseAddItem(value);
+                CacheItem newCachedItem = new(name, value);
+                newCachedItem.ResetMaximumAge = ResetMaximumAge;
 
-                return true;
+                _cachedItems.Add(name, newCachedItem);
+                RaiseAddItem(newCachedItem);
+
+                return newCachedItem;
             }
         }
 
@@ -165,9 +167,9 @@ namespace Shared.Classes
         /// </summary>
         /// <param name="name">Name of cached item</param>
         /// <returns>CacheItem if found, otherwise null</returns>
-        public CacheItem Get(string name)
+        public ICacheItem Get(string name)
         {
-            CacheItem Result = null;
+            ICacheItem Result = null;
 
             using (TimedLock.Lock(_cacheLockObject))
             {
@@ -196,10 +198,10 @@ namespace Shared.Classes
         {
             using (TimedLock.Lock(_cacheLockObject))
             {
-                List<string> removeItems = new List<string>();
+                List<string> removeItems = new();
                 try
                 {
-                    foreach (KeyValuePair<string, CacheItem> item in _cachedItems)
+                    foreach (KeyValuePair<string, ICacheItem> item in _cachedItems)
                     {
                         removeItems.Add(item.Key);
                     }
@@ -221,7 +223,7 @@ namespace Shared.Classes
         /// Removes a specific item from the cache
         /// </summary>
         /// <param name="item">Item to be removed</param>
-        public void Remove(CacheItem item)
+        public void Remove(ICacheItem item)
         {
             using (TimedLock.Lock(_cacheLockObject))
             {
@@ -241,10 +243,10 @@ namespace Shared.Classes
         {
             using (TimedLock.Lock(_cacheLockObject))
             {
-                List<string> removeItems = new List<string>();
+                List<string> removeItems = [];
                 try
                 {
-                    foreach (KeyValuePair<string, CacheItem> item in _cachedItems)
+                    foreach (KeyValuePair<string, ICacheItem> item in _cachedItems)
                     {
                         TimeSpan age = DateTime.UtcNow - item.Value.LastUpdated;
 
@@ -272,21 +274,21 @@ namespace Shared.Classes
 
         #region Event Wrappers
 
-        private void RaiseAddItem(CacheItem item)
+        private void RaiseAddItem(ICacheItem item)
         {
             if (ItemAdd != null)
                 ItemAdd(this, new CacheItemArgs(item));
         }
 
-        private void RaiseRemoveItem(CacheItem item)
+        private void RaiseRemoveItem(ICacheItem item)
         {
             if (ItemRemoved != null)
                 ItemRemoved(this, new CacheItemArgs(item));
         }
 
-        private CacheItem RaiseItemNotFound(string name)
+        private ICacheItem RaiseItemNotFound(string name)
         {
-            CacheItem Result = null;
+            ICacheItem Result = null;
 
             if (ItemNotFound != null)
             {

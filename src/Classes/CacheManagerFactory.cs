@@ -48,12 +48,12 @@ namespace Shared.Classes
             CacheManager.ClearAllCaches();
         }
 
-        public CacheManager CreateCache(string cacheName, TimeSpan maximumAge)
+        public ICacheManager CreateCache(string cacheName, TimeSpan maximumAge)
         {
             return CreateCache(cacheName, maximumAge, false, true);
         }
 
-        public CacheManager CreateCache(string cacheName, TimeSpan maximumAge, bool resetMaximumAge, bool allowClearAll)
+        public ICacheManager CreateCache(string cacheName, TimeSpan maximumAge, bool resetMaximumAge, bool allowClearAll)
         {
             if (String.IsNullOrEmpty(cacheName))
                 throw new ArgumentNullException(nameof(cacheName));
@@ -64,7 +64,7 @@ namespace Shared.Classes
             return new CacheManager(cacheName, maximumAge, resetMaximumAge, allowClearAll);
         }
 
-        public CacheManager GetCache(string cacheName)
+        public ICacheManager GetCache(string cacheName)
         {
             if (String.IsNullOrEmpty(cacheName))
                 throw new ArgumentNullException(nameof(cacheName));
@@ -75,7 +75,7 @@ namespace Shared.Classes
             throw new InvalidOperationException();
         }
 
-        public CacheManager GetCacheIfExists(string cacheName)
+        public ICacheManager GetCacheIfExists(string cacheName)
         {
             if (String.IsNullOrEmpty(cacheName))
                 throw new ArgumentNullException(nameof(cacheName));

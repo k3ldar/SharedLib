@@ -18,7 +18,7 @@ namespace Shared.Classes
     /// 
     /// Used by Cache manager for a cached item
     /// </summary>
-    public class CacheItem
+    internal class CacheItem : ICacheItem
     {
         #region Private Members
 
@@ -88,11 +88,6 @@ namespace Shared.Classes
         /// </summary>
         public object Value
         {
-            private set
-            {
-                _value = value;
-            }
-
             get
             {
                 if (ResetMaximumAge)
@@ -103,6 +98,16 @@ namespace Shared.Classes
 
                 return _value;
             }
+        }
+
+        public bool IsNull => _value == null;
+
+        public bool IsType<T>()
+        {
+            if (_value == null)
+                return false;
+
+            return _value is T;
         }
 
         /// <summary>
@@ -128,6 +133,22 @@ namespace Shared.Classes
             }
 
             return _value;
+        }
+
+        /// <summary>
+        /// Returns the cached item
+        /// </summary>
+        /// <param name="ignoreReset">bool, if ResetMaximumAge is true and ignoreReset = false (default) then LastUpdated will be reset</param>
+        /// <returns>CachedItem's value</returns>
+        public T GetValue<T>(bool ignoreReset = false)
+        {
+            if (!ignoreReset && ResetMaximumAge)
+            {
+                _resetCount++;
+                LastUpdated = DateTime.UtcNow;
+            }
+
+            return (T)_value;
         }
 
         #endregion Public Methods

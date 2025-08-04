@@ -26,7 +26,7 @@ namespace Shared.Abstractions
         /// <param name="cacheName">Name of cache to retrieve</param>
         /// <returns>CacheManager instance if found, otherwise null</returns>
         /// <exception cref="ArgumentNullException">Thrown if cacheName is null or empty</exception>
-        CacheManager GetCacheIfExists(string cacheName);
+        ICacheManager GetCacheIfExists(string cacheName);
 
         /// <summary>
         /// Retreives a cache by name if it exists.
@@ -35,7 +35,7 @@ namespace Shared.Abstractions
         /// <returns>CacheManager instance if found, otherwise InvalidOperationException</returns>
         /// <exception cref="InvalidOperationException">Thrown if the cache does not exist</exception>
         /// <exception cref="ArgumentNullException">Thrown if cacheName is null or empty</exception>
-        CacheManager GetCache(string cacheName);
+        ICacheManager GetCache(string cacheName);
 
         /// <summary>
         /// Determines whether a cache exists or not
@@ -56,7 +56,7 @@ namespace Shared.Abstractions
         /// <exception cref="ArgumentNullException">Thrown if cacheName is null or empty</exception>
         /// <exception cref="InvalidOperationException">Thrown if a cache by cacheName already exists</exception>
         /// 
-        CacheManager CreateCache(string cacheName, TimeSpan maximumAge);
+        ICacheManager CreateCache(string cacheName, TimeSpan maximumAge);
 
         /// <summary>
         /// Creates an instance of CacheManager
@@ -69,7 +69,7 @@ namespace Shared.Abstractions
         /// <exception cref="ArgumentNullException">Thrown if cacheName is null or empty</exception>
         /// <exception cref="InvalidOperationException">Thrown if a cache by cacheName already exists</exception>
         /// 
-        CacheManager CreateCache(string cacheName, TimeSpan maximumAge,
+        ICacheManager CreateCache(string cacheName, TimeSpan maximumAge,
             bool resetMaximumAge, bool allowClearAll);
 
         /// <summary>

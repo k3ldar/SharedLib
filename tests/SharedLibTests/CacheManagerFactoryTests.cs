@@ -56,7 +56,7 @@ namespace SharedLibTests
             CacheManagerFactory sut = new CacheManagerFactory();
             try
             {
-                CacheManager testCache = sut.CreateCache("test123", new TimeSpan());
+                ICacheManager testCache = sut.CreateCache("test123", new TimeSpan());
 
                 Assert.IsNotNull(testCache);
 
@@ -173,7 +173,7 @@ namespace SharedLibTests
             CacheManagerFactory sut = new CacheManagerFactory();
             try
             {
-                CacheManager testCache = sut.CreateCache("test123a", new TimeSpan());
+                ICacheManager testCache = sut.CreateCache("test123a", new TimeSpan());
 
                 Assert.IsNotNull(testCache);
 
@@ -202,7 +202,7 @@ namespace SharedLibTests
             CacheManagerFactory sut = new CacheManagerFactory();
             try
             {
-                CacheManager testCache = sut.CreateCache("test123a", new TimeSpan());
+                ICacheManager testCache = sut.CreateCache("test123a", new TimeSpan());
 
                 Assert.IsNotNull(testCache);
 
@@ -221,7 +221,7 @@ namespace SharedLibTests
             CacheManagerFactory sut = new CacheManagerFactory();
             try
             {
-                CacheManager testCache = sut.CreateCache("clear all", new TimeSpan(), false, true);
+                ICacheManager testCache = sut.CreateCache("clear all", new TimeSpan(), false, true);
 
                 Assert.IsNotNull(testCache);
                 testCache.Add("test 1", new CacheItem("test 1", true));
@@ -245,7 +245,7 @@ namespace SharedLibTests
             CacheManagerFactory sut = new CacheManagerFactory();
             try
             {
-                CacheManager testCache = sut.CreateCache("clear all", new TimeSpan(0, 0, 0, 0, 15), false, true);
+                ICacheManager testCache = sut.CreateCache("clear all", new TimeSpan(0, 0, 0, 0, 15), false, true);
 
                 Assert.IsNotNull(testCache);
                 testCache.Add("test 1", new CacheItem("test 1", true));

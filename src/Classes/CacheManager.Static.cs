@@ -22,7 +22,7 @@ namespace Shared.Classes
         /// <summary>
         /// List of all cache's created by application
         /// </summary>
-        internal static readonly Dictionary<string, CacheManager> _allCaches = new Dictionary<string, CacheManager>();
+        internal static readonly Dictionary<string, ICacheManager> _allCaches = new();
 
         private static readonly object _dictionaryLockObject = new object();
 
@@ -63,11 +63,12 @@ namespace Shared.Classes
         /// </summary>
         internal static void CleanAllCaches()
         {
-            foreach (KeyValuePair<string, CacheManager> cManager in _allCaches)
+            foreach (KeyValuePair<string, ICacheManager> cManager in _allCaches)
             {
                 try
                 {
-                    cManager.Value.CleanCachedItems();
+                    if (cManager.Value is CacheManager cacheManager)
+                    cacheManager.CleanCachedItems();
                 }
                 catch (Exception err)
                 {
@@ -81,7 +82,7 @@ namespace Shared.Classes
         /// </summary>
         internal static void ClearAllCaches()
         {
-            foreach (KeyValuePair<string, CacheManager> cManager in _allCaches)
+            foreach (KeyValuePair<string, ICacheManager> cManager in _allCaches)
             {
                 try
                 {
@@ -114,7 +115,7 @@ namespace Shared.Classes
         /// Returns the numer of caches
         /// </summary>
         /// <returns></returns>
-        internal static CacheManager GetCache(string cacheName)
+        internal static ICacheManager GetCache(string cacheName)
         {
             if (String.IsNullOrEmpty(cacheName))
                 throw new ArgumentNullException(nameof(cacheName));
@@ -151,7 +152,7 @@ namespace Shared.Classes
 
             using (TimedLock.Lock(_dictionaryLockObject))
             {
-                foreach (KeyValuePair<string, CacheManager> cManager in _allCaches)
+                foreach (KeyValuePair<string, ICacheManager> cManager in _allCaches)
                 {
                     if (i == index)
                         return cManager.Value.Name;
@@ -174,7 +175,7 @@ namespace Shared.Classes
 
             using (TimedLock.Lock(_dictionaryLockObject))
             {
-                foreach (KeyValuePair<string, CacheManager> cManager in _allCaches)
+                foreach (KeyValuePair<string, ICacheManager> cManager in _allCaches)
                 {
                     if (i == index)
                         return cManager.Value.MaximumAge;
@@ -197,7 +198,7 @@ namespace Shared.Classes
 
             using (TimedLock.Lock(_dictionaryLockObject))
             {
-                foreach (KeyValuePair<string, CacheManager> cManager in _allCaches)
+                foreach (KeyValuePair<string, ICacheManager> cManager in _allCaches)
                 {
                     if (i == index)
                         return cManager.Value.Count;

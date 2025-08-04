@@ -655,7 +655,7 @@ namespace Shared
         /// <summary>
         /// New cached item, to be added to the list
         /// </summary>
-        public CacheItem CachedItem { get; set; }
+        public ICacheItem CachedItem { get; set; }
 
         #endregion Properties
     }
@@ -678,7 +678,7 @@ namespace Shared
         /// Constructor
         /// </summary>
         /// <param name="item">Name of cached item</param>
-        public CacheItemArgs(CacheItem item)
+        public CacheItemArgs(ICacheItem item)
         {
             CachedItem = item;
         }
@@ -690,7 +690,7 @@ namespace Shared
         /// <summary>
         /// Cached item, to be added to the list
         /// </summary>
-        public CacheItem CachedItem { get; private set; }
+        public ICacheItem CachedItem { get; private set; }
 
         #endregion Properties
     }

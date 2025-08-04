@@ -138,7 +138,6 @@ namespace Shared.Classes
                     Result = rdr.BaseStream.Position;
                     rdr.Close();
                     rdr.Dispose();
-                    rdr = null;
                 }
             }
             finally

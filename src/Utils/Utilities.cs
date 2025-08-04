@@ -2350,10 +2350,10 @@ namespace Shared
                 throw new Exception(error);
 
             if (s.Length < minLength)
-                throw new Exception(String.Format("{0}\r\nMinimum length must be {1)", error, minLength));
+                throw new Exception(String.Format("{0}\r\nMinimum length must be {1}", error, minLength));
 
             if (s.Length > maxLength)
-                throw new Exception(String.Format("{0}\r\nMaximun length must be {1)", error, maxLength));
+                throw new Exception(String.Format("{0}\r\nMaximun length must be {1}", error, maxLength));
         }
 
         /// <summary>

@@ -165,7 +165,7 @@ namespace Shared.Docs
             string mnParts = memberNameParts;
             string nameParams = String.Empty;
 
-            if (mnParts.Contains("("))
+            if (mnParts.Contains('('))
             {
                 nameParams = mnParts.Substring(mnParts.IndexOf("("));
                 mnParts = mnParts.Substring(0, mnParts.Length - nameParams.Length);

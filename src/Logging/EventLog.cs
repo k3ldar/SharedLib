@@ -421,10 +421,10 @@ namespace Shared
                     previousError.FileName = _errorPath + String.Format("{0}.log",
                         DateTime.Now.ToString("ddMMyyyy HH mm ss ffff"));
 
-                    if (!CanLogData(previousError.FileName))
+                    if (CanLogData(previousError.FileName) == null)
                         return;
 
-                    if (!_errorCache.Add(e.Message, previousError))
+                    if (_errorCache.Add(e.Message, previousError) == null)
                         return;
                 }
 
@@ -500,7 +500,7 @@ namespace Shared
             {
                 using (TimedLock.Lock(_lockObject))
                 {
-                    CacheItem item = _logCache.Get(text);
+                    ICacheItem item = _logCache.Get(text);
 
                     // already cached, don't bother again until item uncached
                     if (item != null)
@@ -705,7 +705,7 @@ namespace Shared
                 if (!CanLogData(errorItem.FileName))
                     return false;
 
-                if (!_errorCache.Add(error, errorItem))
+                if (_errorCache.Add(error, errorItem) == null)
                     return false;
             }
 

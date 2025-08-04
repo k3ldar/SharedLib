@@ -130,9 +130,9 @@ namespace Shared.Classes
             {
                 if (OnSessionSave != null && UserSessions != null)
                 {
-                    foreach (CacheItem item in UserSessions.Items)
+                    foreach (ICacheItem item in UserSessions.Items)
                     {
-                        UserSession session = (UserSession)item.GetValue(true);
+                        UserSession session = item.GetValue<UserSession>(true);
 
                         // every 15 seconds or so save the data
                         using (TimedLock.Lock(_sessionLockObject))
@@ -484,11 +484,11 @@ namespace Shared.Classes
         /// <param name="userID">ID of current user</param>
         public static void Login(string sessionID, string username, string email, Int64 userID)
         {
-            CacheItem cachedItem = _userSessionCacheManager.Get(sessionID);
+            ICacheItem cachedItem = _userSessionCacheManager.Get(sessionID);
 
             if (cachedItem != null)
             {
-                UserSession session = (UserSession)cachedItem.Value;
+                UserSession session = cachedItem.GetValue<UserSession>();
                 session.UserName = username;
                 session.UserEmail = email;
                 session.UserID = userID;
@@ -504,10 +504,10 @@ namespace Shared.Classes
         private static void _userSessionManger_ItemRemoved(object sender, Shared.CacheItemArgs e)
         {
             //save statistics on user session
-            if (e.CachedItem == null || e.CachedItem.Value == null)
+            if (e.CachedItem == null || e.CachedItem.IsNull)
                 return;
 
-            UserSession session = (UserSession)e.CachedItem.Value;
+            UserSession session = e.CachedItem.GetValue<UserSession>();
             session.Status = SessionStatus.Closing;
             UpdateSession(session);
         }
@@ -540,9 +540,9 @@ namespace Shared.Classes
 
                 using (TimedLock.Lock(_sessionLockObject))
                 {
-                    foreach (CacheItem item in _userSessionCacheManager.Items)
+                    foreach (ICacheItem item in _userSessionCacheManager.Items)
                     {
-                        Result.Add(((UserSession)item.Value).Clone());
+                        Result.Add(item.GetValue<UserSession>().Clone());
                     }
                 }
 
@@ -553,7 +553,7 @@ namespace Shared.Classes
         /// <summary>
         /// Returns all cache manager items
         /// </summary>
-        public static CacheManager UserSessions
+        public static ICacheManager UserSessions
         {
             get
             {

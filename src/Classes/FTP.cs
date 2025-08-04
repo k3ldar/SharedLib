@@ -245,8 +245,6 @@ namespace Shared.Classes
             {
                 throw;
             }
-
-            return;
         }
 
         /// <summary>
