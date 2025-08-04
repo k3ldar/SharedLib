@@ -231,7 +231,7 @@ namespace Shared.Communication
 
             using (Socket tcpSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp))
             {
-                //try to connect and test the rsponse for code 220 = success
+                //try to connect and test the response for code 220 = success
                 tcpSocket.Connect(endPoint);
 
                 if (!CheckResponse(tcpSocket, 220))
