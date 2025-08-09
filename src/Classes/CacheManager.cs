@@ -180,11 +180,14 @@ namespace Shared.Classes
                 else
                 {
                     // raise event to get the cached item
-                    Result = RaiseItemNotFound(name);
+                    object cachedItem = RaiseItemNotFound(name);
 
                     // if we have a new cached item, add to list
-                    if (Result != null)
+                    if (cachedItem != null)
+                    {
+                        Result = new CacheItem(name, cachedItem);
                         _cachedItems.Add(name, Result);
+                    }
                 }
             }
 
@@ -286,9 +289,9 @@ namespace Shared.Classes
                 ItemRemoved(this, new CacheItemArgs(item));
         }
 
-        private ICacheItem RaiseItemNotFound(string name)
+        private object RaiseItemNotFound(string name)
         {
-            ICacheItem Result = null;
+            object Result = null;
 
             if (ItemNotFound != null)
             {

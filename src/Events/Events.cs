@@ -655,7 +655,7 @@ namespace Shared
         /// <summary>
         /// New cached item, to be added to the list
         /// </summary>
-        public ICacheItem CachedItem { get; set; }
+        public object CachedItem { get; set; }
 
         #endregion Properties
     }
