@@ -471,8 +471,7 @@ namespace Shared.Classes
             if (_userSessionCacheManager == null)
                 throw new Exception("SessionManager has not been initialised!");
 
-            _userSessionCacheManager.Add(session.SessionID,
-                new CacheItem(session.SessionID, session));
+            _userSessionCacheManager.Add(session.SessionID, session);
         }
 
         /// <summary>
@@ -520,7 +519,7 @@ namespace Shared.Classes
 
                 if (session != null)
                 {
-                    e.CachedItem = new CacheItem(e.Name, session);
+                    e.CachedItem = session;
                 }
             }
         }

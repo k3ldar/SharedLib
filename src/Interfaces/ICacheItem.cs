@@ -24,7 +24,6 @@ namespace Shared.Classes
         [Obsolete("deprecated, use GetValue<T> instead")]
         object Value { get; }
 
-        [Obsolete("deprecated, use GetValue<T> instead")]
         object GetValue(bool ignoreReset = false);
 
         T GetValue<T>(bool ignoreReset = false);

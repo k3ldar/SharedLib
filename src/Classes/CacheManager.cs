@@ -135,8 +135,8 @@ namespace Shared.Classes
         /// <param name="deleteIfExists">if true and the list contains a value with the same name, then the existing item is deleted</param>
         public ICacheItem Add(string name, object value, bool deleteIfExists = false)
         {
-            if (value is ICacheItem)
-                throw new ArgumentException("value can not be of type ICacheItem", nameof(value));
+            if (value is ICacheItem cacheItem)
+                value = cacheItem.GetValue();
 
             // is the item is already cached and we are not renewing it
             if (_cachedItems.ContainsKey(name) && !deleteIfExists)

@@ -506,7 +506,7 @@ namespace Shared
                     if (item != null)
                         return;
 
-                    _logCache.Add(text, new CacheItem(text, text));
+                    _logCache.Add(text, text);
 
                     string LogPath = Path;
 
